@@ -10,8 +10,6 @@ MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 BQ_DDBB = os.environ.get("MQTT_HOST", "localhost")
 POWER_CONSTANT = 35
-
-
 TOPICS = ["device/control"]
 
 bigquery_client = bigquery.Client()
