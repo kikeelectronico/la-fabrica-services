@@ -9,6 +9,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 BQ_DDBB = os.environ.get("MQTT_HOST", "localhost")
+POWER_CONSTANT = 35
 
 
 TOPICS = ["device/control"]
@@ -44,11 +45,11 @@ def sendToBigquery(data):
   global last_value
   if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
     ts = int(time.time())
-    power = data['value'] * 35
+    power = data['value'] * POWER_CONSTANT
 
     query_job = bigquery_client.query(
         """
-        INSERT INTO `{coruscant-f1352.lafabrica.power}`
+        INSERT INTO `{}`
         (time, power, version)
         VALUES ({},{},2);
         """.format(BQ_DDBB, ts, power)
