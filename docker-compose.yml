@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  mqtt-2-bigquery:
+    image: ghcr.io/kikeelectronico/mqtt-2-bigquery:latest
+    container_name: mqtt-2-bigquery
+    restart: always
+    environment:
+      - MQTT_USER = user
+      - MQTT_PASS = pass
+      - MQTT_HOST = host
+      - BQ_DDBB = bigquery_ddbb
+    volumes:
+      - creds:/app/creds
+
+volumes:
+  creds:
