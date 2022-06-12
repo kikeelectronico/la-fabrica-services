@@ -2,7 +2,7 @@ name: Build and publish Data Panel API
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - "data-panel-api/**"
 
