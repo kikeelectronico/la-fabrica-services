@@ -1,7 +1,7 @@
 FROM node:lts-alpine AS base
 RUN mkdir front
 WORKDIR /front
-COPY data-panel-front ./
+COPY . ./
 RUN npm install --no-package-lock
 RUN npm run build
 FROM nginx
