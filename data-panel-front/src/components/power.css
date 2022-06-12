@@ -36,4 +36,8 @@
   .powerTemperature {
     font-size: 40px;
   }
+
+  .powerFail {
+    font-size: 20px;
+  }
 }
