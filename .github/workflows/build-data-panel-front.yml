@@ -1,4 +1,4 @@
-name: Build and publish Data pnael front
+name: Build and publish Data Panel Front
 
 on:
   push:
