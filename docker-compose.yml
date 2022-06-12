@@ -5,6 +5,7 @@ services:
     image: ghcr.io/kikeelectronico/mqtt-2-bigquery:latest
     container_name: mqtt-2-bigquery
     restart: always
+    network_mode: "host"
     environment:
       - MQTT_USER = user
       - MQTT_PASS = pass
