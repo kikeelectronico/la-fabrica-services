@@ -56,6 +56,8 @@ def sendToBigquery(data):
 			r = requests.post(url, data = body)
 			if not r.text == "Done":
 				print(r.text)
+		else:
+			print("There is no token or URL for the injector")
 
 		last_value = data['value']
 
