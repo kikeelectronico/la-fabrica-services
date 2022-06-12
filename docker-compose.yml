@@ -1,6 +1,7 @@
 version: "3.4"
 
 services:
+  # Big Query connector
   mqtt-2-bigquery:
     image: ghcr.io/kikeelectronico/mqtt-2-bigquery:latest
     container_name: mqtt-2-bigquery
@@ -12,3 +13,33 @@ services:
       - MQTT_HOST=host
       - INJECTOR_URL=host
       - INJECTOR_TOKEN=bigquery_ddbb
+
+  # Panel
+  data-panel-front:
+    image: ghcr.io/kikeelectronico/data-panel-front:latest
+    container_name: data-panel-front
+    restart: always
+    ports:
+      - "81:80"
+    depends_on:
+      - data-panel-api
+
+  #API REST
+  data-panel-api:
+    image: ghcr.io/kikeelectronico/data-panel-api:latest
+    container_name: data-panel-api
+    restart: always
+    network_mode: "host"
+    expose:
+      - "8000"
+    env_file:
+     - .env
+
+  #Autoload
+  data-panel-autoload:
+    image: ghcr.io/kikeelectronico/data-panel-autoload:latest
+    container_name: data-panel-autoload
+    restart: always
+    network_mode: "host"
+    depends_on:
+      - data-panel-front

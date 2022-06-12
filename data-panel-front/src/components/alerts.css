@@ -1,0 +1,46 @@
+.alertsCard {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+}
+
+.criticalShadow {
+  box-shadow: 0 0.1rem 1rem rgba(255, 0, 0, 0.8)
+}
+
+.alertsCritical {
+  animation: color-change 2s infinite;
+  font-size: 25px;
+}
+
+@keyframes color-change {
+  0% { color: white; }
+  50% { color: red; }
+  100% { color: white; }
+}
+
+.alertsLow {
+  color: lightgreen;
+  font-size: 25px;
+}
+
+.alertsNormal {
+  color: yellow;
+  font-size: 25px;
+}
+
+.alertsHigh {
+  color: red;
+  font-size: 25px;
+}
+
+.alertImage {
+  height: 80px;
+}

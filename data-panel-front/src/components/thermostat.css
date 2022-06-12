@@ -1,0 +1,17 @@
+.thermostatCard {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+}
+
+.thermostatTemperature {
+  color: white;
+  font-size: 50px;
+}

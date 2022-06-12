@@ -1,10 +1,14 @@
-name: Build and publish
+name: Build and publish MQTT 2 bigquery
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - "mqtt-2-bigquery/**"
   pull_request:
     branches: [ main ]
+    paths:
+      - "mqtt-2-bigquery/**"
 
 env:
   # Use docker.io for Docker Hub if empty

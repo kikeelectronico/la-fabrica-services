@@ -1,0 +1,54 @@
+.spotifyCard {
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+}
+
+.spotifyImageCard {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  border: 2px solid rgb(44, 43, 43);
+  background-size: 200px 200px;
+  -webkit-transition: background-image 0.5s ease-in-out;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.spotifyProgressBar {
+  width: 200px;
+  border-radius: 20px 20px 0px 0px;
+  position: absolute;
+  bottom: 0;
+}
+
+.spotifyTitle {
+  color: white;
+  font-size: 25px;
+}
+
+.spotifyArtistsSeparator {
+  width: 80%;
+  margin: 5px;
+  margin-left: 10%;
+  color: white;
+}
+
+.spotifyArtist {
+  color: white;
+  font-size: 20px;
+}
+
+.spotifyDevice {
+  color: white;
+  font-size: 15px;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,43 @@
+.weatherCard {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+}
+
+.weatherIcon {
+  width: 70px;
+  height: 70px;
+}
+
+.weatherTemperature {
+  font-size: 25px;
+  color: white;
+}
+
+.weatherUltraviolet {
+  font-size: 25px;
+  color: white;
+}
+
+.weatherWind {
+  font-size: 25px;
+  color: white;
+}
+
+.weatherFail {
+  animation: color-change 2s infinite;
+  font-size: 25px;
+}
+
+@keyframes color-change {
+  0% { color: white; }
+  50% { color: red; }
+  100% { color: white; }
+}
