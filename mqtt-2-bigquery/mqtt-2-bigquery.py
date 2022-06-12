@@ -47,13 +47,13 @@ def sendToBigquery(data):
 
 		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
 			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
-			data = {
+			body = {
 				'ddbb': 'power',
 				"ts": ts,
 				"power": power
 			}
 
-			r = requests.post(url, data)
+			r = requests.post(url, data = body)
 			if not r.text == "Done":
 				print(r.text)
 
