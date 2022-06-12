@@ -60,4 +60,12 @@ def sendToBigquery(data):
 		last_value = data['value']
 
 if __name__ == "__main__":
+	print("start")
+	print(MQTT_USER)
+	print(MQTT_PASS)
+	print(MQTT_HOST)
+	print(INJECTOR_URL)
+	print(INJECTOR_TOKEN)
+	print("end")
 	mqttReader(mqtt_client)
+ 
