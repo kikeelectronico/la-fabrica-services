@@ -1,4 +1,4 @@
-name: Build and publish MQTT 2 bigquery
+name: Build and publish MQTT 2 BigQuery
 
 on:
   push:
