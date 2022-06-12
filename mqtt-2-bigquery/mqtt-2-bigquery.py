@@ -56,7 +56,7 @@ def sendToBigquery(data):
 				"Content-Type": "application/json"
 			}
 
-			r = requests.post(url, data = body, headers = headers)
+			r = requests.post(url, data = json.dumps(body), headers = headers)
 			if not r.text == "Done":
 				print(r.text)
 		else:
