@@ -13,59 +13,52 @@ INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
 TOPICS = ["device/control"]
 
-# mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client()
 
-# last_value = 0
+last_value = 0
 
-# def on_connect(client, userdata, flags, rc):
-# 	print("Connected with result code "+str(rc))
-# 	# Suscribe to topics
-# 	for topic in TOPICS:
-# 		client.subscribe(topic)
+def on_connect(client, userdata, flags, rc):
+	print("Connected with result code "+str(rc))
+	# Suscribe to topics
+	for topic in TOPICS:
+		client.subscribe(topic)
 
-# def on_message(client, userdata, msg):
-# 	if msg.topic in TOPICS:
-# 		if msg.topic == "device/control":
-# 			payload = json.loads(msg.payload)
-# 			sendToBigquery(payload)
+def on_message(client, userdata, msg):
+	if msg.topic in TOPICS:
+		if msg.topic == "device/control":
+			payload = json.loads(msg.payload)
+			sendToBigquery(payload)
 
-# # MQTT reader
-# def mqttReader(client):
+# MQTT reader
+def mqttReader(client):
 	
-# 	client.on_message = on_message
-# 	client.on_connect = on_connect
+	client.on_message = on_message
+	client.on_connect = on_connect
 
-# 	client.username_pw_set(MQTT_USER, MQTT_PASS)
-# 	client.connect(MQTT_HOST, MQTT_PORT, 60)
-# 	client.loop_forever()
+	client.username_pw_set(MQTT_USER, MQTT_PASS)
+	client.connect(MQTT_HOST, MQTT_PORT, 60)
+	client.loop_forever()
 
-# def sendToBigquery(data):
-# 	global last_value
-# 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
-# 		ts = int(time.time())
-# 		power = data['value'] * POWER_CONSTANT
+def sendToBigquery(data):
+	global last_value
+	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
+		ts = int(time.time())
+		power = data['value'] * POWER_CONSTANT
 
-# 		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
-# 			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
-# 			data = {
-# 				'ddbb': 'power',
-# 				"ts": ts,
-# 				"power": power
-# 			}
+		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
+			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
+			data = {
+				'ddbb': 'power',
+				"ts": ts,
+				"power": power
+			}
 
-# 			r = requests.post(url, data)
-# 			if not r.text == "Done":
-# 				print(r.text)
+			r = requests.post(url, data)
+			if not r.text == "Done":
+				print(r.text)
 
-# 		last_value = data['value']
+		last_value = data['value']
 
 if __name__ == "__main__":
-	print("start")
-	print(MQTT_USER)
-	print(MQTT_PASS)
-	print(MQTT_HOST)
-	print(INJECTOR_URL)
-	print(INJECTOR_TOKEN)
-	print("end")
-	# mqttReader(mqtt_client)
+	mqttReader(mqtt_client)
  

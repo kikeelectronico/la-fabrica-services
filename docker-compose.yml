@@ -7,8 +7,8 @@ services:
     restart: always
     network_mode: "host"
     environment:
-      - MQTT_USER = user
-      - MQTT_PASS = pass
-      - MQTT_HOST = host
-      - INJECTOR_URL = host
-      - INJECTOR_TOKEN = bigquery_ddbb
+      - MQTT_USER=user
+      - MQTT_PASS=pass
+      - MQTT_HOST=host
+      - INJECTOR_URL=host
+      - INJECTOR_TOKEN=bigquery_ddbb
