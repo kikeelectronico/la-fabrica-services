@@ -1,4 +1,2 @@
-#pyarrow
-#google-cloud
-google-cloud-bigquery
+requests
 paho-mqtt

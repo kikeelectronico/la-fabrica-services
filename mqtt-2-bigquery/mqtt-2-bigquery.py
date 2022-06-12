@@ -1,4 +1,4 @@
-from google.cloud import bigquery
+import requests
 import time
 import paho.mqtt.client as mqtt
 import json
@@ -8,11 +8,11 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
-BQ_DDBB = os.environ.get("MQTT_HOST", "localhost")
+INJECTOR_URL = os.environ.get("INJECTOR_URL", "no_url")
+INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
 TOPICS = ["device/control"]
 
-bigquery_client = bigquery.Client()
 mqtt_client = mqtt.Client()
 
 last_value = 0
@@ -40,21 +40,24 @@ def mqttReader(client):
 	client.loop_forever()
 
 def sendToBigquery(data):
-  global last_value
-  if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
-    ts = int(time.time())
-    power = data['value'] * POWER_CONSTANT
+	global last_value
+	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
+		ts = int(time.time())
+		power = data['value'] * POWER_CONSTANT
 
-    query_job = bigquery_client.query(
-        """
-        INSERT INTO `{}`
-        (time, power, version)
-        VALUES ({},{},2);
-        """.format(BQ_DDBB, ts, power)
-    )
+		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
+			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
+			data = {
+				'ddbb': 'power',
+				"ts": ts,
+				"power": power
+			}
 
-    #results = query_job.result()
-    last_value = data['value']
+			r = requests.post(url, data)
+			if not r.text == "Done":
+				print(r.text)
+
+		last_value = data['value']
 
 if __name__ == "__main__":
 	mqttReader(mqtt_client)

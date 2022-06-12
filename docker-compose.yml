@@ -9,9 +9,5 @@ services:
       - MQTT_USER = user
       - MQTT_PASS = pass
       - MQTT_HOST = host
-      - BQ_DDBB = bigquery_ddbb
-    volumes:
-      - creds:/app/creds
-
-volumes:
-  creds:
+      - INJECTOR_URL = host
+      - INJECTOR_TOKEN = bigquery_ddbb
