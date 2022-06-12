@@ -26,3 +26,18 @@
   font-size: 15px;
   color: white;
 }
+
+@media screen and (max-width:600px) {
+  .airCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .airMain {
+    font-size: 35px;
+  }
+
+  .airThird {
+    font-size: 10px;
+  }
+}

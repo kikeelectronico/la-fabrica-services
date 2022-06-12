@@ -41,3 +41,31 @@
   50% { color: red; }
   100% { color: white; }
 }
+
+@media screen and (max-width:600px) {
+  .weatherCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .weatherIcon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .weatherTemperature {
+    font-size: 20px;
+  }
+  
+  .weatherUltraviolet {
+    font-size: 20px;
+  }
+  
+  .weatherWind {
+    font-size: 20px;
+  }
+  
+  .weatherFail {
+    font-size: 20px;
+  }
+}

@@ -52,3 +52,32 @@
   font-size: 15px;
   margin-bottom: 10px;
 }
+
+@media screen and (max-width:600px) {
+  .spotifyCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .spotifyImageCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .spotifyProgressBar {
+    width: 150px;
+  }
+  
+  .spotifyTitle {
+    font-size: 20px;
+  }
+
+  .spotifyArtist {
+    font-size: 15px;
+  }
+  
+  .spotifyDevice {
+    font-size: 10px;
+  }
+  
+}

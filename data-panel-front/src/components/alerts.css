@@ -44,3 +44,30 @@
 .alertImage {
   height: 80px;
 }
+
+@media screen and (max-width:600px) {
+  .alertsCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .alertsCritical {
+    font-size: 20px;
+  }
+  
+  .alertsLow {
+    font-size: 20px;
+  }
+  
+  .alertsNormal {
+    font-size: 20px;
+  }
+  
+  .alertsHigh {
+    font-size: 20px;
+  }
+  
+  .alertImage {
+    height: 50px;
+  }
+}

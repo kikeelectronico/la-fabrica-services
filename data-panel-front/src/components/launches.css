@@ -38,3 +38,22 @@
   50% { color: red; }
   100% { color: white; }
 }
+
+@media screen and (max-width:600px) {
+  .launchesCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .launchesName {
+    font-size: 20px;
+  }
+  
+  .launchesNet {
+    font-size: 20px;
+  }
+  
+  .launchesFail {
+    font-size: 20px;
+  }
+}

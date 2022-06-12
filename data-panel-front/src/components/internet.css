@@ -21,3 +21,14 @@
   50% { color: red; }
   100% { color: white; }
 }
+
+@media screen and (max-width:600px) {
+  .internetCard {
+    width: 150px;
+    height: 150px;
+  }
+
+  .internetFail {
+    font-size: 20px;
+  }
+}
