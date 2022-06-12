@@ -44,7 +44,7 @@ def sendToBigquery(data):
 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
 		ts = int(time.time())
 		power = data['value'] * POWER_CONSTANT
-		print(INJECTOR_URL, INJECTOR_TOKEN)
+  
 		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
 			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
 			body = {
@@ -52,8 +52,11 @@ def sendToBigquery(data):
 				"ts": ts,
 				"power": power
 			}
+			headers = {
+				"Content-Type": "application/json"
+			}
 
-			r = requests.post(url, data = body)
+			r = requests.post(url, data = body, headers = headers)
 			if not r.text == "Done":
 				print(r.text)
 		else:
