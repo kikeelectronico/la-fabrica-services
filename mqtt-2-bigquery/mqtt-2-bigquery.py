@@ -16,6 +16,7 @@ TOPICS = ["device/control"]
 mqtt_client = mqtt.Client()
 
 power_last_value = 0
+temperature_last_value = 0
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
@@ -45,16 +46,28 @@ def sendToBigquery(data):
 		ts = int(time.time())
 
 		inject = {
-			'ddbb': 'power',
+			"ddbb": "power",
 			"ts": ts,
-			"power": data['value'] * POWER_CONSTANT
+			"power": data["value"] * POWER_CONSTANT
 		}
 
 		bigqueyInjector(inject)
-  
-		
-
 		power_last_value = data['value']
+	
+	elif data['id'] == "termos" and data['param'] == "thermostatTemperatureAmbient" and data['value'] != temperature_last_value:
+		ts = int(time.time())
+
+		inject = {
+			"ddbb": "ambient",
+			"ts": ts,
+			"magnitude": "temperature",
+			"value": data['value'],
+			"location": "livingroom",
+			"units": "C"
+		}
+
+		bigqueyInjector(inject)
+		temperature_last_value = data["value"]
 
 def bigqueyInjector(body):
 	if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
