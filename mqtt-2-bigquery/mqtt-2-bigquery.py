@@ -43,26 +43,31 @@ def sendToBigquery(data):
 	global power_last_value
 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
 		ts = int(time.time())
-		power = data['value'] * POWER_CONSTANT
-  
-		if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
-			url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
-			body = {
-				'ddbb': 'power',
-				"ts": ts,
-				"power": power
-			}
-			headers = {
-				"Content-Type": "application/json"
-			}
 
-			r = requests.post(url, data = json.dumps(body), headers = headers)
-			if not r.text == "Done":
-				print(r.text)
-		else:
-			print("There is no token or URL for the injector")
+		inject = {
+			'ddbb': 'power',
+			"ts": ts,
+			"power": data['value'] * POWER_CONSTANT
+		}
+
+		bigqueyInjector(inject)
+  
+		
 
 		power_last_value = data['value']
+
+def bigqueyInjector(body):
+	if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
+		url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
+		headers = {
+			"Content-Type": "application/json"
+		}
+
+		r = requests.post(url, data = json.dumps(body), headers = headers)
+		if not r.text == "Done":
+			print(r.text)
+	else:
+		print("There is no token or URL for the injector")
 
 if __name__ == "__main__":
 	mqttReader(mqtt_client)
