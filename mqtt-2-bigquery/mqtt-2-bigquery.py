@@ -42,6 +42,7 @@ def mqttReader(client):
 
 def sendToBigquery(data):
 	global power_last_value
+	global temperature_last_value
 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
 		ts = int(time.time())
 
