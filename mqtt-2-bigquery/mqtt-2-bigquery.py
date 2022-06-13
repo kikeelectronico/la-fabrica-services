@@ -15,7 +15,7 @@ TOPICS = ["device/control"]
 
 mqtt_client = mqtt.Client()
 
-last_value = 0
+power_last_value = 0
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
@@ -40,8 +40,8 @@ def mqttReader(client):
 	client.loop_forever()
 
 def sendToBigquery(data):
-	global last_value
-	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != last_value:
+	global power_last_value
+	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
 		ts = int(time.time())
 		power = data['value'] * POWER_CONSTANT
   
@@ -62,7 +62,7 @@ def sendToBigquery(data):
 		else:
 			print("There is no token or URL for the injector")
 
-		last_value = data['value']
+		power_last_value = data['value']
 
 if __name__ == "__main__":
 	mqttReader(mqtt_client)
