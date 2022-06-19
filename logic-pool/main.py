@@ -31,7 +31,7 @@ def on_message(client, userdata, msg):
     if msg.topic == "device/control":
       payload = json.loads(msg.payload)
       if payload["id"] == "switch003" and payload["param"] == "on":
-        internet_switch.on(payload["value"])
+        internet_switch.on(payload["value"], control_ids=["light001", "light002"])
     elif msg.topic == "device/switch003/on":
       status = functions.payloadToBool(msg.payload)
       internet_switch.on(status)

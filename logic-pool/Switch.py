@@ -13,13 +13,14 @@ class Switch:
   def mqttReady(self, status):
     self._mqtt_ready = status
 
-  def on(self, state):
+  def on(self, state, control_ids):
     if not self._mqtt_ready:
       return False
-    payload = {
-      "id": "light003",
-      "param": "on",
-      "value": state,
-      "intent": "execute"
-    }
-    self._mqtt_client.publish("device/control", json.dumps(payload))
+    for control_id in control_ids:
+      payload = {
+        "id": control_id,
+        "param": "on",
+        "value": state,
+        "intent": "execute"
+      }
+      self._mqtt_client.publish("device/control", json.dumps(payload))
