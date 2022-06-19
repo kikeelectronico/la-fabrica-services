@@ -20,6 +20,15 @@ services:
     env_file:
      - .env
 
+  # Alert system, mqtt
+  alert-system-mqtt:
+    image: ghcr.io/kikeelectronico/alert-system-mqtt:latest
+    container_name: alert-system-mqtt
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+
   # Panel
   data-panel-front:
     image: ghcr.io/kikeelectronico/data-panel-front:latest
