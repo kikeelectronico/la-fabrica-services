@@ -34,7 +34,7 @@ def on_message(client, userdata, msg):
         internet_switch.on(payload["value"], control_ids=["light001", "light002"])
     elif msg.topic == "device/switch003/on":
       status = functions.payloadToBool(msg.payload)
-      internet_switch.on(status)
+      internet_switch.on(status, control_ids=["light001", "light002"])
 
 # MQTT reader
 def mqttReader(mqtt_client):
