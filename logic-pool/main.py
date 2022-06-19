@@ -3,7 +3,7 @@ import json
 import os
 
 import functions
-import switches
+from Switch import Switch
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -17,12 +17,14 @@ MQTT_PORT = 1883
 TOPICS = ["device/control", "device/switch003/on"]
 
 mqtt_client = mqtt.Client()
+internet_switch = Switch(mqtt_client, "")
 
 def on_connect(client, userdata, flags, rc):
-	print("Connected with result code "+str(rc))
-	# Suscribe to topics
-	for topic in TOPICS:
-		client.subscribe(topic)
+  print("Connected with result code "+str(rc))
+  internet_switch.mqttReady(True)
+  # Suscribe to topics
+  for topic in TOPICS:
+    client.subscribe(topic)
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
@@ -30,7 +32,7 @@ def on_message(client, userdata, msg):
       payload = json.loads(msg.payload)
     elif msg.topic == "device/switch003/on":
       status = functions.payloadToBool(msg.payload)
-      switches.internetSwith(status)
+      internet_switch.on(status)
 
 # MQTT reader
 def mqttReader(mqtt_client):
