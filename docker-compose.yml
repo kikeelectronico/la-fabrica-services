@@ -42,7 +42,7 @@ services:
     volumes:
      - creds:/app/creds
 
-  # Panel
+  # Data panel, front
   data-panel-front:
     image: ghcr.io/kikeelectronico/data-panel-front:latest
     container_name: data-panel-front
@@ -52,7 +52,7 @@ services:
     depends_on:
       - data-panel-api
 
-  #API REST
+  # Data panel, API REST
   data-panel-api:
     image: ghcr.io/kikeelectronico/data-panel-api:latest
     container_name: data-panel-api
@@ -63,7 +63,7 @@ services:
     env_file:
      - .env
 
-  #Autoload
+  # Data panel, autoload
   data-panel-autoload:
     image: ghcr.io/kikeelectronico/data-panel-autoload:latest
     container_name: data-panel-autoload
