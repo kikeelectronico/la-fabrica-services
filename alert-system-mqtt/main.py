@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import telebot
 import json
 from Voice import Voice
 from homeware import Homeware
@@ -12,10 +13,13 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
+ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
 TOPICS = ["device/control", "device/switch003/on"]
 
 mqtt_client = mqtt.Client()
+bot = telebot.TeleBot(token=BOT_TOKEN)
 voice = Voice()
 homeware = Homeware()
 
@@ -56,8 +60,8 @@ def on_message(client, userdata, msg):
             if power >= 100:
                 power_alert_counter += 1
                 voice.getAndPlay("Sobrecarga de potencia, nivel crítico")
-                #if power_alert_counter > 2:
-                    #bot.send_message(ENRIQUE_CHAT_ID, "Sobrecarga de potencia")
+                if power_alert_counter > 2:
+                    bot.send_message(ENRIQUE_CHAT_ID, "Sobrecarga de potencia")
             elif power_alert_counter <= 3 and power >= 90:
                 power_alert_counter += 1
                 voice.getAndPlay("Sobrecarga de potencia, nivel 9")
