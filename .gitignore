@@ -1,3 +1,6 @@
 env
 .env
 *.pyc
+
+#alert system voice
+audio/
