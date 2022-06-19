@@ -33,14 +33,14 @@ def on_message(client, userdata, msg):
       switches.internetSwith(status)
 
 # MQTT reader
-def mqttReader(client):
+def mqttReader(mqtt_client):
 	
-	client.on_message = on_message
-	client.on_connect = on_connect
+	mqtt_client.on_message = on_message
+	mqtt_client.on_connect = on_connect
 
-	client.username_pw_set(MQTT_USER, MQTT_PASS)
-	client.connect(MQTT_HOST, MQTT_PORT, 60)
-	client.loop_forever()
+	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+	mqtt_client.loop_forever()
 
 if __name__ == "__main__":
 	mqttReader(mqtt_client)
