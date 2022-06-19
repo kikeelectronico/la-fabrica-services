@@ -10,6 +10,16 @@ services:
     env_file:
      - .env
 
+    
+  # Logic pool
+  logic-pool:
+    image: ghcr.io/kikeelectronico/logic-pool:latest
+    container_name: logic-pool
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+
   # Panel
   data-panel-front:
     image: ghcr.io/kikeelectronico/data-panel-front:latest
