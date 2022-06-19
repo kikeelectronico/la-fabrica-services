@@ -29,6 +29,15 @@ services:
     env_file:
      - .env
 
+  # Alert system, request
+  alert-system-request:
+    image: ghcr.io/kikeelectronico/alert-system-request:latest
+    container_name: alert-system-request
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+
   # Panel
   data-panel-front:
     image: ghcr.io/kikeelectronico/data-panel-front:latest
