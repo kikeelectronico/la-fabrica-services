@@ -12,8 +12,8 @@ class Homeware:
       from dotenv import load_dotenv
       load_dotenv(dotenv_path="../.env")
 
-    self.__api_key = os.environ.get("HOMEWARE_API_KEY")
-    self.__domain = os.environ.get("HOMEWARE_DOMAIN")
+    self.__api_key = os.environ.get("HOMEWARE_API_KEY", "no_api_key")
+    self.__domain = os.environ.get("HOMEWARE_DOMAIN", "localhost")
 
   def getHomewareTest(self):
     response = requests.get("https://" + self.__domain + "/test").text
