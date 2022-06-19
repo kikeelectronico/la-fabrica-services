@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import json
 from Voice import Voice
+from homeware import Homeware
 import os
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
@@ -11,11 +12,16 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
+POWER_CONSTANT = 35
 
 TOPICS = ["device/control", "device/switch003/on"]
 
 mqtt_client = mqtt.Client()
 voice = Voice()
+homeware = Homeware()
+
+store = {}
+power_alert_counter = 0
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -28,10 +34,43 @@ def on_message(client, userdata, msg):
     if msg.topic == "device/control":
         payload = json.loads(msg.payload)
         if payload["id"] == "switch003" and payload["param"] == "on":
-            voice.getAndPlay("Usando el interruptor como test")
+            voice.getAndPlay("Alguien ha usado en interruptor de internet")
+        if payload["id"] == "current001" and payload["param"] == "brightness":
+            power = payload["value"]
+            global store
+            global power_alert_counter
+            # Power alerts
+            if power >= 90:
+                # Get home devices status
+                devices = homeware.getDevices()
+                store["rgb001"] = {
+                    "color": devices["rgb001"]["color"],
+                    "on": devices["rgb001"]["on"]
+                }
+                color = {
+                    "spectrumRGB": 16711680,
+                    "spectrumRgb": 16711680
+                }
+                homeware.setParam("rgb001", "color", color)
+                homeware.setParam("rgb001", "on", True)
+
+            if power >= 100:
+                power_alert_counter += 1
+                voice.getAndPlay("Sobrecarga de potencia, nivel crítico")
+                #if power_alert_counter > 2:
+                    #bot.send_message(ENRIQUE_CHAT_ID, "Sobrecarga de potencia")
+            elif power_alert_counter <= 3 and power >= 90:
+                power_alert_counter += 1
+                voice.getAndPlay("Sobrecarga de potencia, nivel 9")
+            
+            if power_alert_counter >= 1 and power < 75:
+                power_alert_counter = 0
+                voice.getAndPlay("Sistemas de potencia bajo control")
+                homeware.setParam("rgb001", "color", store["rgb001"]["color"])
+                homeware.setParam("rgb001", "on", store["rgb001"]["on"])
 
     elif msg.topic == "device/switch003/on":
-        voice.getAndPlay("Usando el interruptor como test")
+        voice.getAndPlay("Alguien ha usado en interruptor de internet")
 
 # MQTT reader
 def mqttReader(mqtt_client):
