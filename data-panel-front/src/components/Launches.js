@@ -38,17 +38,21 @@ import React, { useState, useEffect } from "react";
     }
 
     const getLaunchTime = (launch) => {
-      if (launch)
+      if (launch) {
         return launch.net.split("T")[1].split(":")
-      else
+      } else {
+        setData({fail_to_update: true})
         return ""
+      }
     }
 
     const getMisionName = (launch) => {
-      if (launch)
+      if (launch) {
         return launch.mission.name.length > 30 ? launch.mission.name.substring(0, 30) + "..." : launch.mission.name
-      else
+      } else {
+        setData({fail_to_update: true})
         return ""
+      }
     }
   
     return (
