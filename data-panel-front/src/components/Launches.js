@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
   
   export default function Launches() {
   
-    const [data, setData] = useState({weather_flag: false, fail_to_update: true});
+    const [data, setData] = useState({launches_flag: false, fail_to_update: true});
     const [uv_alert, setUvAlert] = useState("0, 0, 0");
   
     useEffect(() => {
@@ -37,11 +37,18 @@ import React, { useState, useEffect } from "react";
       }*/
     }
 
-    const getLaunchName = (launch) =>  {
-      if ("name" in launch.mission)
+    const getLaunchTime = (launch) => {
+      if (launch)
+        return launch.net.split("T")[1].split(":")
+      else
+        return ""
+    }
+
+    const getMisionName = (launch) => {
+      if (launch)
         return launch.mission.name.length > 30 ? launch.mission.name.substring(0, 30) + "..." : launch.mission.name
       else
-        return "..."
+        return ""
     }
   
     return (
@@ -51,25 +58,27 @@ import React, { useState, useEffect } from "react";
             
               data.launches.map(launch => {
 
-                const time = launch.net.split("T")[1].split(":")
-                const mision_name = getLaunchName()
+                {
+                  launch !== undefined ?    
+                    <div
+                      className="launchesCard"
+                      style={{
+                        boxShadow: "0 0.1rem 1rem rgba(" + uv_alert  + ", 0.8)"
+                      }}
+                    >
+                      <div className="launchesName">
+                        {getMisionName()}
+                      </div>
+                      <hr className="launchDivider"/>
+                      <div className="launchesNet">
+                        {getLaunchTime()[0]} : {getLaunchTime()[1]}
+                      </div>
+                    </div>
+                  :
+                    <></>
+                }
 
-                return (
-                  <div
-                    className="launchesCard"
-                    style={{
-                      boxShadow: "0 0.1rem 1rem rgba(" + uv_alert  + ", 0.8)"
-                    }}
-                  >
-                    <div className="launchesName">
-                      {mision_name}
-                    </div>
-                    <hr className="launchDivider"/>
-                    <div className="launchesNet">
-                      {time[0]} : {time[1]}
-                    </div>
-                  </div>
-                )
+                
               })
             
           : <></>
