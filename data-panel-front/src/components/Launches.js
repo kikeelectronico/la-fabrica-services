@@ -36,6 +36,13 @@ import React, { useState, useEffect } from "react";
         else setUvAlert("126,0,35")
       }*/
     }
+
+    const getLaunchName = (launch) =>  {
+      if ("name" in launch.mission)
+        return launch.mission.name.length > 30 ? launch.mission.name.substring(0, 30) + "..." : launch.mission.name
+      else
+        return "..."
+    }
   
     return (
       <>
@@ -45,7 +52,7 @@ import React, { useState, useEffect } from "react";
               data.launches.map(launch => {
 
                 const time = launch.net.split("T")[1].split(":")
-                const mision_name = launch.mission.name.length > 30 ? launch.mission.name.substring(0, 30) + "..." : launch.mission.name
+                const mision_name = getLaunchName()
 
                 return (
                   <div
