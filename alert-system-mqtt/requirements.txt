@@ -2,3 +2,4 @@ paho-mqtt
 pyTelegramBotAPI
 catt
 google.cloud
+google-cloud-speech
