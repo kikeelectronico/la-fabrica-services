@@ -42,6 +42,15 @@ services:
     volumes:
      - creds:/app/creds
 
+  # Bot
+  telegram-bot:
+    image: ghcr.io/kikeelectronico/telegram-bot:latest
+    container_name: telegram-bot
+    restart: always
+    network_mode: "host"
+    volumes:
+      - creds:/app/creds
+
   # Data panel, front
   data-panel-front:
     image: ghcr.io/kikeelectronico/data-panel-front:latest
