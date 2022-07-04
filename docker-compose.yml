@@ -10,7 +10,15 @@ services:
     env_file:
      - .env
 
-    
+  # Logic pool time
+  logic-pool-time:
+    image: ghcr.io/kikeelectronico/logic-pool-time:latest
+    container_name: logic-pool-time
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+
   # Logic pool mqtt
   logic-pool-mqtt:
     image: ghcr.io/kikeelectronico/logic-pool-mqtt:latest
