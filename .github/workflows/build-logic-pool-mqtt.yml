@@ -15,7 +15,7 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  mqtt-2-bigquery:
+  mqtt-pool-mqtt:
     name: Build and publish the service
     runs-on: ubuntu-latest
     permissions:
