@@ -11,10 +11,10 @@ services:
      - .env
 
     
-  # Logic pool
-  logic-pool:
-    image: ghcr.io/kikeelectronico/logic-pool:latest
-    container_name: logic-pool
+  # Logic pool mqtt
+  logic-pool-mqtt:
+    image: ghcr.io/kikeelectronico/logic-pool-mqtt:latest
+    container_name: logic-pool-mqtt
     restart: always
     network_mode: "host"
     env_file:
