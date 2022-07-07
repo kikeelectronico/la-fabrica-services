@@ -9,6 +9,7 @@ var loading = false
 export default function Spotify() {
 
   const [playing, setPlaying] = useState({});
+  const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
     getSpotify()
@@ -24,6 +25,7 @@ export default function Spotify() {
       .then((response) => response.json())
       .then((spotify) => setPlaying(spotify))
       .catch((error) => console.log(error))
+      .finally(() => setApiRequested(true))
       setTimeout(() => {loading = false}, 1000)
     }
     
@@ -32,7 +34,7 @@ export default function Spotify() {
   return (
     <>
       {
-        playing.playing ? 
+        playing.playing && api_requested ? 
           <>
           <div
             className="spotifyCard"
@@ -65,7 +67,7 @@ export default function Spotify() {
         : <></>
       }
       {
-        playing.quota_exceeded ? 
+        playing.quota_exceeded && api_requested ? 
           <div className="spotifyCard">
             <div className="spotifyTitle">
               Excedida la cuota de Spotify WEB API

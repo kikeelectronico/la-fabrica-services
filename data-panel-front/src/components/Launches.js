@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
   
     const [data, setData] = useState({launches_flag: false, fail_to_update: true});
     const [uv_alert, setUvAlert] = useState("0, 0, 0");
+    const [api_requested, setApiRequested] = useState(false);
   
     useEffect(() => {
       getData()
@@ -20,6 +21,7 @@ import React, { useState, useEffect } from "react";
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.log(error))
+        .finally(() => setApiRequested(true))
     }
   
     useEffect(() => {
@@ -58,7 +60,7 @@ import React, { useState, useEffect } from "react";
     return (
       <>
         {
-          !data.fail_to_update && data.launches_flag ? 
+          !data.fail_to_update && data.launches_flag && api_requested ? 
             
               data.launches.map(launch => {
 
@@ -88,7 +90,7 @@ import React, { useState, useEffect } from "react";
           : <></>
         }
         {
-          data.fail_to_update ? 
+          data.fail_to_update && api_requested ? 
             <div className="weatherCard" >            
               <div className="launchesFail">
                 Fallo al cargar datos de lanzamientos

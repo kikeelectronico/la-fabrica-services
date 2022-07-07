@@ -6,6 +6,7 @@ const API = "http://" + window.location.hostname + ":8000"
 export default function Power() {
 
   const [homeware, setHomeware] = useState({status_flag: false});
+  const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
     getData();
@@ -19,12 +20,13 @@ export default function Power() {
     .then((response) => response.json())
     .then((homeware) => setHomeware(homeware))
     .catch((error) => console.log(error))
+    .finally(() => setApiRequested(true))
   }
 
   return (
     <>
       {
-        homeware.status_flag ?
+        homeware.status_flag && api_requested ?
           <>
             <div
               className="powerCard"
@@ -39,7 +41,7 @@ export default function Power() {
       }
       
       {
-        !homeware.status_flag ?
+        !homeware.status_flag && api_requested ?
           <>
             <div className="powerCard">
               <div className="powerFail">

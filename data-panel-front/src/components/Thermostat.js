@@ -6,6 +6,7 @@ const API = "http://" + window.location.hostname + ":8000"
 export default function Thermostat() {
 
   const [homeware, setHomeware] = useState({});
+  const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
     getData();
@@ -19,12 +20,13 @@ export default function Thermostat() {
     .then((response) => response.json())
     .then((homeware) => setHomeware(homeware))
     .catch((error) => console.log(error))
+    .finally(() => setApiRequested(true))
   }
 
   return (
     <>
       {
-        homeware.status_flag ?
+        homeware.status_flag && api_requested ?
           <>
             <div
               className="thermostatCard"

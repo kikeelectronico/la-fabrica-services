@@ -7,6 +7,7 @@ export default function Weather() {
 
   const [data, setData] = useState({weather_flag: false, fail_to_update: true});
   const [uv_alert, setUvAlert] = useState("255, 0, 0");
+  const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
     getData()
@@ -20,6 +21,7 @@ export default function Weather() {
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.log(error))
+      .finally(() => setApiRequested(true))
   }
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function Weather() {
   return (
     <>
       {
-        !data.fail_to_update && data.weather_flag ? 
+        !data.fail_to_update && data.weather_flag && api_requested ? 
           <div
             className="weatherCard"
             style={{
@@ -61,7 +63,7 @@ export default function Weather() {
         : <></>
       }
       {
-        data.fail_to_update ? 
+        data.fail_to_update && api_requested ? 
           <div className="weatherCard" >            
             <div className="weatherFail">
               Fallo al cargar datos meteorológicos
