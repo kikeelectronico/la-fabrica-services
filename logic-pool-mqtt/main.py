@@ -36,7 +36,7 @@ def on_message(client, userdata, msg):
     elif msg.topic == "device/switch003/on":
       status = functions.payloadToBool(msg.payload)
       internet_switch.on(status, control_ids=["light001", "light002"])
-    elif msg.topic == "device/scene_pelicula/deactivate":
+    elif msg.topic == "device/scene_pelicula/deactivate" and not functions.payloadToBool(msg.payload):
       turn_off_devices = ["light001", "light002", "light003", "outlet001", "rgb001"]
       for control_id in turn_off_devices:
         payload = {
