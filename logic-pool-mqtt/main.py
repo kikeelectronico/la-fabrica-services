@@ -3,7 +3,8 @@ import json
 import os
 
 import functions
-from Switch import Switch
+import scenes
+import switches
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -17,42 +18,17 @@ MQTT_PORT = 1883
 TOPICS = ["device/control", "device/switch003/on", "device/scene_pelicula/deactivate"]
 
 mqtt_client = mqtt.Client()
-internet_switch = Switch(mqtt_client, "")
-
-def on_connect(client, userdata, flags, rc):
-  print("Connected with result code "+str(rc))
-  internet_switch.mqttReady(True)
-  # Suscribe to topics
-  for topic in TOPICS:
-    client.subscribe(topic)
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
-    if msg.topic == "device/control":
-      payload = json.loads(msg.payload)
-      if payload["id"] == "switch003" and payload["param"] == "on":
-        internet_switch.on(payload["value"], control_ids=["light001", "light002"])
-      
-    elif msg.topic == "device/switch003/on":
-      status = functions.payloadToBool(msg.payload)
-      internet_switch.on(status, control_ids=["light001", "light002"])
-    elif msg.topic == "device/scene_pelicula/deactivate" and not functions.payloadToBool(msg.payload):
-      turn_off_devices = ["light001", "light002", "light003", "outlet001", "rgb001"]
-      for control_id in turn_off_devices:
-        payload = {
-          "id": control_id,
-          "param": "on",
-          "value": False,
-          "intent": "execute"
-        }
-        mqtt_client.publish("device/control", json.dumps(payload))
-      payload = {
-        "id": "scene_pelicula",
-        "param": "deactivate",
-        "value": True,
-        "intent": "execute"
-      }
-      mqtt_client.publish("device/control", json.dumps(payload))
+    switches.green(mqtt_client, msg.topic, msg.payload)
+    scenes.film(mqtt_client, msg.topic, msg.payload)
+
+def on_connect(client, userdata, flags, rc):
+  print("Connected with result code "+str(rc))
+  # Suscribe to topics
+  for topic in TOPICS:
+    client.subscribe(topic)
 
 # MQTT reader
 def mqttReader(mqtt_client):
