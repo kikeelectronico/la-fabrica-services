@@ -11,12 +11,17 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
   load_dotenv(dotenv_path="../.env")
 
-MQTT_USER = os.environ.get("MQTT_USER", "user")
-MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
+MQTT_USER = os.environ.get("MQTT_USER", "mosquitto")
+MQTT_PASS = os.environ.get("MQTT_PASS", "homewarelan123")
+MQTT_HOST = os.environ.get("MQTT_HOST", "192.168.10.2")
 MQTT_PORT = 1883
 
-TOPICS = ["device/control", "device/switch003/on", "device/scene_pelicula/deactivate"]
+TOPICS = [
+  "device/control",
+  "device/switch003/on",
+  "device/scene_pelicula/deactivate",
+  "device/rgb001/color"
+  ]
 
 mqtt_client = mqtt.Client()
 
@@ -24,7 +29,7 @@ def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     switches.green(mqtt_client, msg.topic, msg.payload)
     scenes.film(mqtt_client, msg.topic, msg.payload)
-    colors.equal(mqtt_client, msg.topic, msg.payload)
+    colors.equal(mqtt_client, msg.topic, msg.payload.decode('utf-8').replace("\'", "\""))
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code "+str(rc))

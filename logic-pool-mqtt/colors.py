@@ -8,8 +8,8 @@ def equal(mqtt_client, topic, payload):
     for control_id in control_ids:
       control_payload = {
         "id": control_id,
-        "param": "deactivate",
-        "value": payload,
+        "param": "color",
+        "value": json.loads(payload),
         "intent": "execute"
       }
       mqtt_client.publish("device/control", json.dumps(control_payload))
