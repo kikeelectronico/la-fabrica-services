@@ -1,0 +1,15 @@
+.cocinaPage {
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.title {
+  width: 100%;
+  color: white;
+  font-size: 20px;
+}
