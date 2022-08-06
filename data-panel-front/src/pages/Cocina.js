@@ -18,6 +18,7 @@ export default function Cocina() {
         <Clock/>
         <Internet/>
         <Power/>
+        <Thermostat/>
         <Alerts/>
     </div>
   )
