@@ -45,3 +45,7 @@ class Homeware:
     response = requests.post(url, data=json.dumps(body), headers=headers)
 
     return response.text
+
+  def getHomewareTest(self):
+    response = requests.get("https://" + self.__domain + "/test").text
+    return response == "Load"

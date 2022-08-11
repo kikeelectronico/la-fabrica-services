@@ -1,4 +1,5 @@
 import json
+from turtle import home
 
 from homeware import Homeware
 from Voice import Voice
@@ -48,4 +49,19 @@ def power(topic, payload):
 
 def checkSystemsByVoice(topic, payload):
   if topic == "home" and payload == "check_systems_by_voice":
-    voice.getAndPlay("Hola Enrique, todos los sistemas están operativos")
+    not_pass = []
+    if not homeware.getHomewareTest():
+        not_pass.append("homeware")
+
+    if len(not_pass) == 0:
+        voice.getAndPlay("Todos los sistemas están operativos")
+    elif len(not_pass) == 1:
+        voice.getAndPlay(not_pass[0] + " no está operativo")
+    else:
+        text = "No están operativos los siguientes sistemas: "
+        for i, system in enumerate(not_pass):
+            if not i == len(not_pass) - 2:
+                text += system + ", "
+            else:
+                text += system + " y "
+        voice.getAndPlay(text)
