@@ -1,5 +1,6 @@
 pyTelegramBotAPI
 catt
-google.cloud
-google-cloud-speech
-google-cloud-texttospeech
+#google.cloud
+#google-cloud-speech
+#google-cloud-texttospeech
+gtts

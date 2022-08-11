@@ -1,4 +1,4 @@
-from google.cloud import texttospeech
+#from google.cloud import texttospeech
 import threading
 import os
 
@@ -9,14 +9,15 @@ DEVICES_IPS = ['192.168.10.201', '192.168.10.202', '192.168.10.203']
 class Voice:
 
   def __init__(self):
-    self.text_to_speech_client = texttospeech.TextToSpeechClient()
-    self.voice = texttospeech.VoiceSelectionParams(
-        language_code="es-ES", name="es-ES-Wavenet-D", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
-    )
-    self.audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3,
-        pitch=1.2
-    )
+    # self.text_to_speech_client = texttospeech.TextToSpeechClient()
+    # self.voice = texttospeech.VoiceSelectionParams(
+    #     language_code="es-ES", name="es-ES-Wavenet-D", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+    # )
+    # self.audio_config = texttospeech.AudioConfig(
+    #     audio_encoding=texttospeech.AudioEncoding.MP3,
+    #     pitch=1.2
+    # )
+    pass
 
   def getFile(self, text):
         file_name = text
