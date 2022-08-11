@@ -14,7 +14,7 @@ MQTT_PORT = 1883
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
-TOPICS = ["device/control", "device/switch003/on"]
+TOPICS = ["device/control", "device/switch003/on", "home"]
 
 mqtt_client = mqtt.Client()
 bot = telebot.TeleBot(token=BOT_TOKEN)
@@ -28,6 +28,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     general.power(msg.topic, msg.payload)
+    general.checkSystemsByVoice(msg.topic, msg.payload.decode("utf-8"))
 
 # MQTT reader
 def mqttReader(mqtt_client):

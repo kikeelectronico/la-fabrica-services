@@ -45,3 +45,7 @@ def power(topic, payload):
             voice.getAndPlay("Sistemas de potencia bajo control")
             homeware.setParam("rgb001", "color", store["rgb001"]["color"])
             homeware.setParam("rgb001", "on", store["rgb001"]["on"])
+
+def checkSystemsByVoice(topic, payload):
+  if topic == "home" and payload == "check_systems_by_voice":
+    voice.getAndPlay("Hola Enrique, todos los sistemas están operativos")
