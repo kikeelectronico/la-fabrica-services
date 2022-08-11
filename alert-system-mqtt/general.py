@@ -1,6 +1,4 @@
 import json
-from turtle import home
-
 from homeware import Homeware
 from Voice import Voice
 import functions
