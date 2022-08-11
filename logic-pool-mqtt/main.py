@@ -29,6 +29,7 @@ def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     switches.green(mqtt_client, msg.topic, msg.payload)
     scenes.film(mqtt_client, msg.topic, msg.payload)
+    scenes.relax(mqtt_client, msg.topic, msg.payload)
     colors.equal(mqtt_client, msg.topic, msg.payload.decode('utf-8').replace("\'", "\""))
 
 def on_connect(client, userdata, flags, rc):
