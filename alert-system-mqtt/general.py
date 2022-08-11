@@ -48,7 +48,7 @@ def power(topic, payload):
             homeware.setParam("rgb001", "on", store["rgb001"]["on"])
 
 def systemVoiceReport(topic, payload):
-  if topic == "home" and payload == "check_systems_by_voice":
+  if topic == "home" and payload == "systems_voice_report":
     not_pass = []
     if not homeware.getHomewareTest():
         not_pass.append("homeware")
