@@ -4,3 +4,4 @@ catt
 #google-cloud-speech
 #google-cloud-texttospeech
 gtts
+python-dotenv
