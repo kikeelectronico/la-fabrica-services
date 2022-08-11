@@ -1,8 +1,5 @@
 import paho.mqtt.client as mqtt
 import telebot
-import json
-from Voice import Voice
-from homeware import Homeware
 import os
 import general
 
