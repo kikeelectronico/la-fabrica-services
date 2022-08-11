@@ -28,7 +28,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     general.power(msg.topic, msg.payload)
-    general.checkSystemsByVoice(msg.topic, msg.payload.decode("utf-8"))
+    general.systemVoiceReport(msg.topic, msg.payload.decode("utf-8"))
 
 # MQTT reader
 def mqttReader(mqtt_client):
