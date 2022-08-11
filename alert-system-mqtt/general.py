@@ -3,6 +3,7 @@ from turtle import home
 
 from homeware import Homeware
 from Voice import Voice
+import functions
 
 voice = Voice()
 homeware = Homeware()
@@ -48,7 +49,8 @@ def power(topic, payload):
             homeware.setParam("rgb001", "on", store["rgb001"]["on"])
 
 def systemVoiceReport(topic, payload):
-  if topic == "home" and payload == "systems_voice_report":
+  if topic == "home" and payload == "systems_voice_report" \
+    or topic == "device/scene_systems_report/deactivate" and not functions.payloadToBool(payload):
     not_pass = []
     if not homeware.getHomewareTest():
         not_pass.append("homeware")

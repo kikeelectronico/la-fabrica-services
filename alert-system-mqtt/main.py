@@ -14,7 +14,7 @@ MQTT_PORT = 1883
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
-TOPICS = ["device/control", "device/switch003/on", "home"]
+TOPICS = ["device/control", "device/switch003/on", "home", "device/scene_systems_report/deactivate"]
 
 mqtt_client = mqtt.Client()
 bot = telebot.TeleBot(token=BOT_TOKEN)
