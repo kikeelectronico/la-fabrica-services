@@ -1,12 +1,10 @@
 import json
-import functions
 
 store = {}
 power_alert_counter = 0
 
 def power(homeware, voice, topic, payload):
   if topic == "device/control":
-    payload = json.loads(payload)
     if payload["id"] == "switch003" and payload["param"] == "on":
         voice.getAndPlay("Alguien ha usado en interruptor de internet")
     if payload["id"] == "current001" and payload["param"] == "brightness":
@@ -43,7 +41,7 @@ def power(homeware, voice, topic, payload):
 
 def systemVoiceReport(homeware, voice, topic, payload):
   if topic == "home" and payload == "systems_voice_report" \
-    or topic == "device/scene_systems_report/deactivate" and not functions.payloadToBool(payload):
+    or topic == "device/scene_systems_report/deactivate" and not payload:
     not_pass = []
     if not homeware.getHomewareTest():
         not_pass.append("homeware")

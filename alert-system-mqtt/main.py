@@ -4,6 +4,7 @@ import os
 from homeware import Homeware
 from Voice import Voice
 
+import functions
 import general
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
@@ -32,8 +33,9 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
-    general.power(homeware, msg.topic, msg.payload)
-    general.systemVoiceReport(homeware, msg.topic, msg.payload.decode("utf-8"))
+    payload = functions.loadPayload(msg.payload)
+    general.power(homeware, msg.topic, payload)
+    general.systemVoiceReport(homeware, msg.topic, payload)
 
 # MQTT reader
 def mqttReader(mqtt_client):
