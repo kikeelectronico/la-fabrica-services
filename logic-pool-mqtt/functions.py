@@ -1,3 +1,3 @@
 
 def payloadToBool(value):
-  return value.decode() in ["True", "true"]
+  return value in ["True", "true"]
