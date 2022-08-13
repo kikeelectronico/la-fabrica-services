@@ -38,7 +38,6 @@ def on_message(client, userdata, msg):
     lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
-  print("Connected with result code "+str(rc))
   # Suscribe to topics
   for topic in TOPICS:
     client.subscribe(topic)
