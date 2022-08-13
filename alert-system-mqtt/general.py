@@ -1,15 +1,10 @@
 import json
-from homeware import Homeware
-from Voice import Voice
 import functions
-
-voice = Voice()
-homeware = Homeware()
 
 store = {}
 power_alert_counter = 0
 
-def power(topic, payload):
+def power(homeware, voice, topic, payload):
   if topic == "device/control":
     payload = json.loads(payload)
     if payload["id"] == "switch003" and payload["param"] == "on":
@@ -46,7 +41,7 @@ def power(topic, payload):
             homeware.setParam("rgb001", "color", store["rgb001"]["color"])
             homeware.setParam("rgb001", "on", store["rgb001"]["on"])
 
-def systemVoiceReport(topic, payload):
+def systemVoiceReport(homeware, voice, topic, payload):
   if topic == "home" and payload == "systems_voice_report" \
     or topic == "device/scene_systems_report/deactivate" and not functions.payloadToBool(payload):
     not_pass = []

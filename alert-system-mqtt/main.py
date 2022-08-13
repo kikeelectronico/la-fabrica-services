@@ -1,6 +1,9 @@
 import paho.mqtt.client as mqtt
 import telebot
 import os
+from homeware import Homeware
+from Voice import Voice
+
 import general
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
@@ -17,6 +20,8 @@ ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 TOPICS = ["device/control", "device/switch003/on", "home", "device/scene_systems_report/deactivate"]
 
 mqtt_client = mqtt.Client()
+homeware = Homeware()
+voice = Voice()
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
 def on_connect(client, userdata, flags, rc):
@@ -27,8 +32,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
-    general.power(msg.topic, msg.payload)
-    general.systemVoiceReport(msg.topic, msg.payload.decode("utf-8"))
+    general.power(homeware, msg.topic, msg.payload)
+    general.systemVoiceReport(homeware, msg.topic, msg.payload.decode("utf-8"))
 
 # MQTT reader
 def mqttReader(mqtt_client):
