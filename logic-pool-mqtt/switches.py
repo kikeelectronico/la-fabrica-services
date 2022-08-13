@@ -4,7 +4,6 @@ import functions
 
 def green(homeware, topic, payload):
   if topic == "device/control":
-    payload = json.loads(payload)
     if payload["id"] == "switch003" and payload["param"] == "on":
       status = payload["value"]
       control_ids=["light001", "light002"]
@@ -12,7 +11,6 @@ def green(homeware, topic, payload):
         homeware.execute(control_id, "on", status)
   
   elif topic == "device/switch003/on":
-    status = functions.payloadToBool(payload)
     control_ids=["light001", "light002"]
     for control_id in control_ids:
-      homeware.execute(control_id, "on", status)
+      homeware.execute(control_id, "on", payload)

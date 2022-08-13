@@ -21,7 +21,9 @@ TOPICS = [
   "device/control",
   "device/switch003/on",
   "device/scene_pelicula/deactivate",
-  "device/rgb001/color"
+  "device/scene_relajacion/deactivate",
+  "device/rgb001/color",
+  "device/rgb001/on"
   ]
 
 mqtt_client = mqtt.Client()
@@ -29,7 +31,7 @@ homeware = Homeware(mqtt_client)
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
-    payload = msg.payload.decode('utf-8').replace("\'", "\"")
+    payload = functions.loadPayload(msg.payload)
     switches.green(homeware, msg.topic, payload)
     scenes.film(homeware, msg.topic, payload)
     scenes.relax(homeware, msg.topic, payload)

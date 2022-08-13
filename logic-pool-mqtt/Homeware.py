@@ -8,10 +8,7 @@ class Homeware:
   def __init__(self, mqtt_client):
     self.__mqtt_client = mqtt_client
 
-  def execute(self, id, param, value):
-    if not type(value) == bool:
-      value = json.loads(value)
-      
+  def execute(self, id, param, value):    
     control_payload = {
       "id": id,
       "param": param,
