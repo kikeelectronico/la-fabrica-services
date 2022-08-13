@@ -3,6 +3,7 @@ import json
 import os
 
 import functions
+import homeware as HW
 import scenes
 import switches
 import lights
@@ -24,13 +25,15 @@ TOPICS = [
   ]
 
 mqtt_client = mqtt.Client()
+homeware = HW(mqtt_client)
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
-    switches.green(mqtt_client, msg.topic, msg.payload)
-    scenes.film(mqtt_client, msg.topic, msg.payload)
-    scenes.relax(mqtt_client, msg.topic, msg.payload)
-    lights.rgbMain(mqtt_client, msg.topic, msg.payload.decode('utf-8').replace("\'", "\""))
+    payload = msg.payload.decode('utf-8').replace("\'", "\"")
+    switches.green(homeware, msg.topic, payload)
+    scenes.film(homeware, msg.topic, payload)
+    scenes.relax(homeware, msg.topic, payload)
+    lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code "+str(rc))
