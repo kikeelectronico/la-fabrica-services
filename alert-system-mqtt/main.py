@@ -31,8 +31,8 @@ bot = telebot.TeleBot(token=BOT_TOKEN)
 
 def on_message(client, userdata, msg):
   payload = functions.loadPayload(msg.payload)
-  general.power(homeware, msg.topic, payload)
-  general.systemVoiceReport(homeware, msg.topic, payload)
+  general.power(homeware, voice, msg.topic, payload)
+  general.systemVoiceReport(homeware, voice, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
