@@ -1,6 +1,7 @@
 name: Build and publish Data Panel Front
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:

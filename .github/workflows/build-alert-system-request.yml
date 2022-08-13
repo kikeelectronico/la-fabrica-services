@@ -1,6 +1,7 @@
 name: Build and publish Alert system requests
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:
