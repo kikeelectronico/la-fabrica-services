@@ -30,12 +30,11 @@ mqtt_client = mqtt.Client()
 homeware = Homeware(mqtt_client)
 
 def on_message(client, userdata, msg):
-  if msg.topic in TOPICS:
-    payload = functions.loadPayload(msg.payload)
-    switches.green(homeware, msg.topic, payload)
-    scenes.film(homeware, msg.topic, payload)
-    scenes.relax(homeware, msg.topic, payload)
-    lights.rgbMain(homeware, msg.topic, payload)
+  payload = functions.loadPayload(msg.payload)
+  switches.green(homeware, msg.topic, payload)
+  scenes.film(homeware, msg.topic, payload)
+  scenes.relax(homeware, msg.topic, payload)
+  lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
   # Suscribe to topics
