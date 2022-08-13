@@ -9,10 +9,13 @@ class Homeware:
     self.__mqtt_client = mqtt_client
 
   def execute(self, id, param, value):
+    if not type(value) == bool:
+      value = json.loads(value)
+      
     control_payload = {
       "id": id,
       "param": param,
-      "value": json.loads(value),
+      "value": value,
       "intent": "execute"
     }
     self.__mqtt_client.publish("device/control", json.dumps(control_payload))
