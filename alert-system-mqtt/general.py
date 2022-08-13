@@ -1,5 +1,3 @@
-import json
-
 store = {}
 power_alert_counter = 0
 

@@ -3,7 +3,6 @@ import telebot
 import os
 from homeware import Homeware
 from Voice import Voice
-
 import functions
 import general
 
