@@ -1,5 +1,3 @@
-import functions
-
 def film(homeware, topic, payload):
   if topic == "device/scene_pelicula/deactivate" and not payload:
     turn_off_devices = ["light001", "light002", "light003", "outlet001", "rgb001"]

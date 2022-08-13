@@ -1,7 +1,3 @@
-import json
-
-import functions
-
 def green(homeware, topic, payload):
   if topic == "device/control":
     if payload["id"] == "switch003" and payload["param"] == "on":
