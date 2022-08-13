@@ -39,7 +39,7 @@ def power(homeware, voice, topic, payload):
 
 def systemVoiceReport(homeware, voice, topic, payload):
   if topic == "home" and payload == "systems_voice_report" \
-    or topic == "device/scene_systems_report/deactivate" and not payload:
+    or topic == "device/scene_at_home/deactivate" and not payload:
     not_pass = []
     if not homeware.getHomewareTest():
         not_pass.append("homeware")

@@ -21,7 +21,7 @@ ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 TOPICS = [
   "device/control",
   "home",
-  "device/scene_systems_report/deactivate"
+  "device/scene_at_home/deactivate"
 ]
 
 mqtt_client = mqtt.Client()
