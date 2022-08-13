@@ -5,7 +5,7 @@ import os
 import functions
 import scenes
 import switches
-import colors
+import lights
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -30,7 +30,7 @@ def on_message(client, userdata, msg):
     switches.green(mqtt_client, msg.topic, msg.payload)
     scenes.film(mqtt_client, msg.topic, msg.payload)
     scenes.relax(mqtt_client, msg.topic, msg.payload)
-    colors.equal(mqtt_client, msg.topic, msg.payload.decode('utf-8').replace("\'", "\""))
+    lights.rgbMain(mqtt_client, msg.topic, msg.payload.decode('utf-8').replace("\'", "\""))
 
 def on_connect(client, userdata, flags, rc):
   print("Connected with result code "+str(rc))
