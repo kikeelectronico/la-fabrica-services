@@ -5,8 +5,6 @@ power_alert_counter = 0
 
 def power(homeware, voice, topic, payload):
   if topic == "device/control":
-    if payload["id"] == "switch003" and payload["param"] == "on":
-        voice.getAndPlay("Alguien ha usado en interruptor de internet")
     if payload["id"] == "current001" and payload["param"] == "brightness":
         power = payload["value"]
         global store

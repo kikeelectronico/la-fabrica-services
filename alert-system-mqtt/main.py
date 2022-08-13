@@ -20,7 +20,6 @@ ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
 TOPICS = [
   "device/control",
-  "device/switch003/on",
   "home",
   "device/scene_systems_report/deactivate"
 ]
