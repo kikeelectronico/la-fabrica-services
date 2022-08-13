@@ -8,5 +8,7 @@ def loadPayload(payload):
 
   if payload in ["True", "true", "False", "false"]:
     return payload in ["True", "true"]
-  else:
+  elif "}" in payload or "]" in payload:
     return json.loads(payload)
+  else:
+    return payload
