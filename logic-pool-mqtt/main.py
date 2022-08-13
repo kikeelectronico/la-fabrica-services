@@ -37,7 +37,6 @@ def on_message(client, userdata, msg):
   lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
-  # Suscribe to topics
   for topic in TOPICS:
     client.subscribe(topic)
 
