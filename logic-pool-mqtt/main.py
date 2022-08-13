@@ -3,7 +3,7 @@ import json
 import os
 
 import functions
-import homeware as HW
+from Homeware import Homeware
 import scenes
 import switches
 import lights
@@ -25,7 +25,7 @@ TOPICS = [
   ]
 
 mqtt_client = mqtt.Client()
-homeware = HW(mqtt_client)
+homeware = Homeware(mqtt_client)
 
 def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
