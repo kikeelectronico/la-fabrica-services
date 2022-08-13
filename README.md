@@ -3,11 +3,11 @@ Microservices that run my smarthome
 
 ### Alert system MQTT
 
-This microservice wait for data coming through MQTT in order to analyze it. It raises and triggers either visible or audible alarms if one evaluate condition happens.
+This microservice waits for data coming through MQTT in order to analyze it. It raises and triggers either visible or audible alarms if one evaluate condition happens.
 
 ### Alert system rquest
 
-This microservice request data to different sources and triggers either visible or audible alarms if one evaluated condition happend.
+This microservice requests data to different sources and triggers either visible or audible alarms if one evaluated condition happend.
 
 ### Data panel front
 
@@ -15,7 +15,7 @@ This microservice is a web frontend that shows data in form of dashboards in dif
 
 ### Data panel API
 
-This microservice is an REST API for the data dashboards. It request data to different sources and cache for the right amount time.
+This microservice is a REST API for the data dashboards. It request data to different sources and cache for the right amount time.
 
 ### Data panel autoload
 
