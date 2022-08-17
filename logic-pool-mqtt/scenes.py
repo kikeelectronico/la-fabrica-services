@@ -25,19 +25,19 @@ def relax(homeware, topic, payload):
 def powerAlert(homeware, topic, payload):
   if topic == "device/control":
     if payload["id"] == "current001" and payload["param"] == "brightness":
-        global last_power_check
-        if time.time() - last_power_check > DELAY_BETWEEN_POWER_ALERTS:
-          last_power_check = time.time()
-          global power_alert_counter
-          power = payload["value"]
-          # Power alerts
-          if power >= 100:
-              power_alert_counter += 1
-              homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
-          elif power_alert_counter <= 3 and power >= 90:
-              power_alert_counter += 1
-              homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
-          
-          if power_alert_counter >= 1 and power < 75:
-              power_alert_counter = 0
-              homeware.voiceAlert("Sistemas de potencia bajo control")
+      global last_power_check
+      if time.time() - last_power_check > DELAY_BETWEEN_POWER_ALERTS:
+        last_power_check = time.time()
+        global power_alert_counter
+        power = payload["value"]
+        # Power alerts
+        if power >= 100:
+            power_alert_counter += 1
+            homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
+        elif power_alert_counter <= 3 and power >= 90:
+            power_alert_counter += 1
+            homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
+        
+        if power_alert_counter >= 1 and power < 75:
+            power_alert_counter = 0
+            homeware.voiceAlert("Sistemas de potencia bajo control")
