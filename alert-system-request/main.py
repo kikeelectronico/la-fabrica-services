@@ -31,7 +31,6 @@ def getPublicIP():
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  global public_IP_saved
   while True:
     ip = getPublicIP()
     if not ip == public_IP_saved:
