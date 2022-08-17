@@ -34,10 +34,13 @@ def powerAlert(homeware, topic, payload):
         if power >= 100:
             power_alert_counter += 1
             homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
+            homeware.execute("scene_power_alert", "deactivate", False)
         elif power_alert_counter <= 3 and power >= 90:
             power_alert_counter += 1
             homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
+            homeware.execute("scene_power_alert", "deactivate", False)
         
         if power_alert_counter >= 1 and power < 75:
             power_alert_counter = 0
             homeware.voiceAlert("Sistemas de potencia bajo control")
+            homeware.execute("scene_power_alert", "deactivate", True)
