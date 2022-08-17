@@ -12,6 +12,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "localhost")
 
 SLEEP_TIME = 10
 
@@ -24,7 +25,7 @@ def getHomewareTest():
     return response
 
 def getPublicIP():
-    ip = requests.get('http://rinconingenieril.es/ip.php').text
+    ip = requests.get(GET_IP_ENDPOINT).text
     return ip
 
 def main():
