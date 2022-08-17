@@ -36,7 +36,7 @@ def main():
     ip = getPublicIP()
     if not ip == public_IP_saved:
       #bot.send_message(ENRIQUE_CHAT_ID, 'Cambio de IP pública de Coruscant\r\n\r\n Actual: ' + str(ip) + '\r\nAbandonada: ' + str(public_IP_saved))
-      mqtt_client.publish("voice-alerts", "Cambio de IP pública")
+      mqtt_client.publish("voice-alerts", "Cambio de I P pública")
       public_IP_saved = ip
 
     if not getHomewareTest() == 'Load':
