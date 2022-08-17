@@ -28,10 +28,10 @@ services:
     env_file:
      - .env
 
-  # Alert system, mqtt
-  alert-system-mqtt:
-    image: ghcr.io/kikeelectronico/alert-system-mqtt:latest
-    container_name: alert-system-mqtt
+  # Voice alert
+  voice-alert:
+    image: ghcr.io/kikeelectronico/voice-alert:latest
+    container_name: voice-alert
     restart: always
     network_mode: "host"
     env_file:

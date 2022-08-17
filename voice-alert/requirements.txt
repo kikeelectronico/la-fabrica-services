@@ -1,0 +1,7 @@
+paho-mqtt
+catt
+#google.cloud
+#google-cloud-speech
+#google-cloud-texttospeech
+gtts
+python-dotenv
