@@ -28,7 +28,7 @@ def getPublicIP():
   ip = requests.get(GET_IP_ENDPOINT).text
   return ip
 
-def main():
+if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   global public_IP_saved
@@ -44,8 +44,5 @@ def main():
       mqtt_client.publish("voice-alerts", "Homeware se ha caido")
 
     time.sleep(SLEEP_TIME)
-
-if __name__ == "__main__":
-	main()
 
     
