@@ -15,3 +15,6 @@ class Homeware:
       "intent": "execute"
     }
     self.__mqtt_client.publish("device/control", json.dumps(control_payload))
+  
+  def voiceAlert(self, text):
+    self.__mqtt_client.publish("voice-alerts", text)
