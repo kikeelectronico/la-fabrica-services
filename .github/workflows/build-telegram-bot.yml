@@ -1,4 +1,4 @@
-name: Build and publish telegram-bot
+name: Build telegram-bot
 
 on:
   workflow_dispatch:

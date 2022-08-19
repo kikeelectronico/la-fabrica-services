@@ -1,4 +1,4 @@
-name: Build and publish Alert system mqtt
+name: Build Alert system mqtt
 
 on:
   workflow_dispatch:

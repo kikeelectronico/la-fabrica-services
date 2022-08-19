@@ -1,4 +1,4 @@
-name: Build and publish Data Panel Autoload
+name: Build Data Panel Autoload
 
 on:
   workflow_dispatch:

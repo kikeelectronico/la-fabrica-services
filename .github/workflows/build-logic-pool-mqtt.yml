@@ -1,4 +1,4 @@
-name: Build and publish Logic pool mqtt
+name: Build Logic pool mqtt
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build and publish Message alert
+name: Build Message alert
 
 on:
   workflow_dispatch:

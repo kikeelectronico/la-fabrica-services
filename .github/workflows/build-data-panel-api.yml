@@ -1,4 +1,4 @@
-name: Build and publish Data Panel API
+name: Build Data Panel API
 
 on:
   workflow_dispatch:

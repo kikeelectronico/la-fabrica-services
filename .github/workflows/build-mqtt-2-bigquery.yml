@@ -1,4 +1,4 @@
-name: Build and publish MQTT 2 BigQuery
+name: Build MQTT 2 BigQuery
 
 on:
   workflow_dispatch:

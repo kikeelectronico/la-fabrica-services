@@ -1,4 +1,4 @@
-name: Build and publish Logic pool time
+name: Build Logic pool time
 
 on:
   workflow_dispatch:

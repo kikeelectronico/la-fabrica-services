@@ -1,4 +1,4 @@
-name: Build and publish Alert system requests
+name: Build Alert system requests
 
 on:
   workflow_dispatch:
