@@ -31,7 +31,7 @@ def getPublicIP():
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  mqtt_client.publish("voice-alerts", "El sistema de alertas por petición está operativo")
+  mqtt_client.publish("message-alerts", "Alert system request: operativo")
   while True:
     ip = getPublicIP()
     if not ip == public_IP_saved and not public_IP_saved == "unknow":
