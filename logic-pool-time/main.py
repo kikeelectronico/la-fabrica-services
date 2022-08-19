@@ -22,6 +22,7 @@ if __name__ == "__main__":
   today = datetime.datetime.now()
   hour = today.strftime("%H:%M:%S")
   mqtt_client.publish("voice-alerts", "El sistema logic pool está operativo con hora local " + str(hour))
+  mqtt_client.publish("message-alerts", "El sistema logic pool está operativo con hora local " + str(hour))
   while True:
     today = datetime.datetime.now()
     hour = today.strftime("%H:%M:%S")
