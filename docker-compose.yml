@@ -41,6 +41,17 @@ services:
     volumes:
      - creds:/app/creds
 
+  # Message alert
+  message-alert:
+    image: ghcr.io/kikeelectronico/message-alert:latest
+    container_name: message-alert
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    volumes:
+     - creds:/app/creds
+
   # Alert system, request
   alert-system-request:
     image: ghcr.io/kikeelectronico/alert-system-request:latest
