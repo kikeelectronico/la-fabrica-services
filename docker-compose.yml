@@ -29,6 +29,7 @@ services:
      - .env
     depends_on:
       - voice-alert
+      - message-alert
 
   # Voice alert
   voice-alert:
@@ -64,6 +65,7 @@ services:
      - creds:/app/creds
     depends_on:
       - voice-alert
+      - message-alert
 
   # Bot
   telegram-bot:
