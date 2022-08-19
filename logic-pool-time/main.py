@@ -32,7 +32,7 @@ if __name__ == "__main__":
     elif hour == "06:00:00":
       homeware.execute("hood001", "on", False)
 
-    if hour == "22:05:00":
+    if hour == "22:15:00":
       homeware.execute("scene_noche", "deactivate", False)
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
