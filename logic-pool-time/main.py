@@ -17,6 +17,7 @@ mqtt_client = mqtt.Client()
 homeware = Homeware(mqtt_client)
 
 if __name__ == "__main__":
+  print("hola")
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   today = datetime.datetime.now()
