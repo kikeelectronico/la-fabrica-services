@@ -35,10 +35,12 @@ if __name__ == "__main__":
     ip = getPublicIP()
     if not ip == public_IP_saved:
       mqtt_client.publish("voice-alerts", "Cambio de I P pública")
+      mqtt_client.publish("message-alerts", "Nueva IP: " + str(ip))
       public_IP_saved = ip
 
     if not getHomewareTest() == 'Load':
-      mqtt_client.publish("voice-alerts", "Homeware se ha caido")
+      mqtt_client.publish("voice-alerts", "Homeware no responde")
+      mqtt_client.publish("message-alerts", "Homeware no responde")
 
     time.sleep(SLEEP_TIME)
 
