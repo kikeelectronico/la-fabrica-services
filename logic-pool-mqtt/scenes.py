@@ -54,6 +54,7 @@ def night(homeware, topic, payload):
       "spectrumRgb": 16741656
     }
     homeware.execute("rgb001", "color", color)
+    homeware.execute("rgb003", "color", color)
   # Night
   elif topic == "device/scene_noche/deactivate" and not payload:
     color = {
@@ -61,3 +62,4 @@ def night(homeware, topic, payload):
       "spectrumRgb": 16729344
     }
     homeware.execute("rgb001", "color", color)
+    homeware.execute("rgb003", "color", color)
