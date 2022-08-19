@@ -16,7 +16,7 @@ GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "localhost")
 
 SLEEP_TIME = 10
 
-public_IP_saved = "unknow'
+public_IP_saved = "unknow"
 
 mqtt_client = mqtt.Client()
 
