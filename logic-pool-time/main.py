@@ -19,6 +19,9 @@ homeware = Homeware(mqtt_client)
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  today = datetime.datetime.now()
+  hour = today.strftime("%H:%M:%S")
+  mqtt_client.publish("voice-alerts", "El sistema logic pool está operativo con hora local " + str(hour))
   while True:
     today = datetime.datetime.now()
     hour = today.strftime("%H:%M:%S")
@@ -32,7 +35,7 @@ if __name__ == "__main__":
     elif hour == "06:00:00":
       homeware.execute("hood001", "on", False)
 
-    if hour == "22:15:00":
+    if hour == "22:17:00":
       homeware.execute("scene_noche", "deactivate", False)
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
