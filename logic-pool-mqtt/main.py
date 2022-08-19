@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
   switches.green(homeware, msg.topic, payload)
   scenes.film(homeware, msg.topic, payload)
   scenes.relax(homeware, msg.topic, payload)
-  scenes.powerAlert(homeware, msg.topic, payload)
+  scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
   lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):

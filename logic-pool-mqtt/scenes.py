@@ -22,7 +22,7 @@ def relax(homeware, topic, payload):
       homeware.execute(control_id, "on", False)
     homeware.execute("scene_relajacion", "deactivate", True)
 
-def powerAlert(homeware, topic, payload):
+def powerAlert(homeware, mqtt_client, topic, payload):
   if topic == "device/control":
     if payload["id"] == "current001" and payload["param"] == "brightness":
       global last_power_check
@@ -35,6 +35,7 @@ def powerAlert(homeware, topic, payload):
             power_alert_counter += 1
             homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
             homeware.execute("scene_power_alert", "deactivate", False)
+            mqtt_client.publish("message-alerts", "Sobrecarga de potencia")
         elif power_alert_counter <= 3 and power >= 90:
             power_alert_counter += 1
             homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
