@@ -45,3 +45,19 @@ def powerAlert(homeware, mqtt_client, topic, payload):
             power_alert_counter = 0
             homeware.voiceAlert("Sistemas de potencia bajo control")
             homeware.execute("scene_power_alert", "deactivate", True)
+
+def night(homeware, topic, payload):
+  # Day
+  if topic == "device/scene_noche/deactivate" and payload:
+    color = {
+      "spectrumRGB": 16741656,
+      "spectrumRgb": 16741656
+    }
+    homeware.execute("rgb001", "color", color)
+  # Night
+  elif topic == "device/scene_noche/deactivate" and not payload:
+    color = {
+      "spectrumRGB": 16729344,
+      "spectrumRgb": 16729344
+    }
+    homeware.execute("rgb001", "color", color)

@@ -21,6 +21,7 @@ TOPICS = [
   "device/switch003/on",
   "device/scene_pelicula/deactivate",
   "device/scene_relajacion/deactivate",
+  "device/scene_noche/deactivate",
   "device/rgb001/color",
   "device/rgb001/on"
   ]
@@ -34,6 +35,7 @@ def on_message(client, userdata, msg):
   scenes.film(homeware, msg.topic, payload)
   scenes.relax(homeware, msg.topic, payload)
   scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
+  scenes.night(homeware, msg.topic, payload)
   lights.rgbMain(homeware, msg.topic, payload)
 
 def on_connect(client, userdata, flags, rc):
