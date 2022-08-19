@@ -16,7 +16,7 @@ GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "localhost")
 
 SLEEP_TIME = 10
 
-public_IP_saved = 'unknow'
+public_IP_saved = "unknow'
 
 mqtt_client = mqtt.Client()
 
@@ -31,9 +31,10 @@ def getPublicIP():
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  mqtt_client.publish("voice-alerts", "El sistema de alertas por request está operativo")
   while True:
     ip = getPublicIP()
-    if not ip == public_IP_saved:
+    if not ip == public_IP_saved and not public_IP_saved == "unknow":
       mqtt_client.publish("voice-alerts", "Cambio de I P pública")
       mqtt_client.publish("message-alerts", "Nueva IP: " + str(ip))
       public_IP_saved = ip
