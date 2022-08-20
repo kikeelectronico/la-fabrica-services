@@ -40,6 +40,7 @@ def mqttReader(client):
 
 	client.username_pw_set(MQTT_USER, MQTT_PASS)
 	client.connect(MQTT_HOST, MQTT_PORT, 60)
+	mqtt_client.publish("message-alerts", "MQTT 2 BigQuery: operativo")
 	client.loop_forever()
 
 def sendToBigquery(data):

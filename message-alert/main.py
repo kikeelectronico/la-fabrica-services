@@ -27,11 +27,12 @@ def on_connect(client, userdata, flags, rc):
         client.subscribe(topic)
 	
 if __name__ == "__main__":
-	mqtt_client.on_message = on_message
-	mqtt_client.on_connect = on_connect
+  mqtt_client.on_message = on_message
+  mqtt_client.on_connect = on_connect
 
-	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
-	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-	mqtt_client.loop_forever()
+  mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+  mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  mqtt_client.publish("message-alerts", "Message alert operativo: operativo")
+  mqtt_client.loop_forever()
 
     
