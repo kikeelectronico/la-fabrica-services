@@ -15,7 +15,7 @@ ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
 TOPICS = ["message-alerts"]
 
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(client_id="message-alert")
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
 def on_message(client, userdata, msg):

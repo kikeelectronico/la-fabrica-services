@@ -26,7 +26,7 @@ TOPICS = [
   "device/rgb001/on"
   ]
 
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
 homeware = Homeware(mqtt_client)
 
 def on_message(client, userdata, msg):

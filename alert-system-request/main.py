@@ -18,7 +18,7 @@ SLEEP_TIME = 10
 
 public_IP_saved = "unknow"
 
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(client_id="alert-system-requests")
 
 def getHomewareTest():
   response = requests.get("https://" + HOMEWARE_DOMAIN + "/test").text

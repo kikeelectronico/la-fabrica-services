@@ -14,7 +14,7 @@ MQTT_PORT = 1883
 
 TOPICS = ["voice-alerts"]
 
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(client_id="voice-alert")
 voice = Voice()
 
 def on_message(client, userdata, msg):

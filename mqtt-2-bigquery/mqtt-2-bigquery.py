@@ -15,7 +15,7 @@ TOPICS = ["device/control"]
 
 UTC_TIME_ZONE = 2
 
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
 
 power_last_value = 0
 temperature_last_value = 0
