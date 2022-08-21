@@ -41,3 +41,12 @@ if __name__ == "__main__":
       homeware.execute("scene_noche", "deactivate", False)
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
+
+    if hour == "14:00:00":
+      homeware.execute("scene_noche", "deactivate", False)
+    elif hour == "14:05:00":
+      homeware.execute("scene_noche", "deactivate", True)
+    elif hour == "14:10:00":
+      homeware.execute("scene_noche", "deactivate", True)
+    elif hour == "14:15:00":
+      homeware.execute("scene_noche", "deactivate", True)
