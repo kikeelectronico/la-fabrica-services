@@ -1,4 +1,5 @@
 import json
+import time
 
 class Homeware:
 
@@ -15,3 +16,4 @@ class Homeware:
       "intent": "execute"
     }
     self.__mqtt_client.publish("device/control", json.dumps(control_payload))
+    time.sleep(2)
