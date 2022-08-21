@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import os
 import time
 import requests
+from requests.exceptions import ConnectionError
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -21,12 +22,19 @@ public_IP_saved = "unknow"
 mqtt_client = mqtt.Client(client_id="alert-system-requests")
 
 def getHomewareTest():
-  response = requests.get("https://" + HOMEWARE_DOMAIN + "/test").text
-  return response
+  try:
+    response = requests.get("https://" + HOMEWARE_DOMAIN + "/test").text
+    return response
+  except ConnectionError:
+    return "Down"
 
 def getPublicIP():
-  ip = requests.get(GET_IP_ENDPOINT).text
-  return ip
+  try:
+    ip = requests.get(GET_IP_ENDPOINT).text
+    return ip
+  except ConnectionError:
+    return "unknow"
+  
 
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -34,7 +42,7 @@ if __name__ == "__main__":
   mqtt_client.publish("message-alerts", "Alert system request: operativo")
   while True:
     ip = getPublicIP()
-    if not ip == public_IP_saved and not public_IP_saved == "unknow":
+    if not ip == public_IP_saved and not public_IP_saved == "unknow" and not ip == "unknow":
       mqtt_client.publish("voice-alerts", "Cambio de I P pública")
       mqtt_client.publish("message-alerts", "Nueva IP: " + str(ip))
       public_IP_saved = ip
