@@ -39,30 +39,36 @@ export default function Spotify() {
           <div
             className="spotifyCard"
           >
-            <div className="spotifyTitle">
-              {playing.track_name.length > 20 ? playing.track_name.substring(0, 20) + "..." : playing.track_name}
+            <div className="spotifyData">
+              <div className="spotifyTitle">
+                {playing.track_name.length > 60 ? playing.track_name.substring(0, 60) + "..." : playing.track_name}
+              </div>
+              <hr className="spotifyArtistsSeparator"/>
+              <div className="spotifyArtist">
+                {playing.artists.length > 40 ? playing.artists.substring(0, 40) + "..." : playing.artists}
+              </div>
+              <hr className="spotifyArtistsSeparator"/>
+              <div className="spotifyDevice">
+                {playing.device} ({playing.volume})
+              </div>
             </div>
-            <hr className="spotifyArtistsSeparator"/>
-            <div className="spotifyArtist">
-              {playing.artists.length > 20 ? playing.artists.substring(0, 20) + "..." : playing.artists}
+
+            <div
+              className="spotifyImageCard"
+              style={{ 
+                backgroundImage:  "url(" + playing.image + ")"
+              }}
+            >
             </div>
-            <hr className="spotifyArtistsSeparator"/>
-            <div className="spotifyDevice">
-              {playing.device} ({playing.volume})
-            </div>
+
             <div className="spotifyProgressBar">
               <ProgressBar animated variant="info" now={playing.time} max={playing.duration} />
             </div>
             
+            
           </div>
 
-          <div
-            className="spotifyImageCard"
-            style={{ 
-              backgroundImage:  "url(" + playing.image + ")"
-            }}
-          >
-          </div>
+          
           </>
         : <></>
       }

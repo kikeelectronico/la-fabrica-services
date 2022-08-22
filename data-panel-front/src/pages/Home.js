@@ -17,13 +17,13 @@ export default function Home() {
         </div>
         <Clock/>
         <Internet/>
-        <Spotify/>
         <Thermostat/>
         <Weather/>
         <Air/>
         <Power/>
         <Alerts/>
         <Launches/>
+        <Spotify/>
     </div>
   )
 }

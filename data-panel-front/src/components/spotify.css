@@ -1,33 +1,44 @@
 .spotifyCard {
-  width: 200px;
+  width: 640px;
   height: 200px;
   padding: 10px;
   border-radius: 20px;
   background-color: rgb(44, 43, 43);
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center; 
   overflow: hidden;
 }
 
+.spotifyData {
+  width: calc(100% - 160px);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .spotifyImageCard {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   border-radius: 20px;
   background-color: rgb(44, 43, 43);
   border: 2px solid rgb(44, 43, 43);
-  background-size: 200px 200px;
+  background-size: 160px 160px;
   -webkit-transition: background-image 0.5s ease-in-out;
   transition: background-image 0.5s ease-in-out;
+  position: absolute;
+  right: 10px;
+  top: 15px
 }
 
 .spotifyProgressBar {
-  width: 200px;
+  width: 640px;
   border-radius: 20px 20px 0px 0px;
   position: absolute;
   bottom: 0;
+  left: 0px;
 }
 
 .spotifyTitle {
