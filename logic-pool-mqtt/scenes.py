@@ -32,7 +32,10 @@ def powerAlert(homeware, mqtt_client, topic, payload):
         power = payload["value"]
         # Power alerts
         if power >= 100:
-            power_alert_counter += 1
+          power_alert_counter += 1
+          if power_alert_counter == 1:
+            homeware.execute("water_heater_001", "on", False)
+          else:
             homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
             homeware.execute("scene_power_alert", "deactivate", False)
             mqtt_client.publish("message-alerts", "Sobrecarga de potencia")
@@ -47,8 +50,9 @@ def powerAlert(homeware, mqtt_client, topic, payload):
             homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
             homeware.execute("scene_power_alert", "deactivate", False)
         
-        if power_alert_counter >= 1 and power < 75:
-            power_alert_counter = 0
+        if power < 75:
+          power_alert_counter = 0
+          if power_alert_counter > 1:
             homeware.voiceAlert("Sistemas de potencia bajo control")
             homeware.execute("scene_power_alert", "deactivate", True)
             currentToggleSettings = {
