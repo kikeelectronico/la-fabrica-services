@@ -12,6 +12,17 @@ services:
     depends_on:
       - message-alert
 
+  # Hue connector
+  mqtt-2-hue:
+    image: ghcr.io/kikeelectronico/mqtt-2-hue:latest
+    container_name: mqtt-2-hue
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    depends_on:
+      - message-alert
+
   # Logic pool time
   logic-pool-time:
     image: ghcr.io/kikeelectronico/logic-pool-time:latest
