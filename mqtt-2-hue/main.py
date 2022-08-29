@@ -30,7 +30,7 @@ def on_message(client, userdata, msg):
 	hue_id = topic.split("hue_")[1]
 	hue_status = {
 		"on": payload["on"],
-		"bri": payload["brightness"]
+		"bri": round((payload["brightness"]/100)*254)
 	}
 	sendToHue(hue_id, hue_status)
 
