@@ -29,7 +29,8 @@ def on_message(client, userdata, msg):
 	payload = json.loads(msg.payload)
 	hue_id = topic.split("hue_")[1]
 	hue_status = {
-		"on": payload["on"]
+		"on": payload["on"],
+		"bri": payload["brightness"]
 	}
 	sendToHue(hue_id, hue_status)
 
