@@ -52,7 +52,7 @@ def powerAlert(homeware, mqtt_client, topic, payload):
         
         if power < 75:
           power_alert_counter = 0
-          if power_alert_counter > 1:
+          if power_alert_counter >= 1:
             homeware.voiceAlert("Sistemas de potencia bajo control")
             homeware.execute("scene_power_alert", "deactivate", True)
             currentToggleSettings = {
