@@ -1,23 +1,23 @@
-#from google.cloud import texttospeech
+from google.cloud import texttospeech
 import threading
 import os
 
-from gtts import gTTS
+#from gtts import gTTS
 
 DEVICES_IPS = ['192.168.10.201', '192.168.10.202', '192.168.10.203']
 
 class Voice:
 
   def __init__(self):
-    # self.text_to_speech_client = texttospeech.TextToSpeechClient()
-    # self.voice = texttospeech.VoiceSelectionParams(
-    #     language_code="es-ES", name="es-ES-Wavenet-D", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
-    # )
-    # self.audio_config = texttospeech.AudioConfig(
-    #     audio_encoding=texttospeech.AudioEncoding.MP3,
-    #     pitch=1.2
-    # )
-    pass
+    self.text_to_speech_client = texttospeech.TextToSpeechClient()
+    self.voice = texttospeech.VoiceSelectionParams(
+        language_code="es-ES", name="es-ES-Wavenet-D", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+    )
+    self.audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3,
+        pitch=1.2
+    )
+    #pass
 
   def getFile(self, text):
         file_name = text
@@ -28,17 +28,17 @@ class Voice:
         if os.path.exists(file_path):
             print("Already exists")
         else:
-            # synthesis_input = texttospeech.SynthesisInput(text=text)
+            synthesis_input = texttospeech.SynthesisInput(text=text)
 
-            # response = self.text_to_speech_client.synthesize_speech(
-            #     input=synthesis_input, voice=self.voice, audio_config=self.audio_config
-            # )
+            response = self.text_to_speech_client.synthesize_speech(
+                input=synthesis_input, voice=self.voice, audio_config=self.audio_config
+            )
 
-            # with open(file_path, "wb") as out:
-            #     out.write(response.audio_content)
+            with open(file_path, "wb") as out:
+                out.write(response.audio_content)
         
-            t2s = gTTS(text=text, tld="es", lang='es', slow=False) 
-            t2s.save(file_path)
+            # t2s = gTTS(text=text, tld="es", lang='es', slow=False) 
+            # t2s.save(file_path)
 
         return file_path
 
