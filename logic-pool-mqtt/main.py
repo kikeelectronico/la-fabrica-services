@@ -16,6 +16,9 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
+HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
+
 TOPICS = [
   "device/control",
   "device/switch003/on",
@@ -28,7 +31,7 @@ TOPICS = [
   ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
-homeware = Homeware(mqtt_client)
+homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
 def on_message(client, userdata, msg):
   payload = functions.loadPayload(msg.payload)
