@@ -47,7 +47,6 @@ def on_message(client, userdata, msg):
 
 
 def on_connect(client, userdata, flags, rc):
-  print("conectado")
   for topic in TOPICS:
     client.subscribe(topic)
 
