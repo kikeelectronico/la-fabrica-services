@@ -42,7 +42,7 @@ if __name__ == "__main__":
   mqtt_client.publish("message-alerts", "Alert system request: operativo")
   while True:
     ip = getPublicIP()
-    if not ip == public_IP_saved and not public_IP_saved == "unknow" and not ip == "unknow":
+    if not ip == public_IP_saved and not ip == "unknow":
       mqtt_client.publish("voice-alerts", "Cambio de I P pública")
       mqtt_client.publish("message-alerts", "Nueva IP: " + str(ip))
       public_IP_saved = ip
