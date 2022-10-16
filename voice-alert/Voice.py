@@ -4,7 +4,7 @@ import os
 
 from gtts import gTTS
 
-DEVICES_IPS = ['192.168.10.201', '192.168.10.202', '192.168.10.203']
+DEVICES_IPS = ['192.168.10.15', '192.168.10.16', '192.168.10.17']
 
 class Voice:
 
