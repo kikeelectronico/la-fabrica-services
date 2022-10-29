@@ -21,6 +21,7 @@ last_ip = "unknown"
 mqtt_client = mqtt.Client(client_id="dns-updater")
 
 if __name__ == "__main__":
+  mqtt_client.publish("message-alerts", "DNS updater: operativo")
   while True:
     ip = requests.get(GET_IP_ENDPOINT).text
     if not ip == last_ip and len(ip.split(".")) == 4:
