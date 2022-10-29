@@ -1,6 +1,17 @@
 version: "3.4"
 
 services:
+  # DNS updater
+  dns-updater:
+    image: ghcr.io/kikeelectronico/dns-updater:latest
+    container_name: dns-updater
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    depends_on:
+      - message-alert
+
   # Big Query connector
   mqtt-2-bigquery:
     image: ghcr.io/kikeelectronico/mqtt-2-bigquery:latest
