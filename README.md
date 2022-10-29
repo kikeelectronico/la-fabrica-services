@@ -1,6 +1,8 @@
 # la-fabrica
 Microservices that run my smarthome
 
+![My home architecture](https://github.com/kikeelectronico/la-fabrica/raw/main/resources/Arquitectura.jpg)
+
 ### Alert system MQTT
 
 This microservice waits for data coming through MQTT in order to analyze it. It raises and triggers either visible or audible alarms if one evaluate condition happens.
