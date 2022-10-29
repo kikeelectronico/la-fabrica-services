@@ -1,3 +1,4 @@
+from cmath import e
 import paho.mqtt.client as mqtt
 import os
 
@@ -35,15 +36,19 @@ mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
 homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
 def on_message(client, userdata, msg):
-  payload = functions.loadPayload(msg.payload)
-  switches.green(homeware, msg.topic, payload)
-  scenes.film(homeware, msg.topic, payload)
-  scenes.shower(homeware, msg.topic, payload)
-  scenes.relax(homeware, msg.topic, payload)
-  scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
-  scenes.night(homeware, msg.topic, payload)
-  lights.rgbMain(homeware, msg.topic, payload)
-  # power.powerManagment(homeware, msg.topic, payload)
+  try:
+    payload = functions.loadPayload(msg.payload)
+    switches.green(homeware, msg.topic, payload)
+    scenes.film(homeware, msg.topic, payload)
+    scenes.shower(homeware, msg.topic, payload)
+    scenes.relax(homeware, msg.topic, payload)
+    scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
+    scenes.night(homeware, msg.topic, payload)
+    lights.rgbMain(homeware, msg.topic, payload)
+    # power.powerManagment(homeware, msg.topic, payload)
+  except Exception as e:
+    mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
+    mqtt_client.publish("message-alerts", str(e))
 
 
 def on_connect(client, userdata, flags, rc):
