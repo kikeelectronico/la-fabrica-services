@@ -33,21 +33,21 @@ def powerManagment(homeware, topic, payload):
   # Logic
   if not homeware.get("scene_ducha", "deactivate"):
     heater = True
-    if homeware.get("thermostat_bathroom","thermostatTemperatureAmbient") < homeware.get("thermostat_bathroom","thermostatTemperatureSetpoint"):
+    if homeware.get("termos","thermostatTemperatureAmbient") < homeware.get("termos","thermostatTemperatureSetpoint"):
       bathroom = True
-    elif homeware.get("thermostat_bathroom","thermostatTemperatureAmbient") > homeware.get("thermostat_bathroom","thermostatTemperatureSetpoint"):
+    elif homeware.get("termos","thermostatTemperatureAmbient") > homeware.get("termos","thermostatTemperatureSetpoint"):
       bathroom = False
   elif homeware.get("scene_ducha", "deactivate") and homeware.get("scene_noche", "deactivate"):
-    livingroom = radiatorManagment(homeware, "thermostat_livingroom", "radiator001", LIVINGROOM_POWER, base_power)
-    bedroom = radiatorManagment(homeware, "thermostat_bedroom", "radiator002", BEDROOM_POWER, base_power)
+    livingroom = radiatorManagment(homeware, "termos", "radiator001", LIVINGROOM_POWER, base_power)
+    bedroom = radiatorManagment(homeware, "termos", "radiator002", BEDROOM_POWER, base_power)
     #bathroom = radiatorManagment("thermostat_bathroom", "radiator003", BATHROOM_POWER, base_power)
     if (base_power + HEATER_POWER < 3500):
       heater = True
     else:
       heater = False
   elif homeware.get("scene_ducha", "deactivate") and not homeware.get("scene_noche", "deactivate"):
-    bedroom = radiatorManagment(homeware, "thermostat_bedroom", "radiator002", BEDROOM_POWER, base_power)
-    livingroom = radiatorManagment(homeware, "thermostat_livingroom", "radiator001", LIVINGROOM_POWER, base_power)
+    bedroom = radiatorManagment(homeware, "termos", "radiator002", BEDROOM_POWER, base_power)
+    livingroom = radiatorManagment(homeware, "termos", "radiator001", LIVINGROOM_POWER, base_power)
     #bathroom = radiatorManagment("thermostat_bathroom", "radiator003", BATHROOM_POWER, base_power)
     if (base_power + HEATER_POWER < 3500):
       heater = True
