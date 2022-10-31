@@ -1,5 +1,3 @@
-import time
-
 LIVINGROOM_POWER = 1645
 BEDROOM_POWER = 1000
 BATHROOM_POWER = 800
@@ -68,6 +66,5 @@ def powerManagment(homeware, topic, payload):
   homeware.execute("radiator002","on",bedroom)
   homeware.execute("radiator003","on",bathroom)
   homeware.execute("water_heater_001","on",heater)
-  time.sleep(2)
 
 
