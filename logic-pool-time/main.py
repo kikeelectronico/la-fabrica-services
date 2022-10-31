@@ -30,28 +30,28 @@ if __name__ == "__main__":
 
     if hour == "06:00:00":
       homeware.execute("hood001", "on", False)
-      homeware.execute("water_heater_001", "on", True)
+      # homeware.execute("water_heater_001", "on", True)
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
     elif hour == "08:00:00":
       homeware.execute("hood001", "on", True)
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "10:00:00":
-      homeware.execute("water_heater_001", "on", True)
+      # homeware.execute("water_heater_001", "on", True)
+    # elif hour == "10:00:00":
+    #   homeware.execute("water_heater_001", "on", True)
     elif hour == "12:00:00":
       homeware.execute("hood001", "on", False)
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "14:00:00":
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "16:00:00":
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "18:00:00":
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "20:00:00":
-      homeware.execute("water_heater_001", "on", True)
+      #homeware.execute("water_heater_001", "on", True)
+    # elif hour == "14:00:00":
+    #   homeware.execute("water_heater_001", "on", True)
+    # elif hour == "16:00:00":
+    #   homeware.execute("water_heater_001", "on", True)
+    # elif hour == "18:00:00":
+    #   homeware.execute("water_heater_001", "on", True)
+    # elif hour == "20:00:00":
+    #   homeware.execute("water_heater_001", "on", True)
     elif hour == "22:00:00":
       homeware.execute("hood001", "on", True)
       homeware.execute("scene_noche", "deactivate", False)
-      homeware.execute("water_heater_001", "on", True)
-    elif hour == "00:00:00":
-      homeware.execute("water_heater_001", "on", False)
+      #homeware.execute("water_heater_001", "on", True)
+    # elif hour == "00:00:00":
+    #   homeware.execute("water_heater_001", "on", False)
