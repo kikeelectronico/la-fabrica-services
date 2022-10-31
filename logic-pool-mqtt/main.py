@@ -40,7 +40,7 @@ def on_message(client, userdata, msg):
     payload = functions.loadPayload(msg.payload)
     switches.green(homeware, msg.topic, payload)
     scenes.film(homeware, msg.topic, payload)
-    scenes.shower(homeware, msg.topic, payload)
+    #scenes.shower(homeware, msg.topic, payload)
     scenes.relax(homeware, msg.topic, payload)
     scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
     scenes.night(homeware, msg.topic, payload)
