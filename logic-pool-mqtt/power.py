@@ -47,6 +47,7 @@ def powerManagment(homeware, topic, payload):
     bedroom = radiatorManagment(homeware, "termos", "radiator002", BEDROOM_POWER, base_power)
     base_power += BEDROOM_POWER if bedroom else 0
     #bathroom = radiatorManagment("thermostat_bathroom", "radiator003", BATHROOM_POWER, base_power)
+    #base_power += BATHROOM_POWER if bathroom else 0
     if (base_power + HEATER_POWER < 3500):
       heater = True
     else:
@@ -57,6 +58,7 @@ def powerManagment(homeware, topic, payload):
     livingroom = radiatorManagment(homeware, "termos", "radiator001", LIVINGROOM_POWER, base_power)
     base_power += LIVINGROOM_POWER if livingroom else 0
     #bathroom = radiatorManagment("thermostat_bathroom", "radiator003", BATHROOM_POWER, base_power)
+    #base_power += BATHROOM_POWER if bathroom else 0
     if (base_power + HEATER_POWER < 3500):
       heater = True
     else:
