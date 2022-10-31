@@ -29,7 +29,10 @@ TOPICS = [
   "device/scene_noche/deactivate",
   "device/scene_ducha/deactivate",
   "device/rgb001/color",
-  "device/rgb001/on"
+  "device/rgb001/on",
+  "device/termos/thermostatMode",
+  "device/termos/thermostatTemperatureSetpoint",
+  "device/termos/thermostatTemperatureAmbient"
   ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
