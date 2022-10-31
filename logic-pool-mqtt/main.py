@@ -61,5 +61,5 @@ if __name__ == "__main__":
 
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  #mqtt_client.publish("message-alerts", "Logic pool mqtt: operativo")
+  mqtt_client.publish("message-alerts", "Logic pool mqtt: operativo")
   mqtt_client.loop_forever()
