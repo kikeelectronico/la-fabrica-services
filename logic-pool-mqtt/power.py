@@ -5,14 +5,17 @@ HEATER_POWER = 1800
 MAX_POWER = 3500
 
 def radiatorManagment(homeware, thermostat_id, radiator_id, radiator_power, base_power):
-  if homeware.get(thermostat_id,"thermostatTemperatureAmbient") < homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
-    radiator = homeware.get(radiator_id,"on")
-    if not radiator and ((base_power + radiator_power) < MAX_POWER):
-      return True
-    elif not radiator and ((base_power + radiator_power) >= MAX_POWER):
+  if homeware.get(thermostat_id,"activeThermostatMode") == "heat":
+    if homeware.get(thermostat_id,"thermostatTemperatureAmbient") < homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
+      radiator = homeware.get(radiator_id,"on")
+      if not radiator and ((base_power + radiator_power) < MAX_POWER):
+        return True
+      elif not radiator and ((base_power + radiator_power) >= MAX_POWER):
+        return False
+      return radiator
+    elif homeware.get(thermostat_id,"thermostatTemperatureAmbient") > homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
       return False
-    return radiator
-  elif homeware.get(thermostat_id,"thermostatTemperatureAmbient") > homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
+  else:
     return False
 
 def powerManagment(homeware, topic, payload):
