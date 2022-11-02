@@ -48,7 +48,7 @@ def on_message(client, userdata, msg):
     scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
     scenes.night(homeware, msg.topic, payload)
     lights.rgbMain(homeware, msg.topic, payload)
-    power.powerManagment(homeware, msg.topic, payload)
+    #power.powerManagment(homeware, msg.topic, payload)
   except Exception as e:
     mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
     mqtt_client.publish("message-alerts", str(e))
