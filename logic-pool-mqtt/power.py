@@ -6,14 +6,16 @@ MAX_POWER = 3500
 
 def radiatorManagment(homeware, thermostat_id, radiator_id, radiator_power, base_power):
   if homeware.get(thermostat_id,"activeThermostatMode") == "heat":
-    if homeware.get(thermostat_id,"thermostatTemperatureAmbient") < homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
+    ambient = homeware.get(thermostat_id,"thermostatTemperatureAmbient")
+    set_point =  homeware.get(thermostat_id,"thermostatTemperatureSetpoint")
+    if ambient < set_point:
       radiator = homeware.get(radiator_id,"on")
       if not radiator and ((base_power + radiator_power) < MAX_POWER):
         return True
       elif not radiator and ((base_power + radiator_power) >= MAX_POWER):
         return False
       return radiator
-    elif homeware.get(thermostat_id,"thermostatTemperatureAmbient") > homeware.get(thermostat_id,"thermostatTemperatureSetpoint"):
+    elif ambient > set_point:
       return False
   else:
     return False
@@ -45,17 +47,13 @@ def powerManagment(homeware, topic, payload):
   elif homeware.get("scene_ducha", "deactivate"):
     livingroom = radiatorManagment(homeware, "termos", "radiator001", LIVINGROOM_POWER, base_power)
     base_power += LIVINGROOM_POWER if livingroom else 0
-    print("post livvinroom", base_power)
     bedroom = radiatorManagment(homeware, "termos", "radiator002", BEDROOM_POWER, base_power)
     base_power += BEDROOM_POWER if bedroom else 0
-    print("post bedroom", base_power)
     #bathroom = radiatorManagment("thermostat_bathroom", "radiator003", BATHROOM_POWER, base_power)
     #base_power += BATHROOM_POWER if bathroom else 0
     if (base_power + HEATER_POWER < 3500):
-      print("encender heater")
       heater = True
     else:
-      print("apagar heater")
       heater = False
   
   # Set values
