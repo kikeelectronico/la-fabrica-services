@@ -4,6 +4,10 @@ import paho.mqtt.client as mqtt
 import json
 import os
 
+if os.environ.get("MQTT_PASS", "pass") == "pass":
+  from dotenv import load_dotenv
+  load_dotenv(dotenv_path="../.env")
+
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
