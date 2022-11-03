@@ -32,9 +32,11 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
-		if msg.topic == "device/control":
+		try:
 			payload = json.loads(msg.payload)
 			sendToBigquery(payload)
+		except UnicodeDecodeError as e:
+			print(e)
 
 # MQTT reader
 def mqttReader(client):
