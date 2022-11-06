@@ -62,7 +62,7 @@ def powerAlert(homeware, mqtt_client, topic, payload):
           homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
           homeware.execute("scene_power_alert", "deactivate", False)
         
-        if power < 75:
+        if power < 85:
           if power_alert_counter >= 1:
             power_alert_counter = 0
             homeware.voiceAlert("Sistemas de potencia bajo control")
