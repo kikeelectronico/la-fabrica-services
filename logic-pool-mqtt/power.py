@@ -28,12 +28,12 @@ def powerManagment(homeware, topic, payload):
     livingroom = False
     bedroom = False
     bathroom = shouldHeat(homeware, "termos", "radiator003")
-    heater = True
+    heater = homeware.get("scene_power_alert","deactivate")
   elif homeware.get("scene_ducha", "deactivate"):
     livingroom = shouldHeat(homeware, "termos", "radiator001")
     bedroom = shouldHeat(homeware, "termos", "radiator002")
     bathroom = False
-    heater = not livingroom
+    heater = not livingroom and homeware.get("scene_power_alert","deactivate")
   
   # Set values
   homeware.execute("radiator001","on",livingroom)
