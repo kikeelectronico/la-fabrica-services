@@ -7,7 +7,7 @@ HEATER_POWER = 2200
 MAX_POWER = 3500
 
 def shouldHeat(homeware, thermostat_id, radiator_id):
-  if not homeware.get("scene_power_alert","deactivate"):
+  if homeware.get("scene_power_alert","deactivate"):
     if homeware.get(thermostat_id,"activeThermostatMode") == "heat":
       ambient = homeware.get(thermostat_id,"thermostatTemperatureAmbient")
       set_point =  homeware.get(thermostat_id,"thermostatTemperatureSetpoint")
