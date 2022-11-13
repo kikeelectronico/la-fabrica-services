@@ -54,19 +54,27 @@ def sendToBigquery(data):
 	global temperature_last_value
 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
 		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
-
 		inject = {
 			"ddbb": "power",
 			"ts": ts,
 			"power": data["value"] * POWER_CONSTANT
 		}
-
 		bigqueyInjector(inject)
 		power_last_value = data['value']
 	
 	elif data['id'] == "termos" and data['param'] == "thermostatTemperatureAmbient" and data['value'] != temperature_last_value:
 		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
+		inject = {
+			"ddbb": "ambient",
+			"ts": ts,
+			"magnitude": "temperature",
+			"value": temperature_last_value,
+			"location": "livingroom",
+			"units": "C"
+		}
+		bigqueyInjector(inject)
 
+		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
 		inject = {
 			"ddbb": "ambient",
 			"ts": ts,
@@ -75,8 +83,8 @@ def sendToBigquery(data):
 			"location": "livingroom",
 			"units": "C"
 		}
-
 		bigqueyInjector(inject)
+
 		temperature_last_value = data["value"]
 
 def bigqueyInjector(body):
