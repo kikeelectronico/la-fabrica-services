@@ -17,7 +17,7 @@ INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
 TOPICS = ["device/control"]
 
-UTC_TIME_ZONE = 2
+UTC_TIME_ZONE = 0
 
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
 
