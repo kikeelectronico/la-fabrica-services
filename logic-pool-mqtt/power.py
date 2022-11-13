@@ -53,8 +53,6 @@ def powerManagment(homeware, topic, payload):
     bathroom = False
     heater = False
   
-
-  
   # Set values
   homeware.execute("radiator001","on",livingroom)
   homeware.execute("radiator002","on",bedroom)
