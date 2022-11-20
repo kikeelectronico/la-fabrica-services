@@ -26,9 +26,12 @@ if __name__ == "__main__":
   while True:
     today = datetime.datetime.now()
     hour = today.strftime("%H:%M:%S")
-    
+
     if hour == "06:00:00":
       homeware.execute("hood001", "on", False)
+    if hour == "07:00:00":
+      homeware.execute("termos", "thermostatTemperatureSetpoint", 21)
+      homeware.execute("termos", "thermostatMode", "heat")
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
     elif hour == "08:00:00":
