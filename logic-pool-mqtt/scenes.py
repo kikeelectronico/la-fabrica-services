@@ -14,15 +14,10 @@ def film(homeware, topic, payload):
 
 def shower(homeware, topic, payload):
   if topic == "device/scene_ducha/deactivate" and not payload:
-    homeware.execute("termos", "activeThermostatMode", "off")
-    # homeware.execute("radiator003", "on", True)
-    # homeware.execute("water_heater_001", "on", True)
+    # homeware.execute("hood001", "on", True)
+    homeware.execute("termos", "thermostatTemperatureSetpoint", 25)
   elif topic == "device/scene_ducha/deactivate" and payload:
-    homeware.execute("radiator003", "on", False)
-    # homeware.execute("water_heater_001", "on", False)
-    homeware.execute("hood001", "on", True)
-    homeware.execute("termos", "activeThermostatMode", "heat")
-
+    homeware.execute("termos", "thermostatTemperatureSetpoint", 22)
 
 def relax(homeware, topic, payload):
   if topic == "device/scene_relajacion/deactivate" and not payload:
