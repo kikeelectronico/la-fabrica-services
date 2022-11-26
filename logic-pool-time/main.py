@@ -29,11 +29,10 @@ if __name__ == "__main__":
 
     if hour == "06:00:00":
       homeware.execute("hood001", "on", False)
-    if hour == "07:00:00":
-      homeware.execute("termos", "thermostatTemperatureSetpoint", 21)
-      homeware.execute("termos", "thermostatMode", "heat")
     elif hour == "07:00:00":
       homeware.execute("scene_noche", "deactivate", True)
+      homeware.execute("termos", "thermostatTemperatureSetpoint", 21)
+      homeware.execute("termos", "thermostatMode", "heat")
     elif hour == "08:00:00":
       homeware.execute("hood001", "on", True)
     elif hour == "12:00:00":
