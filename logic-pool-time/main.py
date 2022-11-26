@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import datetime
 import os
+import time
 
 from homeware import Homeware
 
@@ -15,6 +16,7 @@ MQTT_PORT = 1883
 
 mqtt_client = mqtt.Client(client_id="logic-pool-time-2")
 homeware = Homeware(mqtt_client)
+last_time = 0
 
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -40,3 +42,7 @@ if __name__ == "__main__":
     elif hour == "22:00:00":
       homeware.execute("hood001", "on", True)
       homeware.execute("scene_noche", "deactivate", False)
+
+    if time.time() - last_time > 30:
+      mqtt_client.publish("heartbeats", "logic-pool-time")
+      last_time = time.time()
