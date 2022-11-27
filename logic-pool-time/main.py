@@ -14,7 +14,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
-mqtt_client = mqtt.Client(client_id="logic-pool-time-2")
+mqtt_client = mqtt.Client(client_id="logic-pool-time")
 homeware = Homeware(mqtt_client)
 last_time = 0
 
