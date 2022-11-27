@@ -50,8 +50,8 @@ def on_message(client, userdata, msg):
     scenes.night(homeware, msg.topic, payload)
     lights.rgbMain(homeware, msg.topic, payload)
     power.powerManagment(homeware, msg.topic, payload)
-    if msg.topic == "heartbeats/request":
-      mqtt_client.publish("heartbeats", "logic-pool-mqtt")
+    # if msg.topic == "heartbeats/request":
+    #   mqtt_client.publish("heartbeats", "logic-pool-mqtt")
   except Exception as e:
     mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
     mqtt_client.publish("message-alerts", str(e))
