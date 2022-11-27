@@ -46,3 +46,4 @@ if __name__ == "__main__":
     if time.time() - last_time > 30:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_time = time.time()
+      
