@@ -51,6 +51,8 @@ if __name__ == "__main__":
       mqtt_client.publish("voice-alerts", "Homeware no responde")
       mqtt_client.publish("message-alerts", "Homeware no responde")
 
+    mqtt_client.publish("heartbeats", "alert-system-requests")
+
     time.sleep(SLEEP_TIME)
 
     

@@ -43,7 +43,7 @@ if __name__ == "__main__":
       homeware.execute("hood001", "on", True)
       homeware.execute("scene_noche", "deactivate", False)
 
-    if time.time() - last_time > 30:
+    if time.time() - last_time > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_time = time.time()
       

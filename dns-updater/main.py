@@ -40,5 +40,6 @@ if __name__ == "__main__":
           mqtt_client.publish("message-alerts", "Problemas al actualizar la IP")
         last_ip = ip
 
+    mqtt_client.publish("heartbeats", "dns-updater")
     time.sleep(10)
     
