@@ -12,6 +12,17 @@ services:
     depends_on:
       - message-alert
 
+  # Heartbeat request
+  heartbeat-request:
+    image: ghcr.io/kikeelectronico/heartbeat-request:latest
+    container_name: heartbeat-request
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    depends_on:
+      - message-alert
+
   # Big Query connector
   mqtt-2-bigquery:
     image: ghcr.io/kikeelectronico/mqtt-2-bigquery:latest
