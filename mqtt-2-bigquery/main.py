@@ -15,7 +15,7 @@ MQTT_PORT = 1883
 INJECTOR_URL = os.environ.get("INJECTOR_URL", "no_url")
 INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
-TOPICS = ["device/control"]
+TOPICS = ["heartbeats/request","device/control"]
 
 UTC_TIME_ZONE = 0
 
@@ -32,11 +32,14 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
-		try:
-			payload = json.loads(msg.payload)
-			sendToBigquery(payload)
-		except UnicodeDecodeError as e:
-			print(e)
+		if msg.topic == "heartbeats/request":
+			mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
+		else:
+			try:
+				payload = json.loads(msg.payload)
+				sendToBigquery(payload)
+			except UnicodeDecodeError as e:
+				print(e)
 
 # MQTT reader
 def mqttReader(client):

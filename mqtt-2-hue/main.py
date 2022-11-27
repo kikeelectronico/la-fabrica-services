@@ -14,7 +14,7 @@ MQTT_PORT = 1883
 HUE_URL = os.environ.get("HUE_URL", "no_url")
 HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_token")
 POWER_CONSTANT = 35
-TOPICS = ["device/hue_1"]
+TOPICS = ["heartbeats/request","device/hue_1"]
 
 mqtt_client = mqtt.Client(client_id="mqtt-2-hue")
 
@@ -25,14 +25,18 @@ def on_connect(client, userdata, flags, rc):
 		client.subscribe(topic)
 
 def on_message(client, userdata, msg):
-	topic = msg.topic
-	payload = json.loads(msg.payload)
-	hue_id = topic.split("hue_")[1]
-	hue_status = {
-		"on": payload["on"],
-		"bri": round((payload["brightness"]/100)*254)
-	}
-	sendToHue(hue_id, hue_status)
+	if msg.topic in TOPICS:
+		if msg.topic == "heartbeats/request":
+			mqtt_client.publish("heartbeats", "mqtt-2-hue")
+		else:
+			topic = msg.topic
+			payload = json.loads(msg.payload)
+			hue_id = topic.split("hue_")[1]
+			hue_status = {
+				"on": payload["on"],
+				"bri": round((payload["brightness"]/100)*254)
+			}
+			sendToHue(hue_id, hue_status)
 
 def sendToHue(hue_id, hue_status):
 	if not HUE_URL == "no_token" and not HUE_TOKEN == "no_url":

@@ -13,14 +13,18 @@ MQTT_PORT = 1883
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
-TOPICS = ["message-alerts"]
+TOPICS = ["heartbeats/request","message-alerts"]
 
 mqtt_client = mqtt.Client(client_id="message-alert")
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
 def on_message(client, userdata, msg):
-  payload = msg.payload.decode('utf-8').replace("\'", "\"")
-  bot.send_message(ENRIQUE_CHAT_ID, payload)
+  if msg.topic in TOPICS:
+    if msg.topic == "heartbeats/request":
+      mqtt_client.publish("heartbeats", "message-alert")
+    else:
+      payload = msg.payload.decode('utf-8').replace("\'", "\"")
+      bot.send_message(ENRIQUE_CHAT_ID, payload)
 
 def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
