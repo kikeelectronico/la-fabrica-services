@@ -29,7 +29,7 @@ def on_message(client, userdata, msg):
 			current_time = time.time()
 			for service in heartbeats.keys():
 				if current_time - heartbeats[service] > 30:
-					mqtt_client.publish("message-alerts", service + " caido")
+					mqtt_client.publish("message-alerts", service + ": caido")
 					del heartbeats[service]
 		else:
 			service = msg.payload
