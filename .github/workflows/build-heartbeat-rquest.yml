@@ -5,18 +5,18 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "heartbeat-rquest/**"
+      - "heartbeat-request/**"
   pull_request:
     branches: [ main ]
     paths:
-      - "heartbeat-rquest/**"
+      - "heartbeat-request/**"
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
 jobs:
-  heartbeat-rquest:
+  heartbeat-request:
     name: Build and publish the service
     runs-on: ubuntu-latest
     permissions:
@@ -39,8 +39,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: heartbeat-rquest
-          file: heartbeat-rquest/Dockerfile
+          context: heartbeat-request
+          file: heartbeat-request/Dockerfile
           platforms: linux/arm/v7
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-rquest:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-request:latest
