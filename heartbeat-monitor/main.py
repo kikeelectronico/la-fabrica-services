@@ -13,7 +13,7 @@ MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 TOPICS = ["heartbeats", "heartbeats/request"]
 
-mqtt_client = mqtt.Client(client_id="mqtt-2-hue")
+mqtt_client = mqtt.Client(client_id="heartbeat-monitor")
 
 heartbeats = {}
 
@@ -27,9 +27,13 @@ def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "heartbeats/request":
 			current_time = time.time()
+			services_to_delete = []
 			for service in heartbeats.keys():
-				if current_time - heartbeats[service] > 30:
-					mqtt_client.publish("message-alerts", service + ": caido")
+				if current_time - heartbeats[service] > 70:
+					mqtt_client.publish("message-alerts", service.decode("utf-8") + ": caido")
+					services_to_delete.append(service)
+			if len(services_to_delete) > 0:
+				for service in services_to_delete:
 					del heartbeats[service]
 		else:
 			service = msg.payload
