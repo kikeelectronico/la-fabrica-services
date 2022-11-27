@@ -19,7 +19,7 @@ if __name__ == "__main__":
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   mqtt_client.publish("message-alerts", "Heartbeat request: operativo")
   while True:
-    mqtt_client.publish("heartbeats/request", "are you there?")
+    mqtt_client.publish("heartbeats/request", "are-you-there")
     time.sleep(10)
 
       
