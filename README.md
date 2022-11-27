@@ -3,17 +3,9 @@ Microservices that run my smarthome
 
 ![My home architecture](https://github.com/kikeelectronico/la-fabrica/raw/main/resources/Arquitectura.jpg)
 
-### Alert system MQTT
-
-This microservice waits for data coming through MQTT in order to analyze it. It raises and triggers either visible or audible alarms if one evaluate condition happens.
-
 ### Alert system rquest
 
 This microservice requests data to different sources and triggers either visible or audible alarms if one evaluated condition happend.
-
-### Data panel front
-
-This microservice is a web frontend that shows data in form of dashboards in different screens around the house. The data comes from different sources, including Homeware.
 
 ### Data panel API
 
@@ -23,6 +15,22 @@ This microservice is a REST API for the data dashboards. It request data to diff
 
 This microservice forces the loading of the dashboard in a chromecast when not playing anything on it.
 
+### Data panel front
+
+This microservice is a web frontend that shows data in form of dashboards in different screens around the house. The data comes from different sources, including Homeware.
+
+### DNS Updater
+
+This microservice get the public IP of the router and update the value in the DNS if needed.
+
+### Heartbeat monitor
+
+This microservice monitors the heartbeats sent bt the rest of microservices and send an alert if needed.
+
+### Heartbeat request
+
+This microservice monitors requests heartbeats to the passive microservices.
+
 ### Logic pool MQTT
 
 This microservice is in charge of making logic relationships between devices and scenes. It interacts with Homeware MQTT API for detecting trigger events and making changes in devices.
@@ -31,6 +39,18 @@ This microservice is in charge of making logic relationships between devices and
 
 This microservice makes changes in Homeware devices using time as trigger.
 
+### Message alert
+
+This microservice is in charge of sending telegram messages.
+
 ### MQTT 2 BigQuery
 
 This microservice sends Homeware's data to Google Cloud BigQuery. It uses the Homeware MQTT API for detecting changes in the monitored data.
+
+### MQTT 2 Hue
+
+This microservice connects Homeware with a Philips Hue Bridge.
+
+### Voice alert
+
+This microservice generates voice alerts using text to speech and the smart speakers at home.
