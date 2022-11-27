@@ -48,7 +48,7 @@ def sendToHue(hue_id, hue_status):
 		if not "success" in r.text:
 			print(r.text)
 	else:
-		print("There is no token or URL for the injector")
+		print("There is no token or URL for the Hue Bridge")
 
 if __name__ == "__main__":
 	mqtt_client.on_message = on_message
