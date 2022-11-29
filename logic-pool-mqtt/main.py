@@ -23,35 +23,35 @@ HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 
 TOPICS = [
   "heartbeats/request",
-  "device/control",
-  "device/switch003/on",
-  "device/scene_pelicula/deactivate",
-  "device/scene_relajacion/deactivate",
-  "device/scene_noche/deactivate",
-  "device/scene_ducha/deactivate",
   "device/rgb001/color",
   "device/rgb001/on",
-  "device/termos/thermostatMode",
-  "device/termos/thermostatTemperatureSetpoint",
-  "device/termos/thermostatTemperatureAmbient"
-  ]
+  "device/scene_pelicula/deactivate",
+  "device/scene_ducha/deactivate",
+  "device/current001/brightness",
+  "device/termos",
+  "device/scene_relajacion/deactivate",
+  "device/control",
+  "device/scene_noche/deactivate",
+  "device/switch003/on",
+]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
 homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
 def on_message(client, userdata, msg):
   try:
-    payload = functions.loadPayload(msg.payload)
-    switches.green(homeware, msg.topic, payload)
-    scenes.film(homeware, msg.topic, payload)
-    #scenes.shower(homeware, msg.topic, payload)
-    scenes.relax(homeware, msg.topic, payload)
-    scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
-    scenes.night(homeware, msg.topic, payload)
-    lights.rgbMain(homeware, msg.topic, payload)
-    power.powerManagment(homeware, msg.topic, payload)
-    # if msg.topic == "heartbeats/request":
-    #   mqtt_client.publish("heartbeats", "logic-pool-mqtt")
+    if msg.topic == "heartbeats/request":
+      mqtt_client.publish("heartbeats", "logic-pool-mqtt")
+    else:
+      payload = functions.loadPayload(msg.payload)
+      switches.green(homeware, msg.topic, payload)
+      scenes.film(homeware, msg.topic, payload)
+      #scenes.shower(homeware, msg.topic, payload)
+      scenes.relax(homeware, msg.topic, payload)
+      scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
+      scenes.night(homeware, msg.topic, payload)
+      lights.rgbMain(homeware, msg.topic, payload)
+      power.powerManagment(homeware, msg.topic, payload)
   except Exception as e:
     mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
     mqtt_client.publish("message-alerts", str(e))
