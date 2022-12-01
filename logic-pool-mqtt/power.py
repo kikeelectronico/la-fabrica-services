@@ -60,7 +60,7 @@ def powerManagment(homeware, topic, payload):
     if not "thermostat_dormitorio" in cache.keys():  
       cache["thermostat_dormitorio"] = {
         "thermostatTemperatureAmbient": homeware.get("thermostat_dormitorio", "thermostatTemperatureAmbient"),
-        "activeThermostatMode": homeware.get("thermostat_dormitorio", "activeThermostatMode"),
+        "activeThermostatMode": homeware.get("thermostat_dormitorio", "thermostatMode"),
         "thermostatTemperatureSetpoint": homeware.get("thermostat_dormitorio", "thermostatTemperatureSetpoint")
       }
     if topic == "device/thermostat_dormitorio":
