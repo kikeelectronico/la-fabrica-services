@@ -14,7 +14,7 @@ cache = {}
 def shouldHeat(homeware, thermostat_id, radiator_id):
   global cache
 
-  if cache[thermostat_id]["activeThermostatMode"] == "heat":
+  if cache[thermostat_id]["thermostatMode"] == "heat":
     ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
     set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"]
     if ambient < set_point:
@@ -51,7 +51,7 @@ def powerManagment(homeware, topic, payload):
     if not "termos" in cache.keys():  
       cache["termos"] = {
         "thermostatTemperatureAmbient": homeware.get("termos", "thermostatTemperatureAmbient"),
-        "activeThermostatMode": homeware.get("termos", "activeThermostatMode"),
+        "thermostatMode": homeware.get("termos", "thermostatMode"),
         "thermostatTemperatureSetpoint": homeware.get("termos", "thermostatTemperatureSetpoint")
       }
     if topic == "device/termos":
@@ -60,7 +60,7 @@ def powerManagment(homeware, topic, payload):
     if not "thermostat_dormitorio" in cache.keys():  
       cache["thermostat_dormitorio"] = {
         "thermostatTemperatureAmbient": homeware.get("thermostat_dormitorio", "thermostatTemperatureAmbient"),
-        "activeThermostatMode": homeware.get("thermostat_dormitorio", "thermostatMode"),
+        "thermostatMode": homeware.get("thermostat_dormitorio", "thermostatMode"),
         "thermostatTemperatureSetpoint": homeware.get("thermostat_dormitorio", "thermostatTemperatureSetpoint")
       }
     if topic == "device/thermostat_dormitorio":
