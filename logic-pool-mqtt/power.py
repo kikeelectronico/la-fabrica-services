@@ -57,6 +57,15 @@ def powerManagment(homeware, topic, payload):
     if topic == "device/termos":
       cache["termos"] = payload
 
+    if not "thermostat_dormitorio" in cache.keys():  
+      cache["thermostat_dormitorio"] = {
+        "thermostatTemperatureAmbient": homeware.get("thermostat_dormitorio", "thermostatTemperatureAmbient"),
+        "activeThermostatMode": homeware.get("thermostat_dormitorio", "activeThermostatMode"),
+        "thermostatTemperatureSetpoint": homeware.get("thermostat_dormitorio", "thermostatTemperatureSetpoint")
+      }
+    if topic == "device/thermostat_dormitorio":
+      cache["thermostat_dormitorio"] = payload
+
     if cache["power"] >= 100:
       power_alert = True
       power_timestamp = time.time()
@@ -72,7 +81,7 @@ def powerManagment(homeware, topic, payload):
         heater = True
       else:
         livingroom = shouldHeat(homeware, "termos", "radiator001")
-        bedroom = shouldHeat(homeware, "termos", "radiator002")
+        bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002")
         bathroom = False
         heater = not livingroom
     else:
