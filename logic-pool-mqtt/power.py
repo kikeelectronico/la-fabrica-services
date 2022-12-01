@@ -34,7 +34,8 @@ def powerManagment(homeware, topic, payload):
   TOPICS = [
     "device/scene_ducha/deactivate",
     "device/current001/brightness",
-    "device/termos"
+    "device/termos",
+    "device/thermostat_dormitorio"
   ]
 
   if topic in TOPICS:
