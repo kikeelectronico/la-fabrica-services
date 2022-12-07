@@ -17,6 +17,7 @@ MQTT_PORT = 1883
 mqtt_client = mqtt.Client(client_id="logic-pool-time")
 homeware = Homeware(mqtt_client)
 last_time = 0
+just_executed = ""
 
 if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -29,20 +30,31 @@ if __name__ == "__main__":
     today = datetime.datetime.now()
     hour = today.strftime("%H:%M:%S")
 
-    if hour == "06:00:00":
+    # Time blocks
+    if hour == "06:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("hood001", "on", False)
-    elif hour == "07:00:00":
+    elif hour == "07:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("scene_noche", "deactivate", True)
       homeware.execute("termos", "thermostatTemperatureSetpoint", 21)
       homeware.execute("termos", "thermostatMode", "heat")
-    elif hour == "08:00:00":
+    elif hour == "08:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("hood001", "on", True)
-    elif hour == "12:00:00":
+    elif hour == "12:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("hood001", "on", False)
-    elif hour == "22:00:00":
+    elif hour == "22:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("hood001", "on", True)
       homeware.execute("scene_noche", "deactivate", False)
 
+    # Reset the last just_executed block
+    if not just_executed == hour:
+      just_executed = ""
+
+    # Send the heartbeat
     if time.time() - last_time > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_time = time.time()
