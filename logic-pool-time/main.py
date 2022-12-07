@@ -16,7 +16,7 @@ MQTT_PORT = 1883
 
 mqtt_client = mqtt.Client(client_id="logic-pool-time")
 homeware = Homeware(mqtt_client)
-last_time = 0
+last_heartbeat_timestamp = 0
 just_executed = ""
 
 if __name__ == "__main__":
@@ -55,7 +55,7 @@ if __name__ == "__main__":
       just_executed = ""
 
     # Send the heartbeat
-    if time.time() - last_time > 10:
+    if time.time() - last_heartbeat_timestamp > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
-      last_time = time.time()
+      last_heartbeat_timestamp = time.time()
       
