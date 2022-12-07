@@ -16,6 +16,7 @@ MQTT_PORT = 1883
 
 mqtt_client = mqtt.Client(client_id="logic-pool-time")
 homeware = Homeware(mqtt_client)
+
 last_heartbeat_timestamp = 0
 just_executed = ""
 
