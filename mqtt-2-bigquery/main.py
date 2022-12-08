@@ -15,12 +15,19 @@ MQTT_PORT = 1883
 INJECTOR_URL = os.environ.get("INJECTOR_URL", "no_url")
 INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
-TOPICS = ["heartbeats/request","device/control"]
+
+TOPICS = [
+	"heartbeats/request",
+	"device/current001/brightness",
+	"device/termos/thermostatTemperatureAmbient",
+	"device/thermostat_bathroom/thermostatTemperatureAmbient",
+	"device/thermostat_dormitorio/thermostatTemperatureAmbient"
+]
 
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
 
-power_last_value = 0
-temperature_last_value = 0
+latest_power = 0
+latest_livingroom_themperature = 0
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected with result code "+str(rc))
@@ -34,8 +41,8 @@ def on_message(client, userdata, msg):
 			mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
 		else:
 			try:
-				payload = json.loads(msg.payload)
-				sendToBigquery(payload)
+				payload = int(msg.payload)
+				sendToBigquery(msg.topic, payload)
 			except UnicodeDecodeError as e:
 				print(e)
 
@@ -50,43 +57,52 @@ def mqttReader(client):
 	mqtt_client.publish("message-alerts", "MQTT 2 BigQuery: operativo")
 	client.loop_forever()
 
-def sendToBigquery(data):
-	global power_last_value
-	global temperature_last_value
-	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
+def sendThermostatRequest(payload, location):
+	global latest_livingroom_themperature
+	ts = int(time.time())
+	inject = {
+		"ddbb": "ambient",
+		"ts": ts,
+		"magnitude": "temperature",
+		"value": latest_livingroom_themperature,
+		"location": location,
+		"units": "C"
+	}
+	bigqueyInjector(inject)
+
+	ts = int(time.time())
+	inject = {
+		"ddbb": "ambient",
+		"ts": ts,
+		"magnitude": "temperature",
+		"value": payload,
+		"location": location,
+		"units": "C"
+	}
+	bigqueyInjector(inject)
+
+	latest_livingroom_themperature = payload
+
+def sendToBigquery(topic, payload):
+	global latest_power
+	global latest_livingroom_themperature
+	if topic == "device/current001/brightness" and payload != latest_power:
 		ts = int(time.time())
 		inject = {
 			"ddbb": "power",
 			"ts": ts,
-			"power": data["value"] * POWER_CONSTANT
+			"power": payload * POWER_CONSTANT
 		}
 		bigqueyInjector(inject)
-		power_last_value = data['value']
-	
-	elif data['id'] == "termos" and data['param'] == "thermostatTemperatureAmbient" and data['value'] != temperature_last_value:
-		ts = int(time.time())
-		inject = {
-			"ddbb": "ambient",
-			"ts": ts,
-			"magnitude": "temperature",
-			"value": temperature_last_value,
-			"location": "livingroom",
-			"units": "C"
-		}
-		bigqueyInjector(inject)
+		latest_power = payload
 
-		ts = int(time.time())
-		inject = {
-			"ddbb": "ambient",
-			"ts": ts,
-			"magnitude": "temperature",
-			"value": data['value'],
-			"location": "livingroom",
-			"units": "C"
-		}
-		bigqueyInjector(inject)
-
-		temperature_last_value = data["value"]
+	elif topic == "device/termos/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
+		sendThermostatRequest(topic, location="livingroom")
+	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
+		sendThermostatRequest(topic, location="bathroom")
+	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
+		sendThermostatRequest(topic, location="bedroom")
+		
 
 def bigqueyInjector(body):
 	if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
