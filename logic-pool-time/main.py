@@ -20,7 +20,7 @@ homeware = Homeware(mqtt_client)
 last_heartbeat_timestamp = 0
 just_executed = ""
 
-if __name__ == "__main__":
+def main():
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   today = datetime.datetime.now()
@@ -81,4 +81,7 @@ if __name__ == "__main__":
     if time.time() - last_heartbeat_timestamp > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_heartbeat_timestamp = time.time()
+      
+if __name__ == "__main__":
+  main()
       
