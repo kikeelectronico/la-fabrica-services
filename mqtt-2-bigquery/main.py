@@ -17,8 +17,6 @@ INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
 POWER_CONSTANT = 35
 TOPICS = ["heartbeats/request","device/control"]
 
-UTC_TIME_ZONE = 0
-
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
 
 power_last_value = 0
@@ -56,7 +54,7 @@ def sendToBigquery(data):
 	global power_last_value
 	global temperature_last_value
 	if data['id'] == "current001" and data['param'] == "brightness" and data['value'] != power_last_value:
-		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
+		ts = int(time.time())
 		inject = {
 			"ddbb": "power",
 			"ts": ts,
@@ -66,7 +64,7 @@ def sendToBigquery(data):
 		power_last_value = data['value']
 	
 	elif data['id'] == "termos" and data['param'] == "thermostatTemperatureAmbient" and data['value'] != temperature_last_value:
-		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
+		ts = int(time.time())
 		inject = {
 			"ddbb": "ambient",
 			"ts": ts,
@@ -77,7 +75,7 @@ def sendToBigquery(data):
 		}
 		bigqueyInjector(inject)
 
-		ts = int(time.time()) + (60*60*UTC_TIME_ZONE)
+		ts = int(time.time())
 		inject = {
 			"ddbb": "ambient",
 			"ts": ts,
