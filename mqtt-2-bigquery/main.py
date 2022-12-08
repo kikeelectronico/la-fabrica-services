@@ -27,33 +27,56 @@ TOPICS = [
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
 
 latest_power = 0
-latest_livingroom_themperature = 0
+latest_livingroom_temperature = 0
+latest_bathroom_temperature = 0
+latest_bedroom_temperature = 0
 
 def on_connect(client, userdata, flags, rc):
-	print("Connected with result code "+str(rc))
 	# Suscribe to topics
 	for topic in TOPICS:
 		client.subscribe(topic)
 
 def on_message(client, userdata, msg):
-	if msg.topic in TOPICS:
-		if msg.topic == "heartbeats/request":
-			mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
-		else:
-			try:
-				payload = int(msg.payload)
-				sendToBigquery(msg.topic, payload)
-			except UnicodeDecodeError as e:
-				print(e)
+	global latest_power
+	global latest_livingroom_temperature
+	global latest_bathroom_temperature
+	global latest_bedroom_temperature
+	# Rename variables
+	payload = int(msg.payload)
+	topic = msg.topic
+	# The request depends on the device
+	if topic == "heartbeats/request":
+		mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
+	elif topic == "device/current001/brightness" and payload != latest_power:
+		sendPowerRequest(payload)
+		latest_power = payload
+	elif topic == "device/termos/thermostatTemperatureAmbient" and payload != latest_livingroom_temperature:
+		sendThermostatRequest(payload, location="livingroom")
+		latest_livingroom_temperature = payload
+	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" and payload != latest_bathroom_temperature:
+		sendThermostatRequest(payload, location="bathroom")
+		latest_bathroom_temperature = payload
+	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" and payload != latest_bedroom_temperature:
+		sendThermostatRequest(payload, location="bedroom")
+		latest_bedroom_temperature = payload
+
+def sendPowerRequest(payload):
+	ts = int(time.time())
+	inject = {
+		"ddbb": "power",
+		"ts": ts,
+		"power": payload * POWER_CONSTANT
+	}
+	bigqueyInjector(inject)
 
 def sendThermostatRequest(payload, location):
-	global latest_livingroom_themperature
+	global latest_livingroom_temperature
 	ts = int(time.time())
 	inject = {
 		"ddbb": "ambient",
 		"ts": ts,
 		"magnitude": "temperature",
-		"value": latest_livingroom_themperature,
+		"value": latest_livingroom_temperature,
 		"location": location,
 		"units": "C"
 	}
@@ -69,28 +92,6 @@ def sendThermostatRequest(payload, location):
 		"units": "C"
 	}
 	bigqueyInjector(inject)
-
-	latest_livingroom_themperature = payload
-
-def sendToBigquery(topic, payload):
-	global latest_power
-	global latest_livingroom_themperature
-	if topic == "device/current001/brightness" and payload != latest_power:
-		ts = int(time.time())
-		inject = {
-			"ddbb": "power",
-			"ts": ts,
-			"power": payload * POWER_CONSTANT
-		}
-		bigqueyInjector(inject)
-		latest_power = payload
-
-	elif topic == "device/termos/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
-		sendThermostatRequest(topic, location="livingroom")
-	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
-		sendThermostatRequest(topic, location="bathroom")
-	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" and payload != latest_livingroom_themperature:
-		sendThermostatRequest(topic, location="bedroom")
 		
 def bigqueyInjector(body):
 	if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
