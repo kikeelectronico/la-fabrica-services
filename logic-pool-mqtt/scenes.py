@@ -68,7 +68,7 @@ def powerAlert(homeware, mqtt_client, topic, payload):
         #   homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
         #   homeware.execute("scene_power_alert", "deactivate", False)
         if power < 85:
-          if power_alert_counter >= 1:
+          if power_alert_counter > 1:
             power_alert_counter = 0
             homeware.voiceAlert("Sistemas de potencia bajo control")
             homeware.execute("scene_power_alert", "deactivate", True)
@@ -78,6 +78,9 @@ def powerAlert(homeware, mqtt_client, topic, payload):
             homeware.execute("rgb001", "currentToggleSettings", currentToggleSettings)
             homeware.execute("rgb002", "currentToggleSettings", currentToggleSettings)
             homeware.execute("rgb003", "currentToggleSettings", currentToggleSettings)
+          
+          if power_alert_counter == 1:
+            power_alert_counter = 0
 
 def night(homeware, topic, payload):
   # Day
