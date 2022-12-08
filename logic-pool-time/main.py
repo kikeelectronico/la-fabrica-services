@@ -21,12 +21,15 @@ last_heartbeat_timestamp = 0
 just_executed = ""
 
 def main():
+  # Create connection with the MQTT broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  # Send boot message
   today = datetime.datetime.now()
   hour = today.strftime("%H:%M:%S")
   mqtt_client.publish("message-alerts", "Logic pool time: operativo")
   mqtt_client.publish("message-alerts", "Hora local " + str(hour))
+  # Main loop
   while True:
     today = datetime.datetime.now()
     hour = today.strftime("%H:%M:%S")
@@ -81,7 +84,7 @@ def main():
     if time.time() - last_heartbeat_timestamp > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_heartbeat_timestamp = time.time()
-      
+
 if __name__ == "__main__":
   main()
       
