@@ -8,7 +8,7 @@ last_power_check = 0
 def film(homeware, topic, payload):
   if topic == "device/scene_pelicula/deactivate" and not payload:
     # Turn off some lights
-    turn_off_devices = ["light001", "light002", "light003", "hue_1", "rgb001","rgb003"]
+    turn_off_devices = ["light001", "light002", "light003", "hue_1"]
     for control_id in turn_off_devices:
       homeware.execute(control_id, "on", False)
     # Change the color of some lights
@@ -17,7 +17,7 @@ def film(homeware, topic, payload):
       "spectrumRgb": 16741656
     }
     homeware.execute("rgb001", "color", color)
-    homeware.execute("rgb003", "color", color)
+    homeware.execute("rgb002", "color", color)
     # Turn on some lights
     turn_on_devices = ["rgb001", "rgb002"]
     for control_id in turn_on_devices:
