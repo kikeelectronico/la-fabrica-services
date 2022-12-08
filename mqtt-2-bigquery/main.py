@@ -20,8 +20,11 @@ TOPICS = [
 	"heartbeats/request",
 	"device/current001/brightness",
 	"device/termos/thermostatTemperatureAmbient",
+	"device/termos/thermostatHumidityAmbient",
 	"device/thermostat_bathroom/thermostatTemperatureAmbient",
+	"device/thermostat_bathroom/thermostatHumidityAmbient",
 	"device/thermostat_dormitorio/thermostatTemperatureAmbient"
+	"device/thermostat_dormitorio/thermostatHumidityAmbient"
 ]
 
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
@@ -30,6 +33,9 @@ latest_power = 0
 latest_livingroom_temperature = 0
 latest_bathroom_temperature = 0
 latest_bedroom_temperature = 0
+latest_livingroom_humidity = 0
+latest_bathroom_humidity = 0
+latest_bedroom_humidity = 0
 
 def on_connect(client, userdata, flags, rc):
 	# Suscribe to topics
@@ -41,6 +47,9 @@ def on_message(client, userdata, msg):
 	global latest_livingroom_temperature
 	global latest_bathroom_temperature
 	global latest_bedroom_temperature
+	global latest_livingroom_humidity
+	global latest_bathroom_humidity
+	global latest_bedroom_humidity
 	# Rename variables
 	topic = msg.topic
 	payload = int(msg.payload) if not "heartbeats" in topic else msg.payload
@@ -51,14 +60,23 @@ def on_message(client, userdata, msg):
 		sendPowerRequest(payload)
 		latest_power = payload
 	elif topic == "device/termos/thermostatTemperatureAmbient" and payload != latest_livingroom_temperature:
-		sendThermostatRequest(payload, location="livingroom")
+		sendThermostatRequest(payload, last_value=latest_livingroom_temperature, location="livingroom", magnitude="temperature", units="C")
 		latest_livingroom_temperature = payload
 	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" and payload != latest_bathroom_temperature:
-		sendThermostatRequest(payload, location="bathroom")
+		sendThermostatRequest(payload, last_value=latest_bathroom_temperature, location="bathroom", magnitude="temperature", units="C")
 		latest_bathroom_temperature = payload
 	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" and payload != latest_bedroom_temperature:
-		sendThermostatRequest(payload, location="bedroom")
+		sendThermostatRequest(payload, last_value=latest_bedroom_temperature, location="bedroom", magnitude="temperature", units="C")
 		latest_bedroom_temperature = payload
+	elif topic == "device/termos/thermostatHumidityAmbient" and payload != latest_livingroom_humidity:
+		sendThermostatRequest(payload, last_value=latest_livingroom_humidity, location="livingroom", magnitude="humidity", units="%")
+		latest_livingroom_humidity = payload
+	elif topic == "device/thermostat_bathroom/thermostatHumidityAmbient" and payload != latest_bathroom_humidity:
+		sendThermostatRequest(payload, last_value=latest_bathroom_humidity, location="bathroom", magnitude="humidity", units="%")
+		latest_bathroom_humidity = payload
+	elif topic == "device/thermostat_dormitorio/thermostatHumidityAmbient" and payload != latest_bedroom_humidity:
+		sendThermostatRequest(payload, last_value=latest_bedroom_humidity, location="bedroom", magnitude="humidity", units="%")
+		latest_bedroom_humidity = payload
 
 def sendPowerRequest(payload):
 	ts = int(time.time())
@@ -69,16 +87,15 @@ def sendPowerRequest(payload):
 	}
 	bigqueyInjector(inject)
 
-def sendThermostatRequest(payload, location):
-	global latest_livingroom_temperature
+def sendThermostatRequest(payload, last_value, location, magnitude, units):
 	ts = int(time.time())
 	inject = {
 		"ddbb": "ambient",
 		"ts": ts,
-		"magnitude": "temperature",
-		"value": latest_livingroom_temperature,
+		"magnitude": magnitude,
+		"value": last_value,
 		"location": location,
-		"units": "C"
+		"units": units
 	}
 	bigqueyInjector(inject)
 
@@ -86,10 +103,10 @@ def sendThermostatRequest(payload, location):
 	inject = {
 		"ddbb": "ambient",
 		"ts": ts,
-		"magnitude": "temperature",
+		"magnitude": magnitude,
 		"value": payload,
 		"location": location,
-		"units": "C"
+		"units": units
 	}
 	bigqueyInjector(inject)
 		
