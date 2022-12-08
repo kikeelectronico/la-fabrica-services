@@ -42,8 +42,8 @@ def on_message(client, userdata, msg):
 	global latest_bathroom_temperature
 	global latest_bedroom_temperature
 	# Rename variables
-	payload = int(msg.payload)
 	topic = msg.topic
+	payload = int(msg.payload) if not "heartbeats" in topic else msg.payload
 	# The request depends on the device
 	if topic == "heartbeats/request":
 		mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
