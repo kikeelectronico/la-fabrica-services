@@ -21,6 +21,8 @@ last_heartbeat_timestamp = 0
 just_executed = ""
 
 def main():
+  global last_heartbeat_timestamp
+  global just_executed
   # Create connection with the MQTT broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
