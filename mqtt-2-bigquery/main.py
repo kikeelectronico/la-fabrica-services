@@ -23,7 +23,7 @@ TOPICS = [
 	"device/termos/thermostatHumidityAmbient",
 	"device/thermostat_bathroom/thermostatTemperatureAmbient",
 	"device/thermostat_bathroom/thermostatHumidityAmbient",
-	"device/thermostat_dormitorio/thermostatTemperatureAmbient"
+	"device/thermostat_dormitorio/thermostatTemperatureAmbient",
 	"device/thermostat_dormitorio/thermostatHumidityAmbient"
 ]
 
