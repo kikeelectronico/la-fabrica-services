@@ -108,3 +108,4 @@ def night(homeware, topic, payload):
     }
     homeware.execute("rgb001", "color", color)
     homeware.execute("rgb003", "color", color)
+    homeware.execute("thermostat_bedroom", "thermostatTemperatureSetpoint", 19)
