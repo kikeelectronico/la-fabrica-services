@@ -4,6 +4,7 @@ DELAY_BETWEEN_POWER_ALERTS = 30
 
 power_alert_counter = 0
 last_power_check = 0
+waiting_for_shower = False
 
 def film(homeware, topic, payload):
   if topic == "device/scene_pelicula/deactivate" and not payload:
@@ -28,9 +29,16 @@ def shower(homeware, topic, payload):
   if topic == "device/scene_ducha/deactivate" and not payload:
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 28)
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
+    waiting_for_shower = True
   elif topic == "device/scene_ducha/deactivate" and payload:
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     homeware.execute("thermostat_bathroom", "thermostatMode", "off")
+    waiting_for_shower = False
+
+  if topic == "device/thermostat_bathroom" and waiting_for_shower:
+    if payload["thermostatTemperatureAmbient"] == payload["thermostatTemperatureSetpoint"]:
+      homeware.voiceAlert("El baño está preparado")
+      waiting_for_shower = False
 
 def relax(homeware, topic, payload):
   if topic == "device/scene_relajacion/deactivate" and not payload:
