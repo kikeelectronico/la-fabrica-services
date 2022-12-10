@@ -9,7 +9,7 @@ waiting_for_shower = False
 def film(homeware, topic, payload):
   if topic == "device/scene_pelicula/deactivate" and not payload:
     # Turn off some lights
-    turn_off_devices = ["light001", "light002", "light003", "hue_1"]
+    turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
     for control_id in turn_off_devices:
       homeware.execute(control_id, "on", False)
     # Change the color of some lights
@@ -42,10 +42,10 @@ def shower(homeware, topic, payload):
 
 def relax(homeware, topic, payload):
   if topic == "device/scene_relajacion/deactivate" and not payload:
-    turn_on_devices = ["light003", "rgb001", "rgb002", "rgb001"]
+    turn_on_devices = ["light003", "rgb001", "rgb002", "rgb003"]
     for control_id in turn_on_devices:
       homeware.execute(control_id, "on", True)
-    turn_off_devices = ["light001", "light002", "outlet001"]
+    turn_off_devices = ["light001", "light002", "light004", "hue_1"]
     for control_id in turn_off_devices:
       homeware.execute(control_id, "on", False)
     homeware.execute("scene_relajacion", "deactivate", True)
