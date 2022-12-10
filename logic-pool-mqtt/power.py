@@ -89,7 +89,7 @@ def powerManagment(homeware, topic, payload):
         livingroom = False
         bedroom = False
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
-        heater = True
+        heater = not bathroom
       else:
         livingroom = shouldHeat(homeware, "termos", "radiator001")
         bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002")
