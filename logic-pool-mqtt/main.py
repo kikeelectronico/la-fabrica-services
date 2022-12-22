@@ -8,6 +8,7 @@ import scenes
 import switches
 import lights
 import power
+import sensors
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -54,6 +55,7 @@ def on_message(client, userdata, msg):
       scenes.night(homeware, msg.topic, payload)
       lights.rgbMain(homeware, msg.topic, payload)
       power.powerManagment(homeware, msg.topic, payload)
+      sensors.humidity(homeware, msg.topic, payload)
   except Exception as e:
     mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
     mqtt_client.publish("message-alerts", str(e))
