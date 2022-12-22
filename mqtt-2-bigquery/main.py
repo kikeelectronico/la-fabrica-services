@@ -19,8 +19,8 @@ POWER_CONSTANT = 35
 TOPICS = [
 	"heartbeats/request",
 	"device/current001/brightness",
-	"device/termos/thermostatTemperatureAmbient",
-	"device/termos/thermostatHumidityAmbient",
+	"device/thermostat_livingroom/thermostatTemperatureAmbient",
+	"device/thermostat_livingroom/thermostatHumidityAmbient",
 	"device/thermostat_bathroom/thermostatTemperatureAmbient",
 	"device/thermostat_bathroom/thermostatHumidityAmbient",
 	"device/thermostat_dormitorio/thermostatTemperatureAmbient",
@@ -59,7 +59,7 @@ def on_message(client, userdata, msg):
 	elif topic == "device/current001/brightness" and payload != latest_power:
 		sendPowerRequest(payload)
 		latest_power = payload
-	elif topic == "device/termos/thermostatTemperatureAmbient" and payload != latest_livingroom_temperature:
+	elif topic == "device/thermostat_livingroom/thermostatTemperatureAmbient" and payload != latest_livingroom_temperature:
 		sendThermostatRequest(payload, last_value=latest_livingroom_temperature, location="livingroom", magnitude="temperature", units="C")
 		latest_livingroom_temperature = payload
 	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" and payload != latest_bathroom_temperature:
@@ -68,7 +68,7 @@ def on_message(client, userdata, msg):
 	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" and payload != latest_bedroom_temperature:
 		sendThermostatRequest(payload, last_value=latest_bedroom_temperature, location="bedroom", magnitude="temperature", units="C")
 		latest_bedroom_temperature = payload
-	elif topic == "device/termos/thermostatHumidityAmbient" and payload != latest_livingroom_humidity:
+	elif topic == "device/thermostat_livingroom/thermostatHumidityAmbient" and payload != latest_livingroom_humidity:
 		sendThermostatRequest(payload, last_value=latest_livingroom_humidity, location="livingroom", magnitude="humidity", units="%")
 		latest_livingroom_humidity = payload
 	elif topic == "device/thermostat_bathroom/thermostatHumidityAmbient" and payload != latest_bathroom_humidity:
