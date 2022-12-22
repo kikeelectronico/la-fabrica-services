@@ -37,6 +37,15 @@ latest_livingroom_humidity = 0
 latest_bathroom_humidity = 0
 latest_bedroom_humidity = 0
 
+def typifyPayload(topic, payload):
+	if "heartbeats" in topic:
+		return payload
+	elif "Temperature" in topic:
+		return float(payload)
+	else:
+		return int(payload)
+
+
 def on_connect(client, userdata, flags, rc):
 	# Suscribe to topics
 	for topic in TOPICS:
@@ -52,7 +61,7 @@ def on_message(client, userdata, msg):
 	global latest_bedroom_humidity
 	# Rename variables
 	topic = msg.topic
-	payload = int(msg.payload) if not "heartbeats" in topic else msg.payload
+	payload = typifyPayload(topic, msg.payload)
 	# The request depends on the device
 	if topic == "heartbeats/request":
 		mqtt_client.publish("heartbeats", "mqtt-2-bigquery")
