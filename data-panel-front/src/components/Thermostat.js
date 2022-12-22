@@ -33,7 +33,7 @@ export default function Thermostat() {
               style={{boxShadow: "0 0.1rem 1rem rgba(" + (homeware.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
             >
               <div className="thermostatTemperature">
-                {homeware.status.termos.thermostatTemperatureAmbient} ºC
+                {homeware.status.thermostat_livingroom.thermostatTemperatureAmbient} ºC
               </div>
             </div>
           </>
