@@ -30,7 +30,7 @@ export default function Thermostat() {
           <>
             <div
               className="thermostatCard"
-              style={{boxShadow: "0 0.1rem 1rem rgba(" + (homeware.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
+              style={{boxShadow: "0 0.1rem 1rem rgba(" + (homeware.status.radiator001.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
             >
               <div className="thermostatTemperature">
                 {homeware.status.thermostat_livingroom.thermostatTemperatureAmbient} ºC
