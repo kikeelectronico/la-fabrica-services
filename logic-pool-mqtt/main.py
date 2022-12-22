@@ -29,7 +29,7 @@ TOPICS = [
   "device/scene_pelicula/deactivate",
   "device/scene_ducha/deactivate",
   "device/current001/brightness",
-  "device/termos",
+  "device/thermostat_livingroom",
   "device/thermostat_bathroom",
   "device/thermostat_dormitorio",
   "device/scene_relajacion/deactivate",
