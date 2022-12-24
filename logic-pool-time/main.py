@@ -48,7 +48,9 @@ def main():
       homeware.execute("scene_noche", "deactivate", True)
       # Weekday control
       weekday = today.weekday()
-      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on"):
+      if weekday in [0,1,2,3,4] and \
+          homeware.get("switch_at_home", "on") and \
+          homeware.get("scene_on_vacation", "deactivate"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
@@ -60,9 +62,13 @@ def main():
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
-      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on"):
+      if weekday in [0,1,2,3,4] and \
+          homeware.get("switch_at_home", "on") and \
+          homeware.get("scene_on_vacation", "deactivate"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
-      elif weekday in [5,6] and homeware.get("switch_at_home", "on"):
+      elif (weekday in [5,6] or \
+          not homeware.get("scene_on_vacation", "deactivate")) and \
+          homeware.get("switch_at_home", "on"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
@@ -72,7 +78,9 @@ def main():
       homeware.execute("hood001", "on", False)
       # Weekday control
       weekday = today.weekday()
-      if weekday in [5,6] and homeware.get("switch_at_home", "on"):
+      if (weekday in [5,6] or \
+          not homeware.get("scene_on_vacation", "deactivate")) and \
+          homeware.get("switch_at_home", "on"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
