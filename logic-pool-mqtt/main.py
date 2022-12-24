@@ -36,6 +36,7 @@ TOPICS = [
   "device/control",
   "device/scene_noche/deactivate",
   "device/switch003/on",
+  "device/switch_at_home/on",
 ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
@@ -48,6 +49,7 @@ def on_message(client, userdata, msg):
     else:
       payload = functions.loadPayload(msg.payload)
       switches.green(homeware, msg.topic, payload)
+      switches.atHome(homeware, msg.topic, payload)
       scenes.film(homeware, msg.topic, payload)
       scenes.shower(homeware, msg.topic, payload)
       scenes.relax(homeware, msg.topic, payload)
