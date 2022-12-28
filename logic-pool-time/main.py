@@ -40,10 +40,7 @@ def main():
     hour = today.strftime("%H:%M:%S")
 
     # Time blocks
-    if hour == "06:00:00" and not hour == just_executed:
-      just_executed = hour
-      homeware.execute("hood001", "on", False)
-    elif hour == "07:30:00" and not hour == just_executed:
+    if hour == "07:30:00" and not hour == just_executed:
       just_executed = hour
       homeware.execute("scene_noche", "deactivate", True)
       # Weekday control
@@ -60,6 +57,7 @@ def main():
       homeware.execute("hood001", "on", True)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
+      homeware.execute("hood001", "on", True)
       # Weekday control
       weekday = today.weekday()
       if weekday in [0,1,2,3,4] and \
@@ -73,18 +71,89 @@ def main():
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
         homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
-    elif hour == "12:00:00" and not hour == just_executed:
+    elif hour == "09:30:00" and not hour == just_executed:
       just_executed = hour
       homeware.execute("hood001", "on", False)
+    elif hour == "10:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "10:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "11:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "11:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "12:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
       # Weekday control
       weekday = today.weekday()
       if (weekday in [5,6] or \
           not homeware.get("scene_on_vacation", "deactivate")) and \
           homeware.get("switch_at_home", "on"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
-    elif hour == "22:00:00" and not hour == just_executed:
+    elif hour == "12:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "13:00:00" and not hour == just_executed:
       just_executed = hour
       homeware.execute("hood001", "on", True)
+    elif hour == "13:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "14:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "14:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "15:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "15:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "16:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "16:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "17:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "17:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "18:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "18:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "19:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "19:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "20:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "20:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "21:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", True)
+    elif hour == "21:30:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hood001", "on", False)
+    elif hour == "22:00:00" and not hour == just_executed:
+      just_executed = hour
       homeware.execute("scene_noche", "deactivate", False)
 
     # Reset the last just_executed block
