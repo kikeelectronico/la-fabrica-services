@@ -1,9 +1,8 @@
 html, body {
-  margin-top: 0px;
+  margin: 0px;
+  padding: 0px;
   height: 100vh;
-  background-color: black;
 }
-
 .App {
   margin-top: 0px;
   height: 100vh;
