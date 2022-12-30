@@ -6,7 +6,7 @@ import "./spotify.css"
 const API = "http://192.168.10.2:8000"
 var loading = false
 
-export default function Spotify() {
+export default function Spotify(props) {
 
   const [playing, setPlaying] = useState({});
   const [api_requested, setApiRequested] = useState(false);
@@ -23,7 +23,7 @@ export default function Spotify() {
       loading = true
       fetch(API + "/spotify")
       .then((response) => response.json())
-      .then((spotify) => setPlaying(spotify))
+      .then((spotify) => {setPlaying(spotify); props.setBackgroundImage(spotify.image)})
       .catch((error) => console.log(error))
       .finally(() => setApiRequested(true))
       setTimeout(() => {loading = false}, 1000)

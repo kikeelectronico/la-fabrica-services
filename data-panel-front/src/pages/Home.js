@@ -9,7 +9,7 @@ import Air from "../components/Air"
 import Alerts from "../components/Alerts"
 import Launches from "../components/Launches"
 
-export default function Home() {
+export default function Home(props) {
   return (
     <div className="homePage">
         <div className="title">
@@ -23,7 +23,7 @@ export default function Home() {
         <Power/>
         <Alerts/>
         <Launches/>
-        <Spotify/>
+        <Spotify setBackgroundImage={props.setBackgroundImage}/>
     </div>
   )
 }
