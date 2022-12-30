@@ -16,5 +16,6 @@ html, body {
     url("https://i.scdn.co/image/ab67616d0000b273e14f11f796cef9f9a82691a7");
   background-color: rgba(0, 0, 0, 0.2);
   background-repeat:  no-repeat;
-  background-size: cover
+  background-size: cover;
+  background-position: center;
 }
