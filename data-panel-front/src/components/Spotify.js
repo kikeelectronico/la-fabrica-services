@@ -3,7 +3,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./spotify.css"
 
-const API = "http://192.168.10.2:8000"
+const API = "http://" + window.location.hostname + ":8000"
 var loading = false
 
 export default function Spotify(props) {
