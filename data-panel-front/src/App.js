@@ -10,7 +10,7 @@ import React, { useState } from "react";
 
 function App() {
 
-  const [background_image, setBackgroundImage] = useState("https://i.scdn.co/image/ab67616d0000b273e14f11f796cef9f9a82691a7");
+  const [background_image, setBackgroundImage] = useState("");
 
   return (
     <div
