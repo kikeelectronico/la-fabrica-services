@@ -16,20 +16,18 @@ function App() {
     <div
       className="App"
       style={{ 
-        backgroundImage: "linear-gradient( \
-          rgba(0, 0, 0, 0.7), \
-          rgba(0, 0, 0, 0.7) \
-        ), \
-        url(" + background_image + ")"
+        backgroundImage: "url(" + background_image + ")"
       }}
     >
-      
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home setBackgroundImage={setBackgroundImage}/>} />
-        <Route path="/cocina" element={<Cocina/>} />
-      </Routes>
-    </BrowserRouter>
+      <div className="appOverlay"></div>
+      <div className="appContent">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home setBackgroundImage={setBackgroundImage}/>} />
+            <Route path="/cocina" element={<Cocina/>} />
+          </Routes>
+        </BrowserRouter>
+      </div>
     </div>
   );
 }
