@@ -37,6 +37,7 @@ TOPICS = [
   "device/scene_noche/deactivate",
   "device/switch003/on",
   "device/switch_at_home/on",
+  "device/switch_hood/on",
 ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
@@ -57,7 +58,7 @@ def on_message(client, userdata, msg):
       scenes.night(homeware, msg.topic, payload)
       lights.rgbMain(homeware, msg.topic, payload)
       power.powerManagment(homeware, msg.topic, payload)
-      sensors.humidity(homeware, msg.topic, payload)
+      sensors.hood(homeware, msg.topic, payload)
   except Exception as e:
     mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
     mqtt_client.publish("message-alerts", str(e))
