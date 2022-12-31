@@ -10,7 +10,7 @@ export default function Power() {
 
   useEffect(() => {
     getData();
-    const interval = setInterval(() => getData(), 500)
+    const interval = setInterval(() => getData(), 1000)
 
     return()=>clearInterval(interval)
   }, [])
