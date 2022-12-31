@@ -10,7 +10,7 @@ export default function Thermostat() {
 
   useEffect(() => {
     getData();
-    const interval = setInterval(() => getData(), 5000)
+    const interval = setInterval(() => getData(), 20000)
 
     return()=>clearInterval(interval)
   }, [])

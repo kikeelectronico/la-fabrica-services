@@ -9,7 +9,7 @@ export default function Internet() {
 
   useEffect(() => {
     checkInternet();
-    const interval = setInterval(() => checkInternet(), 5000)
+    const interval = setInterval(() => checkInternet(), 10000)
 
     return()=>clearInterval(interval)
   }, [])

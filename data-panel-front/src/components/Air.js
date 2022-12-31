@@ -10,7 +10,7 @@ export default function Air() {
 
   useEffect(() => {
     getData()
-    const interval = setInterval(() => getData(), 10000)
+    const interval = setInterval(() => getData(), 60000)
 
     return()=>clearInterval(interval)
   }, [])
