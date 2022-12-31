@@ -22,7 +22,7 @@ export default function Home(props) {
         <Air/>
         <Power/>
         <Alerts/>
-        <Launches/>
+        {/* <Launches/> */}
         <Spotify setBackgroundImage={props.setBackgroundImage}/>
     </div>
   )
