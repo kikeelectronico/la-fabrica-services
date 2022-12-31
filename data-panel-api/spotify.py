@@ -71,19 +71,19 @@ class Spotify:
               self._tries = 0
               self._playing = spotify
 
-              # Temp for analisys
-              url = self.__injector_url + "?token=" + self.__injector_token
-              headers = {
-                "Content-Type": "application/json"
-              }
-              body = {
-                "ddbb": "covers",
-                "URL": self._track_image
-              }
+              # # Temp for analisys
+              # url = self.__injector_url + "?token=" + self.__injector_token
+              # headers = {
+              #   "Content-Type": "application/json"
+              # }
+              # body = {
+              #   "ddbb": "covers",
+              #   "URL": self._track_image
+              # }
 
-              r = requests.post(url, data = json.dumps(body), headers = headers)
-              if not r.text == "Done":
-                print(r.text)
+              # r = requests.post(url, data = json.dumps(body), headers = headers)
+              # if not r.text == "Done":
+              #   print(r.text)
 
             elif response.status_code == 429:
               self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
