@@ -17,6 +17,9 @@ class Spotify:
   def __init__(self):
     self.__refresh_token = os.environ.get("SPOTIFY_REFRESH_TOKEN")
     self.__app_auth = os.environ.get("SPOTIFY_APP_AUTH")
+    # Temp for analysis
+    self.__injector_url = os.environ.get("INJECTOR_URL", "no_url")
+    self.__injector_token = os.environ.get("INJECTOR_TOKEN", "no_token")
 
 
   def updatePlaying(self, max_tries=2):
@@ -67,6 +70,20 @@ class Spotify:
 
               self._tries = 0
               self._playing = spotify
+
+              # Temp for analisys
+              url = self.__injector_url + "?token=" + self.__injector_token
+              headers = {
+                "Content-Type": "application/json"
+              }
+              body = {
+                "ddbb": "covers",
+                "URL": self._track_image
+              }
+
+              r = requests.post(url, data = json.dumps(body), headers = headers)
+              if not r.text == "Done":
+                print(r.text)
 
             elif response.status_code == 429:
               self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
