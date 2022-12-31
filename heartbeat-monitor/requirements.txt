@@ -1,3 +1,4 @@
 requests
 paho-mqtt
 python-dotenv
+json

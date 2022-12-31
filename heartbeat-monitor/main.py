@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 import os
 import time
+from Homeware import Homeware
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -11,9 +12,14 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
+
+HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
+
 TOPICS = ["heartbeats", "heartbeats/request", "device/heartbeat"]
 
 mqtt_client = mqtt.Client(client_id="heartbeat-monitor")
+homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
 microservices_heartbeats = {}
 devices_heartbeats = {}
@@ -42,7 +48,7 @@ def on_message(client, userdata, msg):
 			for service in devices_heartbeats.keys():
 				if current_time - devices_heartbeats[service] > 70:
 					mqtt_client.publish("message-alerts", service.decode("utf-8") + ": caido")
-					#mqtt_client.publish("voice-alerts", service.decode("utf-8") + " no responde")
+					homeware.execute(service.decode("utf-8"), "online", False)
 					services_to_delete.append(service)
 			if len(services_to_delete) > 0:
 				for service in services_to_delete:
@@ -53,6 +59,7 @@ def on_message(client, userdata, msg):
 		elif msg.topic == "device/heartbeat":
 			service = msg.payload
 			devices_heartbeats[service] = time.time()
+			homeware.execute(service.decode("utf-8"), "online", True)
 
 
 if __name__ == "__main__":
