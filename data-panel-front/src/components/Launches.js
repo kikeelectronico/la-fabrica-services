@@ -9,10 +9,11 @@ import React, { useState, useEffect } from "react";
     const [api_requested, setApiRequested] = useState(false);
   
     useEffect(() => {
-      getData()
-      const interval = setInterval(() => getData(), 10000)
-  
-      return()=>clearInterval(interval)
+      let random_delay = Math.random() * 900
+      setTimeout(() => {
+        getData()
+        const interval = setInterval(() => getData(), 10000)
+      },random_delay)
     }, [])
   
     const getData = () => {

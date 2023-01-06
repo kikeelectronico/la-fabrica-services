@@ -12,10 +12,11 @@ export default function Spotify(props) {
   const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
-    getSpotify()
-    const interval = setInterval(() => getSpotify(), 1000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getSpotify()
+      const interval = setInterval(() => getSpotify(), 1000)
+    },random_delay)
   }, [])
 
   const getSpotify = () => {

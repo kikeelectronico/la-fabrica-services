@@ -10,10 +10,11 @@ export default function Weather() {
   const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
-    getData()
-    const interval = setInterval(() => getData(), 60000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getData()
+      const interval = setInterval(() => getData(), 60000)
+    },random_delay)
   }, [])
 
   const getData = () => {

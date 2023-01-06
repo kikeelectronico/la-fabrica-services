@@ -8,10 +8,11 @@ export default function Internet() {
   const [internet, setInternet] = useState(false);
 
   useEffect(() => {
-    checkInternet();
-    const interval = setInterval(() => checkInternet(), 10000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      checkInternet();
+      const interval = setInterval(() => checkInternet(), 10000)
+    },random_delay)
   }, [])
 
   const checkInternet = () => {

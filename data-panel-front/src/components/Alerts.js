@@ -8,10 +8,11 @@ export default function Alerts() {
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
-    getData();
-    const interval = setInterval(() => getData(), 10000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getData();
+      const interval = setInterval(() => getData(), 10000)
+    },random_delay)
   }, [])
 
   const getData = () => {

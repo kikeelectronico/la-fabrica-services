@@ -9,10 +9,11 @@ export default function Thermostat() {
   const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
-    getData();
-    const interval = setInterval(() => getData(), 20000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getData()
+      const interval = setInterval(() => getData(), 20000)
+    },random_delay)
   }, [])
 
   const getData = () => {

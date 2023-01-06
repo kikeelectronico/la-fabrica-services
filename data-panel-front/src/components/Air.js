@@ -9,10 +9,11 @@ export default function Air() {
   const [aqi_alert, setAqiAlert] = useState("255, 0, 0");
 
   useEffect(() => {
-    getData()
-    const interval = setInterval(() => getData(), 60000)
-
-    return()=>clearInterval(interval)
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getData()
+      const interval = setInterval(() => getData(), 60000)
+    },random_delay)
   }, [])
 
   const getData = () => {
