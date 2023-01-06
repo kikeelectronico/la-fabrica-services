@@ -9,8 +9,32 @@ import Air from "../components/Air"
 import Alerts from "../components/Alerts"
 import Launches from "../components/Launches"
 import Shower from "../components/Shower"
+import React, { useState, useEffect } from "react";
+
+const API = "http://" + window.location.hostname + ":8000"
 
 export default function Home(props) {
+
+  const [homeware, setHomeware] = useState({status_flag: false});
+  const [api_requested, setApiRequested] = useState(false);
+
+  useEffect(() => {
+    let random_delay = Math.random() * 900
+    setTimeout(() => {
+      getData()
+      const interval = setInterval(() => getData(), 2000)
+    },random_delay)
+  }, [])
+
+  const getData = () => {
+    fetch(API + "/homeware")
+    .then((response) => response.json())
+    .then((homeware) => setHomeware(homeware))
+    .catch((error) => console.log(error))
+    .finally(() => setApiRequested(true))
+  }
+
+
   return (
     <div className="homePage">
         <div className="title">
@@ -18,13 +42,13 @@ export default function Home(props) {
         </div>
         <Clock/>
         <Internet/>
-        <Thermostat/>
+        <Thermostat homeware={homeware} api_requested={api_requested}/>
         <Weather/>
         <Air/>
-        <Power/>
+        <Power homeware={homeware} api_requested={api_requested}/>
         <Alerts/>
         {/* <Launches/> */}
-        <Shower/>
+        <Shower homeware={homeware} api_requested={api_requested}/>
         <Spotify setBackgroundImage={props.setBackgroundImage}/>
     </div>
   )

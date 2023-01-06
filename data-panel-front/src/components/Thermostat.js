@@ -1,40 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./thermostat.css"
 
-const API = "http://" + window.location.hostname + ":8000"
-
-export default function Thermostat() {
-
-  const [homeware, setHomeware] = useState({});
-  const [api_requested, setApiRequested] = useState(false);
-
-  useEffect(() => {
-    let random_delay = Math.random() * 900
-    setTimeout(() => {
-      getData()
-      const interval = setInterval(() => getData(), 20000)
-    },random_delay)
-  }, [])
-
-  const getData = () => {
-    fetch(API + "/homeware")
-    .then((response) => response.json())
-    .then((homeware) => setHomeware(homeware))
-    .catch((error) => console.log(error))
-    .finally(() => setApiRequested(true))
-  }
+export default function Thermostat(props) {
 
   return (
     <>
       {
-        homeware.status_flag && api_requested ?
+        props.homeware.status_flag && props.api_requested ?
           <>
             <div
               className="thermostatCard"
-              style={{boxShadow: "0 0.1rem 1rem rgba(" + (homeware.status.radiator001.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
+              style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.homeware.status.radiator001.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
             >
               <div className="thermostatTemperature">
-                {homeware.status.thermostat_livingroom.thermostatTemperatureAmbient} ºC
+                {props.homeware.status.thermostat_livingroom.thermostatTemperatureAmbient} ºC
               </div>
             </div>
           </>

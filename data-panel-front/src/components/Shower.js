@@ -1,46 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./shower.css"
 
-const API = "http://" + window.location.hostname + ":8000"
 
-export default function Shower() {
-
-  const [data, setData] = useState({});
-  const [api_requested, setApiRequested] = useState(false);
-
-  useEffect(() => {
-    let random_delay = Math.random() * 900
-    setTimeout(() => {
-      getData()
-      const interval = setInterval(() => getData(), 5000)
-    },random_delay)
-  }, [])
-
-  const getData = () => {
-      fetch(API + "/homeware")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.log(error))
-      .finally(() => setApiRequested(true))
-  }
+export default function Shower(props) {
 
   return (
     <>
       {
-        api_requested && data.status_flag && !data.status.scene_ducha.deactivate ? 
+        props.api_requested && props.homeware.status_flag && !props.homeware.status.scene_ducha.deactivate ? 
           <div
             className="showerCard"
-            style={{boxShadow: "0 0.1rem 1rem rgba(" + (data.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
+            style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.homeware.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
           >
             <div className="showerMain">
               Baño 
             </div>
             <hr className="showerDivider"/>
             <div className="showerSecond">
-              {data.status.thermostat_bathroom.thermostatTemperatureAmbient} ºC
+              {props.homeware.status.thermostat_bathroom.thermostatTemperatureAmbient} ºC
             </div>        
             <div className="showerSecond">
-              {data.status.thermostat_bathroom.thermostatHumidityAmbient} %
+              {props.homeware.status.thermostat_bathroom.thermostatHumidityAmbient} %
             </div>        
           </div>
         : <></>
