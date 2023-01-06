@@ -46,13 +46,13 @@ async def weatherEndPoint():
 @app.get("/homeware")
 async def homewareEndPoint():
   (status_flag, status) = homeware.getStatus()
-  (devices_flag, devices) = homeware.getDevices()
+  #(devices_flag, devices) = homeware.getDevices()
 
   return {
     "status_flag": status_flag,
-    "devices_flag": devices_flag,
+    #"devices_flag": devices_flag,
     "status": status,
-    "devices": devices,
+    #"devices": devices,
   }
 
 @app.get("/launches")
