@@ -13,6 +13,7 @@ class Spotify:
   _last_track = ""
   _track_image = ""
   _stop_until = 0
+  _service_unavailable_counter = 0
 
   def __init__(self):
     if os.environ.get("SPOTIFY_REFRESH_TOKEN", "no") == "no":
@@ -39,8 +40,9 @@ class Spotify:
       }
       response = requests.request("GET", url, headers=headers, data=payload, timeout=5)
 
-
+      print(response.status_code)
       if response.status_code == 200:
+        self._service_unavailable_counter = 0
         playing = response.json()
         if playing['is_playing']:
           if not self._last_track == playing['item']['id'] and time.time() > self._stop_until:
@@ -148,6 +150,18 @@ class Spotify:
         }
 
         self._playing = spotify
+
+      elif response.status_code == 503:
+        if self._service_unavailable_counter == 0:
+          self._service_unavailable_counter += 1
+        else:
+          spotify = {
+            "playing": False,
+            "tries": self._tries,
+            "quota_exceeded": False
+          }
+
+          self._playing = spotify
 
       else:
         error = response.json()['error']
