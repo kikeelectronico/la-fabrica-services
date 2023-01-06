@@ -8,6 +8,7 @@ import Weather from "../components/Weather"
 import Air from "../components/Air"
 import Alerts from "../components/Alerts"
 import Launches from "../components/Launches"
+import Shower from "../components/Shower"
 
 export default function Home(props) {
   return (
@@ -23,6 +24,7 @@ export default function Home(props) {
         <Power/>
         <Alerts/>
         {/* <Launches/> */}
+        <Shower/>
         <Spotify setBackgroundImage={props.setBackgroundImage}/>
     </div>
   )

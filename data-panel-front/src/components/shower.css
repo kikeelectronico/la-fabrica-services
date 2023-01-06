@@ -1,0 +1,49 @@
+.showerCard {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: rgb(44, 43, 43);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  overflow: hidden;
+}
+
+.showerMain {
+  font-size: 40px;
+  color: white;
+}
+
+.showerDivider {
+  margin: 5px;
+  color: white;
+  width: 80%;
+}
+
+.showerSecond {
+  font-size: 25px;
+  color: white;
+}
+
+.showerThird {
+  font-size: 15px;
+  color: white;
+}
+
+
+@media screen and (max-width:600px) {
+  .showerCashowerCardrd {
+    width: 150px;
+    height: 150px;
+  }
+
+  .showerMain {
+    font-size: 35px;
+  }
+
+  .showerThird {
+    font-size: 10px;
+  }
+}
