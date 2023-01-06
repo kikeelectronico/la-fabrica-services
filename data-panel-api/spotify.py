@@ -15,6 +15,9 @@ class Spotify:
   _stop_until = 0
 
   def __init__(self):
+    if os.environ.get("SPOTIFY_REFRESH_TOKEN", "no") == "no":
+      from dotenv import load_dotenv
+      load_dotenv(dotenv_path="../.env")
     self.__refresh_token = os.environ.get("SPOTIFY_REFRESH_TOKEN")
     self.__app_auth = os.environ.get("SPOTIFY_APP_AUTH")
     # Temp for analysis

@@ -14,6 +14,9 @@ class Weather:
   _fail_to_update = True
 
   def __init__(self):
+    if os.environ.get("WHEATHER_API_KEY", "no") == "no":
+      from dotenv import load_dotenv
+      load_dotenv(dotenv_path="../.env")
     self.__api_key = os.environ.get("WHEATHER_API_KEY")
     self._query = os.environ.get("WHEATHER_QUERY")
 

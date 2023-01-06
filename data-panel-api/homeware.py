@@ -8,6 +8,9 @@ class Homeware:
   __domain = ""
 
   def __init__(self):
+    if os.environ.get("HOMEWARE_API_KEY", "no") == "no":
+      from dotenv import load_dotenv
+      load_dotenv(dotenv_path="../.env")
     self.__api_key = os.environ.get("HOMEWARE_API_KEY")
     self.__domain = os.environ.get("HOMEWARE_DOMAIN")
 
