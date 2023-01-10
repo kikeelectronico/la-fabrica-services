@@ -40,7 +40,6 @@ class Spotify:
       }
       response = requests.request("GET", url, headers=headers, data=payload, timeout=5)
 
-      print(response.status_code)
       if response.status_code == 200:
         self._service_unavailable_counter = 0
         playing = response.json()
