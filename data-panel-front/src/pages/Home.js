@@ -10,6 +10,7 @@ import Alerts from "../components/Alerts"
 import Launches from "../components/Launches"
 import Shower from "../components/Shower"
 import Bedroom from "../components/Bedroom"
+import NotAtHome from "../components/NotAtHome"
 import React, { useState, useEffect } from "react";
 
 const API = "http://" + window.location.hostname + ":8000"
@@ -51,6 +52,7 @@ export default function Home(props) {
         {/* <Launches/> */}
         <Shower homeware={homeware} api_requested={api_requested}/>
         <Bedroom homeware={homeware} api_requested={api_requested}/>
+        <NotAtHome homeware={homeware} api_requested={api_requested}/>
         <Spotify setBackgroundImage={props.setBackgroundImage}/>
     </div>
   )
