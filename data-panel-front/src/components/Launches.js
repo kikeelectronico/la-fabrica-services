@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
   
   export default function Launches() {
   
-    const [data, setData] = useState({launches_flag: false, fail_to_update: true});
+    const [launches, setLaunches] = useState({launches_flag: false, fail_to_update: false});
     const [api_requested, setApiRequested] = useState(false);
   
     useEffect(() => {
@@ -19,58 +19,43 @@ import React, { useState, useEffect } from "react";
     const getData = () => {
         fetch(API + "/launches")
         .then((response) => response.json())
-        .then((data) => setData(data))
+        .then((data) => {setLaunches(data); console.log(data)})
         .catch((error) => console.log(error))
         .finally(() => setApiRequested(true))
     }
 
     const getLaunchTime = (launch) => {
-      if (launch) {
-        return launch.net.split("T")[1].split(":")
-      } else {
-        setData({fail_to_update: true})
-        return ""
-      }
+      return launch.net.split("T")[1].split(":")
     }
 
     const getMisionName = (launch) => {
-      if (launch) {
-        return launch.mission.name.length > 30 ? launch.mission.name.substring(0, 30) + "..." : launch.mission.name
-      } else {
-        setData({fail_to_update: true})
-        return ""
-      }
+      let name = launch.name.split(" | ")[0]
+      return name > 30 ? name.substring(0, 30) + "..." : name
     }
   
     return (
       <>
         {
-          !data.fail_to_update && data.launches_flag && api_requested ? 
+          !launches.fail_to_update && launches.launches_flag && api_requested ? 
             
-              data.launches.map(launch => {
-
-                {
-                  launch !== undefined ?    
+            launches.launches.map(launch => {
+              return (
                     <div className="launchesCard">
                       <div className="launchesName">
-                        {getMisionName()}
+                        {getMisionName(launch)}
                       </div>
                       <hr className="launchDivider"/>
                       <div className="launchesNet">
-                        {getLaunchTime()[0]} : {getLaunchTime()[1]}
+                        {getLaunchTime(launch)[0]} : {getLaunchTime(launch)[1]}
                       </div>
                     </div>
-                  :
-                    <></>
-                }
-
-                
+                )                
               })
             
           : <></>
         }
         {
-          data.fail_to_update && api_requested ? 
+          launches.fail_to_update && api_requested ? 
             <div className="weatherCard" >            
               <div className="launchesFail">
                 Fallo al cargar datos de lanzamientos

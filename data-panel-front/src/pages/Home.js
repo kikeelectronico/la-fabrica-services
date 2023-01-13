@@ -49,7 +49,7 @@ export default function Home(props) {
         <Air/>
         <Power homeware={homeware} api_requested={api_requested}/>
         <Alerts/>
-        {/* <Launches/> */}
+        <Launches/>
         <Shower homeware={homeware} api_requested={api_requested}/>
         <Bedroom homeware={homeware} api_requested={api_requested}/>
         <NotAtHome homeware={homeware} api_requested={api_requested}/>
