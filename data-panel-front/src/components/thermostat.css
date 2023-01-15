@@ -12,12 +12,12 @@
 }
 
 .thermostatTemperature {
-  color: white;
   font-size: 40px;
+  color: white;
 }
 
 .thermostatDivider {
-  margin: 10px;
+  margin: 5px;
   color: white;
   width: 80%;
 }
