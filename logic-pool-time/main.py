@@ -50,7 +50,7 @@ def main():
           homeware.get("scene_on_vacation", "deactivate"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
         homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
     elif hour == "08:00:00" and not hour == just_executed:
       just_executed = hour
@@ -68,7 +68,7 @@ def main():
           homeware.get("switch_at_home", "on"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
         homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
     elif hour == "12:00:00" and not hour == just_executed:
       just_executed = hour
