@@ -43,6 +43,7 @@ def main():
     if hour == "07:30:00" and not hour == just_executed:
       just_executed = hour
       homeware.execute("scene_noche", "deactivate", True)
+      homeware.execute("hood001", "on", False)
       # Weekday control
       weekday = today.weekday()
       if weekday in [0,1,2,3,4] and \
@@ -78,6 +79,7 @@ def main():
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
       homeware.execute("scene_noche", "deactivate", False)
+      homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block
     if not just_executed == hour:
