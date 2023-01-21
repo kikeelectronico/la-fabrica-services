@@ -17,9 +17,9 @@ def shouldHeat(homeware, thermostat_id, radiator_id):
   if cache[thermostat_id]["thermostatMode"] == "heat":
     ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
     set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"]
-    if ambient < (set_point - 0.2):
+    if ambient < set_point:
       return True
-    elif ambient > (set_point + 0.2):
+    elif ambient > set_point:
       return False
     else:
       return homeware.get(radiator_id,"on")
