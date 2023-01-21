@@ -40,9 +40,8 @@ def main():
     hour = today.strftime("%H:%M:%S")
 
     # Time blocks
-    if hour == "07:30:00" and not hour == just_executed:
+    if hour == "06:30:00" and not hour == just_executed:
       just_executed = hour
-      homeware.execute("scene_noche", "deactivate", True)
       homeware.execute("hood001", "on", False)
       # Weekday control
       weekday = today.weekday()
@@ -53,6 +52,9 @@ def main():
         homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
         homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
+    elif hour == "08:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("scene_noche", "deactivate", True)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
