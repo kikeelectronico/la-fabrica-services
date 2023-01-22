@@ -16,7 +16,7 @@ def atHome(homeware, topic, payload):
     if payload:
       homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
       homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
+      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
     else:
       homeware.execute("thermostat_dormitorio", "thermostatMode", "off")
