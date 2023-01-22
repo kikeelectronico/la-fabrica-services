@@ -29,3 +29,6 @@ class Homeware:
   
   def voiceAlert(self, text):
     self.__mqtt_client.publish("voice-alerts", text)
+
+  def messageAlert(self, text):
+    self.__mqtt_client.publish("message-alerts", text)
