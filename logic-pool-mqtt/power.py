@@ -31,6 +31,7 @@ def shouldHeat(homeware, thermostat_id, radiator_id):
 
 def powerManagment(homeware, topic, payload): 
   global power_timestamp
+  global power_pre_alert
   global power_alert
   global cache
 
@@ -111,7 +112,7 @@ def powerManagment(homeware, topic, payload):
       bedroom = False
       bathroom = False
       heater = False
-    
+
     # Set values
     homeware.execute("water_heater_001","on",heater)
     homeware.execute("radiator001","on",livingroom)
