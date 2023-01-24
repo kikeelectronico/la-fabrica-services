@@ -5,6 +5,7 @@ BEDROOM_POWER = 1000
 BATHROOM_POWER = 800
 HEATER_POWER = 2200
 MAX_POWER = 3500
+TIME_TO_RESET_POWER = 30
 
 power_timestamp = 0
 power_alert = False
@@ -81,7 +82,7 @@ def powerManagment(homeware, topic, payload):
       power_alert = True
       power_timestamp = time.time()
 
-    if cache["power"] < 40 and power_alert and (time.time() - power_timestamp) > 30:
+    if cache["power"] < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_RESET_POWER:
       power_alert = False
 
     if not power_alert:
