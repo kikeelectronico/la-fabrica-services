@@ -6,8 +6,10 @@ BATHROOM_POWER = 800
 HEATER_POWER = 2200
 MAX_POWER = 3500
 TIME_TO_DISABLE_POWER_ALERT = 30
+TIME_TO_ENABLE_POWER_ALERT = 5
 
 power_timestamp = 0
+power_pre_alert = False
 power_alert = False
 
 cache = {}
@@ -79,11 +81,19 @@ def powerManagment(homeware, topic, payload):
       cache["thermostat_bathroom"] = payload
 
     if cache["power"] >= 100:
-      power_alert = True
-      power_timestamp = time.time()
+      if power_pre_alert:
+        if (time.time() - power_timestamp) > TIME_TO_ENABLE_POWER_ALERT:
+          power_alert = True
+      else:
+        power_pre_alert = True
+        power_timestamp = time.time()
+
+    if power_pre_alert and cache["power"] < 100:
+      power_pre_alert = False
 
     if cache["power"] < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
       power_alert = False
+      power_pre_alert = False
 
     if not power_alert:
       if not cache["scene_ducha"]:
