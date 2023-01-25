@@ -38,6 +38,7 @@ TOPICS = [
   "device/switch003/on",
   "device/switch_at_home/on",
   "device/switch_hood/on",
+  "device/switch_radiator/on",
 ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")

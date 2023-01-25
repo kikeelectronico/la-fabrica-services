@@ -40,7 +40,8 @@ def powerManagment(homeware, topic, payload):
     "device/current001/brightness",
     "device/thermostat_livingroom",
     "device/thermostat_bathroom",
-    "device/thermostat_dormitorio"
+    "device/thermostat_dormitorio",
+    "device/switch_radiator/on"
   ]
 
   if topic in TOPICS:
@@ -48,6 +49,11 @@ def powerManagment(homeware, topic, payload):
       cache["power"] = homeware.get("current001", "brightness")
     if topic == "device/current001/brightness":
       cache["power"] = int(payload)
+
+    if not "switch_radiator" in cache.keys():  
+      cache["switch_radiator"] = homeware.get("switch_radiator", "on")
+    if topic == "device/switch_radiator/on":
+      cache["switch_radiator"] = payload
 
     if not "scene_ducha" in cache.keys():  
       cache["scene_ducha"] = homeware.get("scene_ducha", "deactivate")
@@ -104,7 +110,8 @@ def powerManagment(homeware, topic, payload):
         heater = not bathroom
       else:
         livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001")
-        bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002")
+        controled_by = "thermostat_dormitorio" if not cache["switch_radiator"] else "thermostat_livingroom"
+        bedroom = shouldHeat(homeware, controled_by, "radiator002")
         bathroom = False
         heater = not livingroom
     else:
