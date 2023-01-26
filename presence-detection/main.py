@@ -20,13 +20,16 @@ HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 DEVICE_IP = os.environ.get("DEVICE_IP", "no-ip")
 
 SLEEP_TIME = 10
+HEARTBEAT_INTERVAL = 10
 
 mqtt_client = mqtt.Client(client_id="presence-detection")
 homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
 count = 0
+last_heartbeat_timestamp = 0
 
 def main():
+  global last_heartbeat_timestamp
   global count
   # Create connection with the MQTT broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -55,6 +58,12 @@ def main():
     if not result == 0 and count > 2 and switch_at_home:
       mqtt_client.publish("message-alerts", "Iniciando secuencia de ausencia")
       homeware.execute("switch_at_home","on",False)
+
+    # Send the heartbeat
+    if time.time() - last_heartbeat_timestamp > HEARTBEAT_INTERVAL:
+      mqtt_client.publish("heartbeats", "logic-pool-time")
+      last_heartbeat_timestamp = time.time()
+
     # Wait
     time.sleep(SLEEP_TIME)
 
