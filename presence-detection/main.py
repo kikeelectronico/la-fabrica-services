@@ -19,7 +19,7 @@ HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 
 DEVICE_IP = os.environ.get("DEVICE_IP", "no-ip")
 
-SLEEP_TIME = 10
+SLEEP_TIME = 5
 HEARTBEAT_INTERVAL = 10
 
 mqtt_client = mqtt.Client(client_id="presence-detection")
