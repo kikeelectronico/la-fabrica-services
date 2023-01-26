@@ -61,7 +61,7 @@ def main():
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > HEARTBEAT_INTERVAL:
-      mqtt_client.publish("heartbeats", "logic-pool-time")
+      mqtt_client.publish("heartbeats", "presence-detection")
       last_heartbeat_timestamp = time.time()
 
     # Wait
