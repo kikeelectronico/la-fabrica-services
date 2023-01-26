@@ -21,6 +21,7 @@ DEVICE_IP = os.environ.get("DEVICE_IP", "no-ip")
 
 SLEEP_TIME = 5
 HEARTBEAT_INTERVAL = 10
+COUNT_FOR_ACTUATE = 5
 
 mqtt_client = mqtt.Client(client_id="presence-detection")
 homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
@@ -55,7 +56,7 @@ def main():
     if result == 0 and not switch_at_home:
       mqtt_client.publish("message-alerts", "Bienvenido a casa")
       homeware.execute("switch_at_home","on",True)
-    if not result == 0 and count > 2 and switch_at_home:
+    if not result == 0 and count > COUNT_FOR_ACTUATE and switch_at_home:
       mqtt_client.publish("message-alerts", "Iniciando secuencia de ausencia")
       homeware.execute("switch_at_home","on",False)
 
