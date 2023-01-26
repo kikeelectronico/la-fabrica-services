@@ -24,8 +24,10 @@ SLEEP_TIME = 10
 mqtt_client = mqtt.Client(client_id="presence-detection")
 homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
 
+count = 0
 
 def main():
+  global count
   # Create connection with the MQTT broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
@@ -41,14 +43,18 @@ def main():
     switch_at_home = homeware.get("switch_at_home","on")
     # Ping the device
     command = ['ping', "-c", '1', DEVICE_IP]
-    if subprocess.call(command) == 0:
-      if not switch_at_home:
-        mqtt_client.publish("message-alerts", "Bienvenido a casa")
-        homeware.execute("switch_at_home","on",True)
+    result = subprocess.call(command)
+    if result == 0:
+      count == 0
     else:
-      if switch_at_home:
-        mqtt_client.publish("message-alerts", "Iniciando secuencia de ausencia")
-        homeware.execute("switch_at_home","on",False)
+      count += 1
+    # Validate variables
+    if result == 0 and not switch_at_home:
+      mqtt_client.publish("message-alerts", "Bienvenido a casa")
+      homeware.execute("switch_at_home","on",True)
+    if not result == 0 and count > 2 and switch_at_home:
+      mqtt_client.publish("message-alerts", "Iniciando secuencia de ausencia")
+      homeware.execute("switch_at_home","on",False)
     # Wait
     time.sleep(SLEEP_TIME)
 
