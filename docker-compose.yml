@@ -56,6 +56,17 @@ services:
     depends_on:
       - message-alert
 
+  # Presence detection
+  presence-detection:
+    image: ghcr.io/kikeelectronico/presence-detection:latest
+    container_name: presence-detection
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    depends_on:
+      - message-alert
+
   # Logic pool time
   logic-pool-time:
     image: ghcr.io/kikeelectronico/logic-pool-time:latest
