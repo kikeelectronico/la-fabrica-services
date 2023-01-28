@@ -28,12 +28,11 @@ def film(homeware, topic, payload):
 def shower(homeware, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/deactivate" and not payload:
-    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 25)
+    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     waiting_for_shower = True
   elif topic == "device/scene_ducha/deactivate" and payload:
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
-    homeware.execute("thermostat_bathroom", "thermostatMode", "off")
     waiting_for_shower = False
 
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
