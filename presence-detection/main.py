@@ -52,13 +52,14 @@ def main():
       count == 0
     else:
       count += 1
+      time.sleep(SLEEP_TIME)
     # Validate variables
     if result == 0 and not switch_at_home:
       mqtt_client.publish("message-alerts", "Bienvenido a casa")
-      homeware.execute("switch_at_home","on",True)
+      #homeware.execute("switch_at_home","on",True)
     if (not result == 0) and count > COUNT_FOR_ACTUATE and switch_at_home:
       mqtt_client.publish("message-alerts", "Iniciando secuencia de ausencia")
-      homeware.execute("switch_at_home","on",False)
+      #homeware.execute("switch_at_home","on",False)
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > HEARTBEAT_INTERVAL:
