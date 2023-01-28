@@ -112,7 +112,7 @@ def powerManagment(homeware, topic, payload):
         livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         controled_by = "thermostat_dormitorio" if not cache["switch_radiator"] else "thermostat_livingroom"
         bedroom = shouldHeat(homeware, controled_by, "radiator002")
-        bathroom = False
+        bathroom = (not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         heater = not livingroom
     else:
       livingroom = False
