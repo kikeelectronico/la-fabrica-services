@@ -37,9 +37,8 @@ def shower(homeware, topic, payload):
     waiting_for_shower = False
 
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
-    if payload["thermostatTemperatureAmbient"] == payload["thermostatTemperatureSetpoint"]:
+    if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
       homeware.voiceAlert("El baño está preparado")
-      homeware.messageAlert("El baño está preparado")
       waiting_for_shower = False
 
 def relax(homeware, topic, payload):
