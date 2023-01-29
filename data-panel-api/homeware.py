@@ -22,6 +22,7 @@ class Homeware:
     }
 
     response = requests.post(url, headers=headers)
+    print(response.status_code)
     if response.status_code == 200:
       status = response.json()
       print(status)
