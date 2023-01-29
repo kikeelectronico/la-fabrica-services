@@ -20,7 +20,8 @@ MQTT_PORT = 1883
 last_ip = "unknown"
 mqtt_client = mqtt.Client(client_id="dns-updater")
 
-if __name__ == "__main__":
+def main():
+  global last_ip
   # Create connection with the MQTT broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
@@ -46,4 +47,7 @@ if __name__ == "__main__":
 
     mqtt_client.publish("heartbeats", "dns-updater")
     time.sleep(10)
+
+if __name__ == "__main__":
+  main()
     
