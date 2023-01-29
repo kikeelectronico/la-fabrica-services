@@ -8,7 +8,7 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
 
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("NEW_MQTT_HOST", "localhost")
+MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")

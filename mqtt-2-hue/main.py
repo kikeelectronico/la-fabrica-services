@@ -9,7 +9,7 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
 
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
+MQTT_HOST = os.environ.get("MQTT_DOMAIN", "localhost")
 MQTT_PORT = 1883
 HUE_URL = os.environ.get("HUE_URL", "no_url")
 HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_token")

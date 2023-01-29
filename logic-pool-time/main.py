@@ -11,10 +11,10 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
 
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("NEW_MQTT_HOST", "localhost")
+MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
-HOMEWARE_DOMAIN = os.environ.get("NEW_HOMEWARE_DOMAIN", "localhost")
+HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_HOST", "localhost")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 
 mqtt_client = mqtt.Client(client_id="logic-pool-time")

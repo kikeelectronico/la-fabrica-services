@@ -14,7 +14,7 @@ CLOUDFLARE_DNS_ID = os.environ.get("CLOUDFLARE_DNS_ID", "none")
 CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_TOKEN", "none")
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("NEW_MQTT_HOST", "localhost")
+MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
 last_ip = "unknown"
