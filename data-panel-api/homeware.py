@@ -12,7 +12,7 @@ class Homeware:
       from dotenv import load_dotenv
       load_dotenv(dotenv_path="../.env")
     self.__api_key = os.environ.get("HOMEWARE_API_KEY")
-    self.__domain = os.environ.get("HOMEWARE_HOST")
+    self.__domain = os.environ.get("HOMEWARE_API_HOST")
 
   def getStatus(self):
     url = "http://" + self.__domain + ":5001/api/status/get/"
