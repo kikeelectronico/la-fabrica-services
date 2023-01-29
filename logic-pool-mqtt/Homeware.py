@@ -22,7 +22,7 @@ class Homeware:
     self.__mqtt_client.publish("device/control", json.dumps(control_payload))
 
   def get(self, id, param):
-    url = "https://" + self.__host + "/api/status/get/" + id
+    url = "http://" + self.__host + "/api/status/get/" + id
     headers = {"Authorization": "baerer " + self.__token}
     response = requests.get(url, headers=headers)
     return response.json()[param]
