@@ -21,7 +21,7 @@ class Homeware:
         "Authorization": "baerer " + self.__api_key
     }
 
-    response = requests.post(url, headers=headers)
+    response = requests.get(url, headers=headers)
     print(response.status_code)
     if response.status_code == 200:
       status = response.json()
