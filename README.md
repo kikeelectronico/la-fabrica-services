@@ -25,11 +25,11 @@ This microservice get the public IP of the router and update the value in the DN
 
 ### Heartbeat monitor
 
-This microservice monitors the heartbeats sent bt the rest of microservices and send an alert if needed.
+This microservice monitors the heartbeats sent by the rest of microservices and send an alert if needed.
 
 ### Heartbeat request
 
-This microservice monitors requests heartbeats to the passive microservices.
+This microservice requests heartbeats to the passive microservices. A microservice is passive when it doesn't send the heartbeats by itself, it needs an external request.
 
 ### Logic pool MQTT
 
