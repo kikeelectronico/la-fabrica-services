@@ -12,15 +12,18 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
-TOPICS = ["voice-alerts"]
+TOPICS = ["heartbeats/request","voice-alerts"]
 
 mqtt_client = mqtt.Client(client_id="voice-alert")
 voice = Voice()
 
 def on_message(client, userdata, msg):
-  payload = msg.payload.decode('utf-8').replace("\'", "\"")
-  voice.getAndPlay(payload)
-  print(payload)
+  if msg.topic in TOPICS:
+    if msg.topic == "heartbeats/request":
+      mqtt_client.publish("heartbeats", "voice-alert")
+    else:
+      payload = msg.payload.decode('utf-8').replace("\'", "\"")
+      voice.getAndPlay(payload)
 
 def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
