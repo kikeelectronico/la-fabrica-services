@@ -10,7 +10,7 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
 
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
+MQTT_HOST = os.environ.get("NEW_MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 INJECTOR_URL = os.environ.get("INJECTOR_URL", "no_url")
 INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
