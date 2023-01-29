@@ -21,6 +21,10 @@ last_ip = "unknown"
 mqtt_client = mqtt.Client(client_id="dns-updater")
 
 if __name__ == "__main__":
+  # Create connection with the MQTT broker
+  mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+  mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  # Send boot message
   mqtt_client.publish("message-alerts", "DNS updater: operativo")
   while True:
     ip = requests.get(GET_IP_ENDPOINT).text
