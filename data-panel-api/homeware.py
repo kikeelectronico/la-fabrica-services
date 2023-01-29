@@ -15,6 +15,7 @@ class Homeware:
     self.__domain = os.environ.get("NEW_HOMEWARE_DOMAIN")
 
   def getStatus(self):
+    print("Domain: ", self.__domain)
     url = "http://" + self.__domain + ":5001/api/status/get/"
     headers = {
         "Authorization": "baerer " + self.__api_key
@@ -23,6 +24,7 @@ class Homeware:
     response = requests.post(url, headers=headers)
     if response.status_code == 200:
       status = response.json()
+      print(status)
       return (True, status)
     else:
       return (False, {})
