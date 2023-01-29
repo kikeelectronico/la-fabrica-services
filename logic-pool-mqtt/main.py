@@ -19,7 +19,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("NEW_MQTT_HOST", "localhost_test")
 MQTT_PORT = 1883
 
-HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_DOMAIN", "localhost")
+HOMEWARE_DOMAIN = os.environ.get("NEW_HOMEWARE_DOMAIN", "localhost_test")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 
 TOPICS = [
