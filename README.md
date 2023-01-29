@@ -13,7 +13,7 @@ This microservice is a REST API for the data dashboards. It request data to diff
 
 ### Data panel autoload
 
-This microservice forces the loading of the dashboard in a chromecast when not playing anything on it.
+This microservice forces the loading of the dashboard in a chromecast when not playing anything on it. Not in use at the moment.
 
 ### Data panel front
 
@@ -50,6 +50,14 @@ This microservice sends Homeware's data to Google Cloud BigQuery. It uses the Ho
 ### MQTT 2 Hue
 
 This microservice connects Homeware with a Philips Hue Bridge.
+
+### Presence detection
+
+An experiment in which I am trying to evaluate if it makes sense to decide if the house is empty using the IPs of critical devices.
+
+### Telegram bot
+
+A way to interact with the system via Telegram. It is not currently in use, but probably I will update it soon.
 
 ### Voice alert
 
