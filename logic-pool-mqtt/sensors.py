@@ -4,6 +4,7 @@ HUMIDITY_TRIGGER = 60
 sensors_cache = {}
 
 def hood(homeware, topic, payload):
+  global sensors_cache
   if topic in ["device/thermostat_bathroom","device/switch_hood/on"]:
     # Cache the state of the bathroom's thermostat
     if not "thermostat_bathroom" in sensors_cache.keys():  
