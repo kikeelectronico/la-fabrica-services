@@ -23,7 +23,7 @@ def getHomewareTest():
   try:
     # response = requests.get("http://" + HOMEWARE_DOMAIN + ":5001/test").text
     # return response
-    url = "http://" + HOMEWARE_DOMAIN + ":5001/api/status/get/scene_test"
+    url = "http://" + HOMEWARE_DOMAIN + ":5001/api/status/get/scene_noche"
     headers = {
         "Authorization": "baerer " + HOMEWARE_API_KEY
     }
