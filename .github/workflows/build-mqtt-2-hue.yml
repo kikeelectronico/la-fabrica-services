@@ -48,7 +48,7 @@ jobs:
         with:
           context: mqtt-2-hue
           file: mqtt-2-hue/Dockerfile
-          platforms: linux/arm/v7, linux/arm64/v8
+          platforms: linux/amd64, linux/arm/v7, linux/arm64/v8
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/mqtt-2-hue:latest
           cache-from: type=local,src=/tmp/.buildx-cache
