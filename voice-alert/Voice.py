@@ -2,8 +2,6 @@ from google.cloud import texttospeech
 import threading
 import os
 
-from gtts import gTTS
-
 DEVICES_IPS = ['192.168.10.15', '192.168.10.16', '192.168.10.17']
 
 class Voice:
@@ -17,7 +15,6 @@ class Voice:
         audio_encoding=texttospeech.AudioEncoding.MP3,
         pitch=1.2
     )
-    #pass
 
   def getFile(self, text):
         file_name = text
@@ -36,9 +33,6 @@ class Voice:
 
             with open(file_path, "wb") as out:
                 out.write(response.audio_content)
-        
-            # t2s = gTTS(text=text, tld="es", lang='es', slow=False) 
-            # t2s.save(file_path)
 
         return file_path
 
