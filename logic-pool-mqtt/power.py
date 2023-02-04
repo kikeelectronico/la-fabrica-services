@@ -14,12 +14,12 @@ power_alert = False
 
 cache = {}
 
-def shouldHeat(homeware, thermostat_id, radiator_id):
+def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
   global cache
 
   if cache[thermostat_id]["thermostatMode"] == "heat":
     ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
-    set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"]
+    set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"] if not rule_14 else 14
     if ambient < set_point:
       return True
     elif ambient > set_point:
@@ -41,7 +41,8 @@ def powerManagment(homeware, topic, payload):
     "device/thermostat_livingroom",
     "device/thermostat_bathroom",
     "device/thermostat_dormitorio",
-    "device/switch_radiator/on"
+    "device/switch_radiator/on",
+    "device/switch_at_home/on"
   ]
 
   if topic in TOPICS:
@@ -54,6 +55,11 @@ def powerManagment(homeware, topic, payload):
       cache["switch_radiator"] = homeware.get("switch_radiator", "on")
     if topic == "device/switch_radiator/on":
       cache["switch_radiator"] = payload
+
+    if not "switch_at_home" in cache.keys():  
+      cache["switch_at_home"] = homeware.get("switch_radiator", "on")
+    if topic == "device/switch_at_home/on":
+      cache["switch_at_home"] = payload
 
     if not "scene_ducha" in cache.keys():  
       cache["scene_ducha"] = homeware.get("scene_ducha", "deactivate")
@@ -104,14 +110,15 @@ def powerManagment(homeware, topic, payload):
 
     if not power_alert:
       if not cache["scene_ducha"]:
-        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
+        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003", False)
         livingroom = not bathroom
         heater = (not bathroom) and (not livingroom)
-        bedroom = False
+        bedroom = False        
       else:
-        livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001")
+        rule_14 = not cache["switch_at_home"]
+        livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
         controled_by = "thermostat_dormitorio" if not cache["switch_radiator"] else "thermostat_livingroom"
-        bedroom = shouldHeat(homeware, controled_by, "radiator002")
+        bedroom = shouldHeat(homeware, controled_by, "radiator002", rule_14)
         bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         heater = not livingroom
     else:
