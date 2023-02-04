@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import os
+import time
 
 from Voice import Voice
 
@@ -29,12 +30,25 @@ def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
         client.subscribe(topic)
 	
-if __name__ == "__main__":
-	mqtt_client.on_message = on_message
-	mqtt_client.on_connect = on_connect
+def main():
+  hour = int(time.strftime("%H"))
+  message = ""
+  if hour >= 22 or (hour > 0 and hour < 7):
+    message = "buenas noches. Ya estoy operativa"
+  elif hour >= 7 and hour < 15:
+    message = "buenos días. Ya estoy operativa"
+  elif hour >= 15 and hour < 22:
+    message = "buenas tardes. Ya estoy operativa"
+  voice.getAndPlay(message)
+  
+  mqtt_client.on_message = on_message
+  mqtt_client.on_connect = on_connect
 
-	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
-	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-	mqtt_client.loop_forever()
+  mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+  mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  mqtt_client.loop_forever()
+
+if __name__ == "__main__":
+  main()
 
     
