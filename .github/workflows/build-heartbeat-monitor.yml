@@ -41,6 +41,6 @@ jobs:
         with:
           context: heartbeat-monitor
           file: heartbeat-monitor/Dockerfile
-          platforms: linux/amd64, linux/arm/v7, linux/arm64/v8
+          platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-monitor:latest

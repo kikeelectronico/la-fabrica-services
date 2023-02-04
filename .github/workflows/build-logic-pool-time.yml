@@ -41,6 +41,6 @@ jobs:
         with:
           context: logic-pool-time
           file: logic-pool-time/Dockerfile
-          platforms: linux/amd64, linux/arm/v7, linux/arm64/v8
+          platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/logic-pool-time:latest

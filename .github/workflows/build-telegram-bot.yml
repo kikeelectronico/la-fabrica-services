@@ -48,7 +48,7 @@ jobs:
         with:
           context: telegram-bot
           file: telegram-bot/Dockerfile
-          platforms: linux/amd64, linux/arm/v7, linux/arm64/v8
+          platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/telegram-bot:latest
           cache-from: type=local,src=/tmp/.buildx-cache
