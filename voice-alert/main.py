@@ -21,7 +21,7 @@ def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     if msg.topic == "heartbeats/request":
       mqtt_client.publish("heartbeats", "voice-alert")
-    else:
+    elif msg.topic == "voice-alerts":
       payload = msg.payload.decode('utf-8').replace("\'", "\"")
       voice.getAndPlay(payload)
 
