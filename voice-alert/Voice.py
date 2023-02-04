@@ -9,7 +9,7 @@ class Voice:
   def __init__(self):
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
     self.voice = texttospeech.VoiceSelectionParams(
-        language_code="es-ES", name="es-ES-Wavenet-D", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+        language_code="es-ES", name="es-ES-Neural2-C", ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
     )
     self.audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.MP3,
