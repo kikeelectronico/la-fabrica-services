@@ -14,10 +14,10 @@ power_alert = False
 
 cache = {}
 
-def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
+def shouldHeat(homeware, thermostat_id, radiator_id, rule_14):
   global cache
 
-  if cache[thermostat_id]["thermostatMode"] == "heat":
+  if cache[thermostat_id]["thermostatMode"] == "heat" or rule_14:
     ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
     set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"] if not rule_14 else 14
     if ambient < set_point:
@@ -57,7 +57,7 @@ def powerManagment(homeware, topic, payload):
       cache["switch_radiator"] = payload
 
     if not "switch_at_home" in cache.keys():  
-      cache["switch_at_home"] = homeware.get("switch_radiator", "on")
+      cache["switch_at_home"] = homeware.get("switch_at_home", "on")
     if topic == "device/switch_at_home/on":
       cache["switch_at_home"] = payload
 
@@ -110,16 +110,16 @@ def powerManagment(homeware, topic, payload):
 
     if not power_alert:
       if not cache["scene_ducha"]:
-        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003", False)
+        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         livingroom = not bathroom
         heater = (not bathroom) and (not livingroom)
-        bedroom = False        
+        bedroom = False
       else:
         rule_14 = not cache["switch_at_home"]
         livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
         controled_by = "thermostat_dormitorio" if not cache["switch_radiator"] else "thermostat_livingroom"
         bedroom = shouldHeat(homeware, controled_by, "radiator002", rule_14)
-        bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003")
+        bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
         heater = not livingroom
     else:
       livingroom = False
