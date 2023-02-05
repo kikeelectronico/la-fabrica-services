@@ -21,35 +21,6 @@ ScriptPath = os.path.realpath(__file__).split('bot')[0]
 bot = telebot.TeleBot(BOT_TOKEN)
 storage_client = storage.Client()
 
-def test():
-  return "I think this is broken. It has a hole."
-
-def downloadYouTubeVideo(url):
-    if not 'list' in url:
-        video = YouTube(url)
-        video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
-    else:
-        playlist = Playlist(url)
-        for video in playlist.videos:
-            video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
-
-    # Get the mp4 files
-    all_in_dir = os.listdir('.')
-    files = [something for something in all_in_dir if something.endswith('.mp4')]
-    # Get the first file
-    urls = []
-    for file in files:
-        # Upload to the bucket
-        bucket = storage_client.bucket(BUCKET_NAME)
-        blob = bucket.blob(file)
-        blob.upload_from_filename(file)
-        # Delete the local file
-        os.remove(file)
-        # Add URL
-        urls.append("https://storage.cloud.google.com/" + BUCKET_NAME + "/" + file.replace(" ", "%20"))
-    # Return URL
-    return urls
-
 @bot.message_handler(commands=['start', 'help','test','office','home','directions','yt'])
 def send_welcome(message):
   if 'start' in message.text:
@@ -77,7 +48,7 @@ def send_welcome(message):
 
 @bot.message_handler(func=lambda message: True)
 def echo_message(message):
-    if message.from_user.id == ENRIQUE_CHAT_ID:
+    if str(message.from_user.id) == ENRIQUE_CHAT_ID:
         if wait_flag == "yt":
             bot.send_message(ENRIQUE_CHAT_ID, "Descargando...", parse_mode= 'Markdown')
             url = message.text
