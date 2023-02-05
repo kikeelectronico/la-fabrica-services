@@ -57,7 +57,7 @@ def send_welcome(message):
   elif 'help' in message.text:
     bot.reply_to(message, "I am sorry but I don't know you.")
   else:
-    if message.from_user.id == ENRIQUE_CHAT_ID:
+    if str(message.from_user.id) == ENRIQUE_CHAT_ID:
         if 'test' in message.text:
             response = test()
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
