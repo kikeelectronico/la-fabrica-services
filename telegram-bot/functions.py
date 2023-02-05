@@ -16,7 +16,7 @@ def getPublicIP():
     return ip
 
 def getHomewareTest():
-    response = requests.get("https://" + HOMEWARE_API_HOST + "/test").text
+    response = requests.get("http://" + HOMEWARE_API_HOST + ":5001/test").text
     return response
 
 def test():
