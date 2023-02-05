@@ -14,7 +14,7 @@ power_alert = False
 
 cache = {}
 
-def shouldHeat(homeware, thermostat_id, radiator_id, rule_14):
+def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
   global cache
 
   if cache[thermostat_id]["thermostatMode"] == "heat" or rule_14:
