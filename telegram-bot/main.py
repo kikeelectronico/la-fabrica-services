@@ -1,5 +1,4 @@
 import telebot
-from pytube import YouTube, Playlist
 import os
 from google.cloud import storage
 
@@ -11,7 +10,6 @@ if os.environ.get("BOT_TOKEN", "no_token") == "no_token":
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
-BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_bucket")
 
 wait_flag = ""
 
@@ -30,7 +28,7 @@ def send_welcome(message):
   else:
     if str(message.from_user.id) == ENRIQUE_CHAT_ID:
         if 'test' in message.text:
-            response = test()
+            response = functions.test()
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
         elif 'home' in message.text:
             response = functions.getHomewareTest()
@@ -52,7 +50,7 @@ def echo_message(message):
         if wait_flag == "yt":
             bot.send_message(ENRIQUE_CHAT_ID, "Descargando...", parse_mode= 'Markdown')
             url = message.text
-            urls = downloadYouTubeVideo(url)
+            urls = functions.downloadYouTubeVideo(url, storage_client)
             bot.send_message(ENRIQUE_CHAT_ID, "Lo tenemos", parse_mode= 'Markdown')
             for url in urls:
                 bot.send_message(ENRIQUE_CHAT_ID, url, parse_mode= 'Markdown')

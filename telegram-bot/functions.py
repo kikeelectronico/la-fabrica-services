@@ -1,5 +1,6 @@
 import os
 import requests
+from pytube import YouTube, Playlist
 
 if os.environ.get("HOMEWARE_APIKEY", "no_api_key") == "no_api_key":
   from dotenv import load_dotenv
@@ -8,6 +9,7 @@ if os.environ.get("HOMEWARE_APIKEY", "no_api_key") == "no_api_key":
 HOMEWARE_APIKEY = os.environ.get("HOMEWARE_APIKEY", "no_api_key")
 HOMEWARE_API_HOST = os.environ.get("HOMEWARE_API_HOST", "no_domain")
 GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "no_ip")
+BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_bucket")
 
 def getPublicIP():
     ip = requests.get(GET_IP_ENDPOINT).text
@@ -20,7 +22,7 @@ def getHomewareTest():
 def test():
   return "I think this is broken. It has a hole."
 
-def downloadYouTubeVideo(url):
+def downloadYouTubeVideo(url, storage_client):
     if not 'list' in url:
         video = YouTube(url)
         video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
