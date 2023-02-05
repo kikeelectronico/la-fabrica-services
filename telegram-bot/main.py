@@ -13,9 +13,6 @@ ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
 
 wait_flag = ""
 
-#Absolute path
-ScriptPath = os.path.realpath(__file__).split('bot')[0]
-
 bot = telebot.TeleBot(BOT_TOKEN)
 storage_client = storage.Client()
 
