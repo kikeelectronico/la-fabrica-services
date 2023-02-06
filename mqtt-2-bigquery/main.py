@@ -97,8 +97,7 @@ def sendPowerRequest(payload):
 				(time, power, version)
 				VALUES ({},{},4);
 			""".format(POWER_DDBB, ts, payload * POWER_CONSTANT)
-	)
-	query_job.result()
+	).result()
 
 def sendThermostatRequest(payload, last_value, location, magnitude, units):
 	ts = int(time.time())
