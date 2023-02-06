@@ -10,7 +10,7 @@ if os.environ.get("MQTT_PASS", "pass") == "pass":
 
 MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_DOMAIN", "localhost")
+MQTT_HOST = os.environ.get("MQTT_HOST_LOCAL_NETWORK", "localhost")
 MQTT_PORT = 1883
 
 TOPICS = ["heartbeats/request","voice-alerts"]
