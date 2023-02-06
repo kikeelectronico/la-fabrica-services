@@ -7,7 +7,7 @@ if os.environ.get("HOMEWARE_APIKEY", "no_api_key") == "no_api_key":
   load_dotenv(dotenv_path="../.env")
 
 HOMEWARE_APIKEY = os.environ.get("HOMEWARE_APIKEY", "no_api_key")
-HOMEWARE_API_HOST = os.environ.get("HOMEWARE_API_HOST", "no_domain")
+HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_domain")
 GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "no_ip")
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_bucket")
 
@@ -16,7 +16,7 @@ def getPublicIP():
     return ip
 
 def getHomewareTest():
-    response = requests.get("http://" + HOMEWARE_API_HOST + ":5001/test").text
+    response = requests.get(HOMEWARE_API_URL + "/test").text
     return response
 
 def test():

@@ -14,11 +14,11 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
 
-HOMEWARE_DOMAIN = os.environ.get("HOMEWARE_API_HOST", "localhost")
+HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "localhost")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
 
 mqtt_client = mqtt.Client(client_id="logic-pool-time")
-homeware = Homeware(mqtt_client, HOMEWARE_DOMAIN, HOMEWARE_API_KEY)
+homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
 
 last_heartbeat_timestamp = 0
 just_executed = ""

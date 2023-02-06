@@ -12,10 +12,10 @@ class Homeware:
       from dotenv import load_dotenv
       load_dotenv(dotenv_path="../.env")
     self.__api_key = os.environ.get("HOMEWARE_API_KEY")
-    self.__domain = os.environ.get("HOMEWARE_API_HOST")
+    self.__url = os.environ.get("HOMEWARE_API_URL")
 
   def getStatus(self):
-    url = "http://" + self.__domain + ":5001/api/status/get/"
+    url = self.__url + "/api/status/get/"
     headers = {
         "Authorization": "baerer " + self.__api_key
     }
@@ -28,7 +28,7 @@ class Homeware:
       return (False, {})
 
   def getDevices(self):
-    url = "http://" + self.__domain + ":5001/api/devices/get/"
+    url = self.__url + "/api/devices/get/"
     headers = {
         "Authorization": "baerer " + self.__api_key
     }

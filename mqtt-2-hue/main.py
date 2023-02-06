@@ -11,7 +11,7 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST_LOCAL_NETWORK", "localhost")
 MQTT_PORT = 1883
-HUE_URL = os.environ.get("HUE_URL", "no_url")
+HUE_HOST = os.environ.get("HUE_HOST", "no_url")
 HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_token")
 POWER_CONSTANT = 35
 TOPICS = ["heartbeats/request","device/hue_1"]
@@ -39,8 +39,8 @@ def on_message(client, userdata, msg):
 			sendToHue(hue_id, hue_status)
 
 def sendToHue(hue_id, hue_status):
-	if not HUE_URL == "no_token" and not HUE_TOKEN == "no_url":
-		url = "http://" + HUE_URL + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
+	if not HUE_HOST == "no_token" and not HUE_TOKEN == "no_url":
+		url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
 		headers = {
 			"Content-Type": "application/json"
 		}
