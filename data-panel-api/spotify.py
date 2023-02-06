@@ -43,7 +43,7 @@ class Spotify:
       if response.status_code == 200:
         self._service_unavailable_counter = 0
         playing = response.json()
-        if playing['is_playing']:
+        if playing['is_playing'] and not playing["item"] is None:
           if not self._last_track == playing['item']['id'] and time.time() > self._stop_until:
             # Track info
             url= "https://api.spotify.com/v1/tracks/" + playing['item']['id']
