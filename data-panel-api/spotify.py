@@ -44,67 +44,68 @@ class Spotify:
         self._service_unavailable_counter = 0
         playing = response.json()
         if playing['is_playing']:
-          if not self._last_track == playing['item']['id'] and time.time() > self._stop_until:
-            # Track info
-            url= "https://api.spotify.com/v1/tracks/" + playing['item']['id']
-            payload={}
-            headers = {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + self.__access_token
-            }
-            response = requests.request("GET", url, headers=headers, data=payload, timeout=5)
-
-            if response.status_code == 200:
-              track = response.json()
-              self._track_image = track['album']['images'][0]['url']
-              self._last_track = playing['item']['id']
-
-              spotify = {
-                "playing": playing['is_playing'],
-                "device": playing['device']['name'],
-                "volume": playing['device']['volume_percent'],
-                "track_name": playing['item']['name'],
-                "time": playing['progress_ms'],
-                "duration": playing['item']['duration_ms'],
-                "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
-                "image": self._track_image,
-                "tries": self._tries,
-                "quota_exceeded": False
-              }
-
-              self._tries = 0
-              self._playing = spotify
-
-              # Temp for analisys
-              url = self.__injector_url + "?token=" + self.__injector_token
+          if "item" in playing.keys() and "id" in playing['item'].keys():
+            if not self._last_track == playing['item']['id'] and time.time() > self._stop_until:
+              # Track info
+              url= "https://api.spotify.com/v1/tracks/" + playing['item']['id']
+              payload={}
               headers = {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + self.__access_token
               }
-              body = {
-                "ddbb": "covers",
-                "URL": self._track_image
-              }
+              response = requests.request("GET", url, headers=headers, data=payload, timeout=5)
 
-              requests.post(url, data = json.dumps(body), headers = headers)
+              if response.status_code == 200:
+                track = response.json()
+                self._track_image = track['album']['images'][0]['url']
+                self._last_track = playing['item']['id']
 
-            elif response.status_code == 429:
-              self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
+                spotify = {
+                  "playing": playing['is_playing'],
+                  "device": playing['device']['name'],
+                  "volume": playing['device']['volume_percent'],
+                  "track_name": playing['item']['name'],
+                  "time": playing['progress_ms'],
+                  "duration": playing['item']['duration_ms'],
+                  "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
+                  "image": self._track_image,
+                  "tries": self._tries,
+                  "quota_exceeded": False
+                }
 
-              spotify = {
-                "playing": playing['is_playing'],
-                "device": playing['device']['name'],
-                "volume": playing['device']['volume_percent'],
-                "track_name": playing['item']['name'],
-                "time": playing['progress_ms'],
-                "duration": playing['item']['duration_ms'],
-                "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
-                "image": "",
-                "tries": self._tries,
-                "quota_exceeded": True
-              }
+                self._tries = 0
+                self._playing = spotify
 
-              self._playing = spotify
-          
+                # Temp for analisys
+                url = self.__injector_url + "?token=" + self.__injector_token
+                headers = {
+                  "Content-Type": "application/json"
+                }
+                body = {
+                  "ddbb": "covers",
+                  "URL": self._track_image
+                }
+
+                requests.post(url, data = json.dumps(body), headers = headers)
+
+              elif response.status_code == 429:
+                self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
+
+                spotify = {
+                  "playing": playing['is_playing'],
+                  "device": playing['device']['name'],
+                  "volume": playing['device']['volume_percent'],
+                  "track_name": playing['item']['name'],
+                  "time": playing['progress_ms'],
+                  "duration": playing['item']['duration_ms'],
+                  "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
+                  "image": "",
+                  "tries": self._tries,
+                  "quota_exceeded": True
+                }
+
+                self._playing = spotify
+            
           else:
             spotify = {
                 "playing": playing['is_playing'],
