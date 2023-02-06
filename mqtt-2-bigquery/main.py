@@ -3,6 +3,7 @@ import time
 import paho.mqtt.client as mqtt
 import json
 import os
+from google.cloud import bigquery
 
 if os.environ.get("MQTT_PASS", "pass") == "pass":
   from dotenv import load_dotenv
@@ -12,8 +13,8 @@ MQTT_USER = os.environ.get("MQTT_USER", "user")
 MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
 MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
 MQTT_PORT = 1883
-INJECTOR_URL = os.environ.get("INJECTOR_URL", "no_url")
-INJECTOR_TOKEN = os.environ.get("INJECTOR_TOKEN", "no_token")
+POWER_DDBB = os.environ.get("POWER_DDBB", "no_ddbb")
+AMBIENT_DDBB = os.environ.get("AMBIENT_DDBB", "no_ddbb")
 POWER_CONSTANT = 35
 
 TOPICS = [
@@ -28,6 +29,7 @@ TOPICS = [
 ]
 
 mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
+bigquery_client = bigquery.Client()
 
 latest_power = 0
 latest_livingroom_temperature = 0
@@ -89,49 +91,32 @@ def on_message(client, userdata, msg):
 
 def sendPowerRequest(payload):
 	ts = int(time.time())
-	inject = {
-		"ddbb": "power",
-		"ts": ts,
-		"power": payload * POWER_CONSTANT
-	}
-	bigqueyInjector(inject)
+	query_job = bigquery_client.query(
+			"""
+				INSERT INTO `{}`
+				(time, power, version)
+				VALUES ({},{},4);
+			""".format(POWER_DDBB, ts, payload * POWER_CONSTANT)
+	)
+	query_job.result()
 
 def sendThermostatRequest(payload, last_value, location, magnitude, units):
 	ts = int(time.time())
-	inject = {
-		"ddbb": "ambient",
-		"ts": ts,
-		"magnitude": magnitude,
-		"value": last_value,
-		"location": location,
-		"units": units
-	}
-	bigqueyInjector(inject)
-
-	ts = int(time.time())
-	inject = {
-		"ddbb": "ambient",
-		"ts": ts,
-		"magnitude": magnitude,
-		"value": payload,
-		"location": location,
-		"units": units
-	}
-	bigqueyInjector(inject)
+	query_job = bigquery_client.query(
+		"""\
+			INSERT INTO `{}`\
+			(time, magnitude, value, location, units)\
+			VALUES ({},"{}",{},"{}","{}");\
+		""".format(AMBIENT_DDBB, ts, magnitude, last_value, location, units)
+	).result()
+	query_job = bigquery_client.query(
+		"""\
+			INSERT INTO `{}`\
+			(time, magnitude, value, location, units)\
+			VALUES ({},"{}",{},"{}","{}");\
+		""".format(AMBIENT_DDBB, ts, magnitude, payload, location, units)
+	).result()
 		
-def bigqueyInjector(body):
-	if not INJECTOR_TOKEN == "no_token" and not INJECTOR_URL == "no_url":
-		url = INJECTOR_URL + "?token=" + INJECTOR_TOKEN
-		headers = {
-			"Content-Type": "application/json"
-		}
-
-		r = requests.post(url, data = json.dumps(body), headers = headers)
-		if not r.text == "Done":
-			print(r.text)
-	else:
-		print("There is no token or URL for the injector")
-
 def main():
   # Define callbacks
 	mqtt_client.on_message = on_message
