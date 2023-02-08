@@ -1,5 +1,5 @@
 
-HUMIDITY_TRIGGER = 60
+HUMIDITY_TRIGGER = 40
 
 sensors_cache = {}
 
