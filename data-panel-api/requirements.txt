@@ -2,3 +2,6 @@ fastapi
 requests
 uvicorn
 python-dotenv
+keras
+tensorflow
+Pillow==9.3.0

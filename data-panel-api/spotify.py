@@ -1,7 +1,10 @@
 import os
 import requests
-import json
+from io import BytesIO
 import time
+from keras.models import load_model
+from PIL import Image, ImageOps
+import numpy as np
 
 class Spotify:
 
@@ -12,6 +15,7 @@ class Spotify:
   _playing = {}
   _last_track = ""
   _track_image = ""
+  _track_image_position = "middle"
   _stop_until = 0
   _service_unavailable_counter = 0
 
@@ -21,7 +25,11 @@ class Spotify:
       load_dotenv(dotenv_path="../.env")
     self.__refresh_token = os.environ.get("SPOTIFY_REFRESH_TOKEN")
     self.__app_auth = os.environ.get("SPOTIFY_APP_AUTH")
-
+    # Initialize the keras model
+    np.set_printoptions(suppress=True)
+    self._track_image_model = load_model("track_image_model/keras_model.h5", compile=False)
+    self._track_image_class_names = open("track_image_model/labels.txt", "r").readlines()
+    self._track_image_data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
   def updatePlaying(self, max_tries=2):
     self._tries += 1
@@ -56,6 +64,8 @@ class Spotify:
               self._track_image = track['album']['images'][0]['url']
               self._last_track = playing['item']['id']
 
+              self.analyzeTrackImage()
+
               spotify = {
                 "playing": playing['is_playing'],
                 "device": playing['device']['name'],
@@ -65,6 +75,7 @@ class Spotify:
                 "duration": playing['item']['duration_ms'],
                 "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                 "image": self._track_image,
+                "image_position": self._track_image_position,
                 "tries": self._tries,
                 "quota_exceeded": False
               }
@@ -84,6 +95,7 @@ class Spotify:
                 "duration": playing['item']['duration_ms'],
                 "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                 "image": "",
+                "image_position": self._track_image_position,
                 "tries": self._tries,
                 "quota_exceeded": True
               }
@@ -100,6 +112,7 @@ class Spotify:
                 "duration": playing['item']['duration_ms'],
                 "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                 "image": self._track_image,
+                "image_position": self._track_image_position,
                 "tries": self._tries,
                 "quota_exceeded": time.time() < self._stop_until
               }
@@ -193,3 +206,18 @@ class Spotify:
     self.updatePlaying(max_tries)
 
     return self._playing
+
+  def analyzeTrackImage(self):
+    response = requests.get(self._track_image)
+    image = Image.open(BytesIO(response.content)).convert("RGB")
+
+    size = (224, 224)
+    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+    image_array = np.asarray(image)
+    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
+    self._track_image_data[0] = normalized_image_array
+
+    prediction = self._track_image_model.predict(self._track_image_data)
+    index = np.argmax(prediction)
+    class_name = self._track_image_class_names[index]
+    self._track_image_position = class_name[2:-1]
