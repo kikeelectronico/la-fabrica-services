@@ -24,7 +24,7 @@ export default function Spotify(props) {
       loading = true
       fetch(API + "/spotify")
       .then((response) => response.json())
-      .then((spotify) => {setPlaying(spotify); props.setBackgroundImage(spotify.image)})
+      .then((spotify) => {setPlaying(spotify); props.setBackgroundImage({url: spotify.image, position: spotify.image_position})})
       .catch((error) => console.log(error))
       .finally(() => setApiRequested(true))
       setTimeout(() => {loading = false}, 2000)
