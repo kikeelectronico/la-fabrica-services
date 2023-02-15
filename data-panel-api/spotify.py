@@ -71,13 +71,13 @@ class Spotify:
               self.analyzeTrackImage()
 
               # Save the image url
-              query_job = self._bigquery_client.query(
+              self._bigquery_client.query(
                   """
                     INSERT INTO `{}`
                     (url, downloaded)
-                    VALUES ({},{});
-                  """.format(self._covers_ddbb, self._track_image, True)
-              ).result()
+                    VALUES ('{}',False);
+                  """.format(self._covers_ddbb, self._track_image)
+              )
 
               spotify = {
                 "playing": playing['is_playing'],
