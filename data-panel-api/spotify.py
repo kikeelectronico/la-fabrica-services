@@ -75,8 +75,8 @@ class Spotify:
                   """
                     INSERT INTO `{}`
                     (url, downloaded)
-                    VALUES ({},True);
-                  """.format(self._covers_ddbb, self._track_image)
+                    VALUES ({},{});
+                  """.format(self._covers_ddbb, self._track_image, True)
               ).result()
 
               spotify = {
