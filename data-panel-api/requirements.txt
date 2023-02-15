@@ -5,3 +5,4 @@ python-dotenv
 keras
 tensorflow
 Pillow==9.3.0
+google-cloud-bigquery
