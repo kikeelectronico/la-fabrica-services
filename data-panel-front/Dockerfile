@@ -1,4 +1,5 @@
 FROM node:lts-alpine AS base
+ENV REACT_APP_DATA_PANEL_API_URL="http://api.data-panel.lafabrica"
 RUN mkdir front
 WORKDIR /front
 COPY . ./
@@ -8,4 +9,3 @@ FROM nginx
 RUN mkdir /html
 COPY --from=base /front/build /html
 COPY nginx_config.conf /etc/nginx/conf.d/default.conf
-ENV REACT_APP_DATA_PANEL_API_URL="http://api.data-panel.lafabrica"
