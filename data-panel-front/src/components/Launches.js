@@ -19,7 +19,7 @@ export default function Launches() {
   const getData = () => {
       fetch(API + "/launches")
       .then((response) => response.json())
-      .then((data) => {setLaunches(data); console.log(data)})
+      .then((data) => setLaunches(data))
       .catch((error) => console.log(error))
       .finally(() => setApiRequested(true))
   }
