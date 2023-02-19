@@ -34,11 +34,11 @@ def main():
   hour = int(time.strftime("%H"))
   message = ""
   if hour >= 22 or (hour > 0 and hour < 7):
-    message = "buenas noches. Ya estoy operativa"
+    message = "buenas noches. Ya estoy operativo"
   elif hour >= 7 and hour < 15:
-    message = "buenos días. Ya estoy operativa"
+    message = "buenos días. Ya estoy operativo"
   elif hour >= 15 and hour < 22:
-    message = "buenas tardes. Ya estoy operativa"
+    message = "buenas tardes. Ya estoy operativo"
   voice.getAndPlay(message)
   
   mqtt_client.on_message = on_message
