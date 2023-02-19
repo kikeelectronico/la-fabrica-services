@@ -10,7 +10,7 @@ class Voice:
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
     self.voice = texttospeech.VoiceSelectionParams(
         language_code="es-ES",
-        name="es-ES-Neural2-D"
+        name="es-ES-Neural2-F"
     )
     self.audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.MP3,
