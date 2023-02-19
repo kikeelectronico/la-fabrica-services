@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./air.css"
 
-const API = "http://" + window.location.hostname + ":8000"
+const API = "http://api.data-panel.lafabrica"
 
 export default function Air() {
 

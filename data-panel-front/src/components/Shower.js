@@ -1,9 +1,7 @@
 import React from "react";
 import "./shower.css"
 
-
 export default function Shower(props) {
-
   return (
     <>
       {

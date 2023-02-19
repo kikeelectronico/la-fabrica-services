@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./clock.css"
 
-
-
 export default function Clock() {
 
   const [show, setShow] = useState(true);

@@ -1,9 +1,7 @@
 import React from "react";
 import "./bedroom.css"
 
-
 export default function Bedroom(props) {
-
   return (
     <>
       {

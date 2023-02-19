@@ -1,9 +1,7 @@
 import React from "react";
 import "./notathome.css"
 
-
 export default function NotAtHome(props) {
-
   return (
     <>
       {
