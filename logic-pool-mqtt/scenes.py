@@ -25,7 +25,7 @@ def film(homeware, topic, payload):
       homeware.execute(control_id, "on", True)
     homeware.execute("scene_pelicula", "deactivate", True)
 
-def shower(homeware, topic, payload):
+def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/deactivate" and not payload:
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
@@ -37,7 +37,7 @@ def shower(homeware, topic, payload):
 
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      homeware.voiceAlert("El baño está preparado")
+      alert.voice("disfruta de la ducha", gpt3=True)
       waiting_for_shower = False
 
 def relax(homeware, topic, payload):
@@ -50,7 +50,7 @@ def relax(homeware, topic, payload):
       homeware.execute(control_id, "on", False)
     homeware.execute("scene_relajacion", "deactivate", True)
 
-def powerAlert(homeware, mqtt_client, topic, payload):
+def powerAlert(homeware, alert, topic, payload):
   if topic == "device/control":
     if payload["id"] == "current001" and payload["param"] == "brightness":
       global last_power_check
@@ -62,8 +62,8 @@ def powerAlert(homeware, mqtt_client, topic, payload):
         if power >= 100:
           power_alert_counter += 1
           if power_alert_counter > 1:
-            homeware.voiceAlert("Sobrecarga de potencia, nivel crítico")
-            mqtt_client.publish("message-alerts", "Sobrecarga de potencia")
+            alert.voice("Sobrecarga de potencia, nivel crítico")
+            alert.message("Sobrecarga de potencia")
             currentToggleSettings = {
               "emergencia": True
             }
@@ -76,7 +76,7 @@ def powerAlert(homeware, mqtt_client, topic, payload):
         if power < 85:
           if power_alert_counter > 1:
             power_alert_counter = 0
-            homeware.voiceAlert("Sistemas de potencia bajo control")
+            alert.voice("Sistemas de potencia bajo control")
             currentToggleSettings = {
               "emergencia": False
             }

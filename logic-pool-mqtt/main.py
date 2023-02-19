@@ -1,9 +1,11 @@
 from cmath import e
 import paho.mqtt.client as mqtt
 import os
+import openai
 
 import functions
 from Homeware import Homeware
+from Alert import Alert
 import scenes
 import switches
 import lights
@@ -21,6 +23,8 @@ MQTT_PORT = 1883
 
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "localhost")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no-token")
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "no-token")
 
 TOPICS = [
   "heartbeats/request",
@@ -42,7 +46,9 @@ TOPICS = [
 ]
 
 mqtt_client = mqtt.Client(client_id="logic-pool-mqtt")
+openai.api_key = OPENAI_API_KEY
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
+alert = Alert(mqtt_client, openai)
 
 def on_message(client, userdata, msg):
   try:
@@ -53,9 +59,9 @@ def on_message(client, userdata, msg):
       switches.green(homeware, msg.topic, payload)
       switches.atHome(homeware, msg.topic, payload)
       scenes.film(homeware, msg.topic, payload)
-      scenes.shower(homeware, msg.topic, payload)
+      scenes.shower(homeware, alert, msg.topic, payload)
       scenes.relax(homeware, msg.topic, payload)
-      scenes.powerAlert(homeware, mqtt_client, msg.topic, payload)
+      scenes.powerAlert(homeware, alert, msg.topic, payload)
       scenes.night(homeware, msg.topic, payload)
       lights.rgbMain(homeware, msg.topic, payload)
       power.powerManagment(homeware, msg.topic, payload)
