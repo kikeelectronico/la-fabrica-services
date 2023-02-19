@@ -13,8 +13,8 @@ class Alert:
     if gpt3:
       openai_response = self.__openai_client.Completion.create(
         model="text-davinci-003",
-        prompt="Dime una frase similar a: " + input_text,
-        max_tokens=30,
+        prompt="frase similar a: " + input_text,
+        max_tokens=20,
         temperature=0.8
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
