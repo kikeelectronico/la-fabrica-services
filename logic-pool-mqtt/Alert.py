@@ -18,7 +18,6 @@ class Alert:
         temperature=0.8
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
-      print(output_text)
     self.__mqtt_client.publish("voice-alerts", output_text)
 
   def message(self, text):
