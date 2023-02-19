@@ -13,7 +13,7 @@ import Bedroom from "../components/Bedroom"
 import NotAtHome from "../components/NotAtHome"
 import React, { useState, useEffect } from "react";
 
-const API = "http://api.data-panel.lafabrica"
+const API = process.env.REACT_APP_DATA_PANEL_API_URL
 
 export default function Home(props) {
 

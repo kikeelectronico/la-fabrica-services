@@ -3,7 +3,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./spotify.css"
 
-const API = "http://api.data-panel.lafabrica"
+const API = process.env.REACT_APP_DATA_PANEL_API_URL
 var loading = false
 
 export default function Spotify(props) {

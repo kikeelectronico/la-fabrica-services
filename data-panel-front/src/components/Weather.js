@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./weather.css"
 
-const API = "http://api.data-panel.lafabrica"
+const API = process.env.REACT_APP_DATA_PANEL_API_URL
 
 export default function Weather() {
 
