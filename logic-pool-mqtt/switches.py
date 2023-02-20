@@ -1,15 +1,16 @@
 def green(homeware, topic, payload):
-  if topic == "device/control":
-    if payload["id"] == "switch003" and payload["param"] == "on":
-      status = payload["value"]
-      control_ids=["light004"]
-      for control_id in control_ids:
-        homeware.execute(control_id, "on", status)
+  # if topic == "device/control":
+  #   if payload["id"] == "switch003" and payload["param"] == "on":
+  #     control_ids=["light004"]
+  #     for control_id in control_ids:
+  #       status = homeware.get(control_id, "on")
+  #       homeware.execute(control_id, "on", status)
   
-  elif topic == "device/switch003/on":
+  if topic == "device/switch003/on":
     control_ids=["light004"]
     for control_id in control_ids:
-      homeware.execute(control_id, "on", payload)
+      status = not homeware.get(control_id, "on")
+      homeware.execute(control_id, "on", status)
 
 def atHome(homeware, topic, payload):  
   if topic == "device/switch_at_home/on":
