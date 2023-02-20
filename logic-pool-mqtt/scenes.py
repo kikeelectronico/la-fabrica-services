@@ -72,9 +72,6 @@ def powerAlert(homeware, alert, topic, payload):
             homeware.execute("rgb001", "currentToggleSettings", currentToggleSettings)
             homeware.execute("rgb002", "currentToggleSettings", currentToggleSettings)
             homeware.execute("rgb003", "currentToggleSettings", currentToggleSettings)
-        # elif power_alert_counter <= 3 and power >= 90:
-        #   power_alert_counter += 1
-        #   homeware.voiceAlert("Sobrecarga de potencia, nivel 9")
         if power < 85:
           if power_alert_counter > 1:
             power_alert_counter = 0
