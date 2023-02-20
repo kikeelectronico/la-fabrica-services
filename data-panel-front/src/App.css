@@ -12,8 +12,8 @@ html, body {
   background-color: rgb(0, 0, 0);
   background-repeat:  no-repeat;
   background-size: cover;
-  -webkit-transition: background-image 1s ease-in-out, background-position 1s ease-in-out;
-  transition: background-image 1s ease-in-out, background-position 1s ease-in-out;
+  -webkit-transition: background-image 1s ease-out, background-position 1s ease-out;
+  transition: background-image 1s ease-out, background-position 1s ease-out;
 }
 
 .appOverlay {
