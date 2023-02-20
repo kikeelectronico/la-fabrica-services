@@ -33,6 +33,7 @@ def shower(homeware, alert, topic, payload):
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     waiting_for_shower = True
   elif topic == "device/scene_ducha/deactivate" and payload:
+    alert.voice("espero que te hayas disfrutado de la ducha", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     waiting_for_shower = False
 
