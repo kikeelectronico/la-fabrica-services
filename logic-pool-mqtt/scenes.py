@@ -28,6 +28,7 @@ def film(homeware, topic, payload):
 def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/deactivate" and not payload:
+    alert.voice("voy a preparar el baño para que te duches", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     waiting_for_shower = True
