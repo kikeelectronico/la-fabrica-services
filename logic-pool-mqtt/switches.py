@@ -1,11 +1,4 @@
-def green(homeware, topic, payload):
-  # if topic == "device/control":
-  #   if payload["id"] == "switch003" and payload["param"] == "on":
-  #     control_ids=["light004"]
-  #     for control_id in control_ids:
-  #       status = homeware.get(control_id, "on")
-  #       homeware.execute(control_id, "on", status)
-  
+def green(homeware, topic, payload):  
   if topic == "device/switch003/on":
     control_ids=["light004"]
     for control_id in control_ids:
