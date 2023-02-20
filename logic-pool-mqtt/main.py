@@ -59,7 +59,7 @@ def on_message(client, userdata, msg):
       if payload is not None:
         switches.green(homeware, msg.topic, payload)
         switches.atHome(homeware, msg.topic, payload)
-        scenes.film(homeware, msg.topic, payload)
+        scenes.film(homeware, alert, msg.topic, payload)
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.relax(homeware, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)

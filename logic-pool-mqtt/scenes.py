@@ -6,8 +6,9 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
-def film(homeware, topic, payload):
+def film(homeware, alert, topic, payload):
   if topic == "device/scene_pelicula/deactivate" and not payload:
+    alert.voice("¡me encantan las películas!", gpt3=True)
     # Turn off some lights
     turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
     for control_id in turn_off_devices:
