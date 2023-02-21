@@ -51,7 +51,7 @@ homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
 alert = Alert(mqtt_client, openai)
 
 def on_message(client, userdata, msg):
-  try:
+  if True:
     if msg.topic == "heartbeats/request":
       mqtt_client.publish("heartbeats", "logic-pool-mqtt")
     else:
@@ -67,9 +67,9 @@ def on_message(client, userdata, msg):
         lights.rgbMain(homeware, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
         sensors.hood(homeware, msg.topic, payload)
-  except Exception as e:
-    mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
-    mqtt_client.publish("message-alerts", str(e))
+  # except Exception as e:
+  #   mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
+  #   mqtt_client.publish("message-alerts", str(e))
 
 
 def on_connect(client, userdata, flags, rc):
