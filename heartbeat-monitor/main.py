@@ -67,6 +67,7 @@ def on_message(client, userdata, msg):
 		devices_heartbeats[service] = time.time()
 		homeware.execute(service.decode("utf-8"), "online", True)
 
+# Main entry point
 if __name__ == "__main__":
 	# Check env vars
 	if MQTT_HOST == "no_set":
