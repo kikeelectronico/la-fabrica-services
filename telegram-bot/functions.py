@@ -6,9 +6,21 @@ def getPublicIP(endpoint):
     ip = requests.get(endpoint).text
     return ip
 
-def getHomewareTest(url, api_key):
-    response = requests.get(url + "/test").text
-    return response
+def getHomewareTest(api_url, api_key):
+    try:
+        url = api_url + "/api/status/get/scene_noche"
+        headers = {
+            "Authorization": "baerer " + api_key
+        }
+
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            status = response.json()
+            return "deactivate" in status
+        else:
+            return False
+    except ConnectionError:
+        return False
 
 def test():
   return "I think this is broken. It has a hole."

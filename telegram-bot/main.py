@@ -39,7 +39,7 @@ def send_welcome(message):
         elif 'home' in message.text:
             # Test Homeware API and db
             response = functions.getHomewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY)
-            bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
+            bot.send_message(ENRIQUE_CHAT_ID, "Corriendo" if response else "Caido", parse_mode= 'Markdown')
         elif 'directions' in message.text:
             # Get the public IP
             response = functions.getPublicIP(GET_IP_ENDPOINT)
