@@ -11,6 +11,10 @@ if os.environ.get("BOT_TOKEN", "no_token") == "no_set":
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_set")
 ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_set")
+HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
+HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
+GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "no_set")
+BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_set")
 
 # Declare variables
 wait_flag = ""
@@ -34,11 +38,11 @@ def send_welcome(message):
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
         elif 'home' in message.text:
             # Test Homeware API and db
-            response = functions.getHomewareTest()
+            response = functions.getHomewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY)
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
         elif 'directions' in message.text:
             # Get the public IP
-            response = functions.getPublicIP()
+            response = functions.getPublicIP(GET_IP_ENDPOINT)
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
         elif 'yt' in message.text:
             # Download a YouTube video
@@ -56,7 +60,7 @@ def echo_message(message):
         if wait_flag == "yt":
             bot.send_message(ENRIQUE_CHAT_ID, "Descargando...", parse_mode= 'Markdown')
             url = message.text
-            urls = functions.downloadYouTubeVideo(url, storage_client)
+            urls = functions.downloadYouTubeVideo(url, storage_client, BUCKET_NAME)
             bot.send_message(ENRIQUE_CHAT_ID, "Lo tenemos", parse_mode= 'Markdown')
             for url in urls:
                 bot.send_message(ENRIQUE_CHAT_ID, url, parse_mode= 'Markdown')
@@ -69,6 +73,18 @@ if __name__ == "__main__":
       exit()
     if ENRIQUE_CHAT_ID == "no_set":
       print("ENRIQUE_CHAT_ID env vars no set")
+      exit()
+    if HOMEWARE_API_KEY == "no_set":
+      print("HOMEWARE_API_KEY env vars no set")
+      exit()
+    if HOMEWARE_API_URL == "no_set":
+      print("HOMEWARE_API_URL env vars no set")
+      exit()
+    if GET_IP_ENDPOINT == "no_set":
+      print("GET_IP_ENDPOINT env vars no set")
+      exit()
+    if BUCKET_NAME == "no_set":
+      print("BUCKET_NAME env vars no set")
       exit()
     # Main loop
     bot.infinity_polling()

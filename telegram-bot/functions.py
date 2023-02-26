@@ -2,27 +2,18 @@ import os
 import requests
 from pytube import YouTube, Playlist
 
-if os.environ.get("HOMEWARE_APIKEY", "no_api_key") == "no_api_key":
-  from dotenv import load_dotenv
-  load_dotenv(dotenv_path="../.env")
-
-HOMEWARE_APIKEY = os.environ.get("HOMEWARE_APIKEY", "no_api_key")
-HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_domain")
-GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "no_ip")
-BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_bucket")
-
-def getPublicIP():
-    ip = requests.get(GET_IP_ENDPOINT).text
+def getPublicIP(endpoint):
+    ip = requests.get(endpoint).text
     return ip
 
-def getHomewareTest():
-    response = requests.get(HOMEWARE_API_URL + "/test").text
+def getHomewareTest(url, api_key):
+    response = requests.get(url + "/test").text
     return response
 
 def test():
   return "I think this is broken. It has a hole."
 
-def downloadYouTubeVideo(url, storage_client):
+def downloadYouTubeVideo(url, storage_client, bucket):
     if not 'list' in url:
         video = YouTube(url)
         video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
@@ -38,12 +29,12 @@ def downloadYouTubeVideo(url, storage_client):
     urls = []
     for file in files:
         # Upload to the bucket
-        bucket = storage_client.bucket(BUCKET_NAME)
+        bucket = storage_client.bucket(bucket)
         blob = bucket.blob(file)
         blob.upload_from_filename(file)
         # Delete the local file
         os.remove(file)
         # Add URL
-        urls.append("https://storage.cloud.google.com/" + BUCKET_NAME + "/" + file.replace(" ", "%20"))
+        urls.append("https://storage.cloud.google.com/" + bucket + "/" + file.replace(" ", "%20"))
     # Return URL
     return urls
