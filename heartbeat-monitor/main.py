@@ -68,6 +68,23 @@ def on_message(client, userdata, msg):
 		homeware.execute(service.decode("utf-8"), "online", True)
 
 if __name__ == "__main__":
+	# Check env vars
+	if MQTT_HOST == "no_set":
+		print("MQTT_HOST env vars no set")
+		exit()
+	if MQTT_PASS == "no_set":
+		print("MQTT_PASS env vars no set")
+		exit()
+	if MQTT_HOST == "no_set":
+		print("MQTT_HOST env vars no set")
+		exit()
+	if HOMEWARE_API_URL == "no_set":
+		print("HOMEWARE_API_URL env vars no set")
+		exit()
+	if HOMEWARE_API_KEY == "no_set":
+		print("HOMEWARE_API_KEY env vars no set")
+		exit()
+    
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
 	mqtt_client.on_connect = on_connect
