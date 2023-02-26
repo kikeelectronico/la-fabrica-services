@@ -18,7 +18,7 @@ HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
 MQTT_PORT = 1883
 SLEEP_TIME = 10
 
-# Create objects
+# Instantiate objects
 mqtt_client = mqtt.Client(client_id="alert-system-requests")  
 
 # Main entry point
@@ -53,7 +53,7 @@ if __name__ == "__main__":
       mqtt_client.publish("message-alerts", "Homeware no responde")
     # Send heartbeart
     mqtt_client.publish("heartbeats", "alert-system-requests")
-    # wait until next iteration
+    # Wait until next iteration
     time.sleep(SLEEP_TIME)
 
     
