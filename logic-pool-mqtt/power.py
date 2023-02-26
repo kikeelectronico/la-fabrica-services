@@ -14,9 +14,10 @@ power_alert = False
 
 # Decide if a radiator should be turn on or off
 def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
-  if homeware.get(thermostat_id, "thermostatMode") == "heat" or rule_14:
-    ambient = homeware.get(thermostat_id, "thermostatTemperatureAmbient")
-    set_point = homeware.get(thermostat_id, "thermostatTemperatureSetpoint") if not rule_14 else 14
+  state = homeware.get(thermostat_id, "all")
+  if state["thermostatMode"] == "heat" or rule_14:
+    ambient = state["thermostatTemperatureAmbient"]
+    set_point = state["thermostatTemperatureSetpoint"] if not rule_14 else 14
     if ambient < set_point:
       return True
     elif ambient > set_point:
