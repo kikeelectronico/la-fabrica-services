@@ -2,41 +2,68 @@ import paho.mqtt.client as mqtt
 import telebot
 import os
 
-if os.environ.get("MQTT_PASS", "pass") == "pass":
+# Load env vars
+if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
   load_dotenv(dotenv_path="../.env")
 
-MQTT_USER = os.environ.get("MQTT_USER", "user")
-MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_HOST", "localhost")
-MQTT_PORT = 1883
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_token")
-ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_id")
+MQTT_USER = os.environ.get("MQTT_USER", "no_set")
+MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
+MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "no_set")
+ENRIQUE_CHAT_ID = os.environ.get("ENRIQUE_CHAT_ID", "no_set")
 
+# Define constants
+MQTT_PORT = 1883
 TOPICS = ["heartbeats/request","message-alerts"]
 
+# Instantiate objects
 mqtt_client = mqtt.Client(client_id="message-alert")
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
-def on_message(client, userdata, msg):
-  if msg.topic in TOPICS:
-    if msg.topic == "heartbeats/request":
-      mqtt_client.publish("heartbeats", "message-alert")
-    else:
-      payload = msg.payload.decode('utf-8').replace("\'", "\"")
-      bot.send_message(ENRIQUE_CHAT_ID, payload)
-
+# Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
         client.subscribe(topic)
+
+# Do tasks when a message is received
+def on_message(client, userdata, msg):
+  if msg.topic == "heartbeats/request":
+    # Send heartbeat
+    mqtt_client.publish("heartbeats", "message-alert")
+  else:
+    # Send the message to the Telegram API
+    payload = msg.payload.decode('utf-8').replace("\'", "\"")
+    bot.send_message(ENRIQUE_CHAT_ID, payload)
 	
+# Main entry point
 if __name__ == "__main__":
+  # Check env vars
+  if MQTT_HOST == "no_set":
+    print("MQTT_HOST env vars no set")
+    exit()
+  if MQTT_PASS == "no_set":
+    print("MQTT_PASS env vars no set")
+    exit()
+  if MQTT_HOST == "no_set":
+    print("MQTT_HOST env vars no set")
+    exit()
+  if BOT_TOKEN == "no_set":
+    print("BOT_TOKEN env vars no set")
+    exit()
+  if ENRIQUE_CHAT_ID == "no_set":
+    print("ENRIQUE_CHAT_ID env vars no set")
+    exit()
+
+  # Declare the callback functions
   mqtt_client.on_message = on_message
   mqtt_client.on_connect = on_connect
-
+  # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  # Wake up alert
   mqtt_client.publish("message-alerts", "Message alert operativo: operativo")
+  # Main loop
   mqtt_client.loop_forever()
 
     
