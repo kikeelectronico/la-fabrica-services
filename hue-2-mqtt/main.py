@@ -59,11 +59,13 @@ if __name__ == "__main__":
   mqtt_client.publish("message-alerts", "Hue 2 MQTT: operativo")
   # Main loop
   while True:
-    # Check online devices
     devices = hue.getDevices()
     for device_id in devices:
       device = devices[device_id]
-      homeware.execute("hue_" + device_id,
-                       "online",
-                       device["state"]["reachable"])
+      # Check online devices
+      if "state" in device:
+        if "reachable" in device["state"]:
+          homeware.execute("hue_" + device_id,
+                          "online",
+                          device["state"]["reachable"])
     time.sleep(SLEEP_TIME)
