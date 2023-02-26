@@ -67,7 +67,7 @@ def on_message(client, userdata, msg):
         lights.rgbPropagation(homeware, msg.topic, payload)
         scenes.film(homeware, alert, msg.topic, payload)
         scenes.shower(homeware, alert, msg.topic, payload)
-        scenes.relax(homeware, msg.topic, payload)
+        scenes.relax(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         scenes.night(homeware, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)

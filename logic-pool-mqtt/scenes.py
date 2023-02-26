@@ -64,11 +64,12 @@ def shower(homeware, alert, topic, payload):
       waiting_for_shower = False
 
 # Set a relax scene
-def relax(homeware, topic, payload):
+def relax(homeware, alert, topic, payload):
   if topic == "device/scene_relajacion/deactivate":
     global scene_pre_state
     if not payload:
       # Activate scenes
+      alert.voice("configuro un ambiente de relajación.", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
       for device_id in devices_id:
