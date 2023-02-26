@@ -6,19 +6,19 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
-film_pre_state = {}
+scene_pre_state = {}
 
 # Set the film scene
 def film(homeware, alert, topic, payload):
   if topic == "device/scene_pelicula/deactivate":
-    global film_pre_state
+    global scene_pre_state
     if not payload:
       # Activate scene
       alert.voice("¡me encantan las películas!", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
-        film_pre_state[device_id] = homeware.get(device_id, "all")
+        scene_pre_state[device_id] = homeware.get(device_id, "all")
       # Turn off some lights
       turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
       for control_id in turn_off_devices:
@@ -39,7 +39,7 @@ def film(homeware, alert, topic, payload):
       # Deactivate scene
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
-        device_state = film_pre_state[device_id]
+        device_state = scene_pre_state[device_id]
         for param in device_state:
           homeware.execute(device_id, param, device_state[param])
 
