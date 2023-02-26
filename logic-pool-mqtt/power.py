@@ -14,9 +14,9 @@ power_alert = False
 
 cache = {}
 
+# Decide if a radiator should be turn on or off
 def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
   global cache
-
   if cache[thermostat_id]["thermostatMode"] == "heat" or rule_14:
     ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
     set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"] if not rule_14 else 14
@@ -29,6 +29,7 @@ def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
   else:
     return False
 
+# Control the power distribution
 def powerManagment(homeware, topic, payload): 
   global power_timestamp
   global power_pre_alert
@@ -93,6 +94,7 @@ def powerManagment(homeware, topic, payload):
     if topic == "device/thermostat_bathroom":
       cache["thermostat_bathroom"] = payload
 
+    # Verify power consumption and generate both pre alert and alert
     if cache["power"] >= 100:
       if power_pre_alert:
         if (time.time() - power_timestamp) > TIME_TO_ENABLE_POWER_ALERT:
@@ -100,14 +102,14 @@ def powerManagment(homeware, topic, payload):
       else:
         power_pre_alert = True
         power_timestamp = time.time()
-
+    # Diable pre alert
     if power_pre_alert and cache["power"] < 100:
       power_pre_alert = False
-
+    # Disable alert
     if cache["power"] < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
       power_alert = False
       power_pre_alert = False
-
+    # Power distribution
     if not power_alert:
       if not cache["scene_ducha"]:
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
@@ -127,7 +129,7 @@ def powerManagment(homeware, topic, payload):
       bathroom = False
       heater = False
 
-    # Set values
+    # Send new values to Homeware
     homeware.execute("water_heater_001","on",heater)
     homeware.execute("radiator001","on",livingroom)
     homeware.execute("radiator002","on",bedroom)

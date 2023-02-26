@@ -1,4 +1,5 @@
-def rgbMain(homeware, topic, payload):
+# Propagate color changes on RGB strips
+def rgbPropagation(homeware, topic, payload):
   if topic == "device/rgb001/color":
     control_ids = ["rgb002"]
     for control_id in control_ids:
