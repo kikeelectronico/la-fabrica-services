@@ -1,0 +1,30 @@
+import json
+import requests
+
+class Homeware:
+
+  __mqtt_client = None
+  __url = "localhost"
+  __token = "token"
+
+  def __init__(self, mqtt_client, host, token):
+    self.__mqtt_client = mqtt_client
+    self.__url = host
+    self.__token = token
+
+  # Make an execution request to Homeware API
+  def execute(self, id, param, value):    
+    control_payload = {
+      "id": id,
+      "param": param,
+      "value": value,
+      "intent": "execute"
+    }
+    self.__mqtt_client.publish("device/control", json.dumps(control_payload))
+
+  # Make a get status request to Homeware API
+  def get(self, id, param):
+    url = self.__url + "/api/status/get/" + id
+    headers = {"Authorization": "baerer " + self.__token}
+    response = requests.get(url, headers=headers)
+    return response.json()[param]
