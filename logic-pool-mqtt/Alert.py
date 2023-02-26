@@ -8,8 +8,10 @@ class Alert:
     self.__mqtt_client = mqtt_client
     self.__openai_client = openai_client
 
+  # Send a voice alert
   def voice(self, input_text, gpt3=False):
     output_text = input_text
+    # Process the message using GPT3 if required
     if gpt3:
       openai_response = self.__openai_client.Completion.create(
         model="text-davinci-003",
@@ -18,7 +20,9 @@ class Alert:
         temperature=1
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
+    # Send the message
     self.__mqtt_client.publish("voice-alerts", output_text)
 
+  # Send a message alert
   def message(self, text):
     self.__mqtt_client.publish("message-alerts", text)
