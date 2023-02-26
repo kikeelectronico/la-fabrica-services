@@ -31,6 +31,10 @@ This microservice monitors the heartbeats sent by the rest of microservices and 
 
 This microservice requests heartbeats to the passive microservices. A microservice is passive when it doesn't send the heartbeats by itself, it needs an external request.
 
+### Hue 2 mqtt
+
+This microservice gets data from the Philips Hue Bridge and push it to Homeware via MQTT
+
 ### Logic pool MQTT
 
 This microservice is in charge of making logic relationships between devices and scenes. It interacts with Homeware MQTT API for detecting trigger events and making changes in devices.
