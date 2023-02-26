@@ -9,8 +9,8 @@ class Hue:
     self.__url = url
     self.__token = token
     
-  # Get devices json
-  def getDevices(self):
+  # Get lights json
+  def getLights(self):
     url = "http://" + self.__url + "/api/" +	self.__token + "/lights"
     response = requests.get(url)
     return response.json()
