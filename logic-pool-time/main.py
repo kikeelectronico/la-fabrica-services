@@ -31,8 +31,8 @@ def main():
   global last_heartbeat_timestamp
   global just_executed
   # Check env vars
-  if MQTT_HOST == "no_set":
-    print("MQTT_HOST env vars no set")
+  if MQTT_USER == "no_set":
+    print("MQTT_USER env vars no set")
     exit()
   if MQTT_PASS == "no_set":
     print("MQTT_PASS env vars no set")

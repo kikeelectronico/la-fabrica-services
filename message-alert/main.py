@@ -39,8 +39,8 @@ def on_message(client, userdata, msg):
 # Main entry point
 if __name__ == "__main__":
   # Check env vars
-  if MQTT_HOST == "no_set":
-    print("MQTT_HOST env vars no set")
+  if MQTT_USER == "no_set":
+    print("MQTT_USER env vars no set")
     exit()
   if MQTT_PASS == "no_set":
     print("MQTT_PASS env vars no set")
