@@ -57,11 +57,11 @@ if __name__ == "__main__":
   while True:
     # Verify Homeware connectivity
     if not functions.homewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY):
-      mqtt_client.publish("voice-alerts", "Homeware no responde")
+      mqtt_client.publish("voice-alert/text", "Homeware no responde")
       mqtt_client.publish("message-alerts", "Homeware no responde")
     # Verify Hue Bridge connectivity
     if not functions.hueTest(HUE_HOST, HUE_TOKEN):
-      mqtt_client.publish("voice-alerts", "Hue bridge no responde")
+      mqtt_client.publish("voice-alert/text", "Hue bridge no responde")
       mqtt_client.publish("message-alerts", "Hue bridge no responde")
     # Send heartbeart
     mqtt_client.publish("heartbeats", "alert-system-requests")

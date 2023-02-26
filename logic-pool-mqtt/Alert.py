@@ -21,7 +21,7 @@ class Alert:
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
     # Send the message
-    self.__mqtt_client.publish("voice-alerts", output_text)
+    self.__mqtt_client.publish("voice-alert/text", output_text)
 
   # Send a message alert
   def message(self, text):
