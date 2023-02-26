@@ -12,14 +12,11 @@ power_timestamp = 0
 power_pre_alert = False
 power_alert = False
 
-cache = {}
-
 # Decide if a radiator should be turn on or off
 def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
-  global cache
-  if cache[thermostat_id]["thermostatMode"] == "heat" or rule_14:
-    ambient = cache[thermostat_id]["thermostatTemperatureAmbient"]
-    set_point = cache[thermostat_id]["thermostatTemperatureSetpoint"] if not rule_14 else 14
+  if homeware.get(thermostat_id, "thermostatMode") == "heat" or rule_14:
+    ambient = homeware.get(thermostat_id, "thermostatTemperatureAmbient")
+    set_point = homeware.get(thermostat_id, "thermostatTemperatureSetpoint") if not rule_14 else 14
     if ambient < set_point:
       return True
     elif ambient > set_point:
@@ -34,7 +31,6 @@ def powerManagment(homeware, topic, payload):
   global power_timestamp
   global power_pre_alert
   global power_alert
-  global cache
 
   TOPICS = [
     "device/scene_ducha/deactivate",
@@ -47,55 +43,9 @@ def powerManagment(homeware, topic, payload):
   ]
 
   if topic in TOPICS:
-    if not "power" in cache.keys():  
-      cache["power"] = homeware.get("current001", "brightness")
-    if topic == "device/current001/brightness":
-      cache["power"] = int(payload)
-
-    if not "switch_radiator" in cache.keys():  
-      cache["switch_radiator"] = homeware.get("switch_radiator", "on")
-    if topic == "device/switch_radiator/on":
-      cache["switch_radiator"] = payload
-
-    if not "switch_at_home" in cache.keys():  
-      cache["switch_at_home"] = homeware.get("switch_at_home", "on")
-    if topic == "device/switch_at_home/on":
-      cache["switch_at_home"] = payload
-
-    if not "scene_ducha" in cache.keys():  
-      cache["scene_ducha"] = homeware.get("scene_ducha", "deactivate")
-    if topic == "device/scene_ducha/deactivate":
-      cache["scene_ducha"] = payload
-
-    if not "thermostat_livingroom" in cache.keys():  
-      cache["thermostat_livingroom"] = {
-        "thermostatTemperatureAmbient": homeware.get("thermostat_livingroom", "thermostatTemperatureAmbient"),
-        "thermostatMode": homeware.get("thermostat_livingroom", "thermostatMode"),
-        "thermostatTemperatureSetpoint": homeware.get("thermostat_livingroom", "thermostatTemperatureSetpoint")
-      }
-    if topic == "device/thermostat_livingroom":
-      cache["thermostat_livingroom"] = payload
-
-    if not "thermostat_dormitorio" in cache.keys():  
-      cache["thermostat_dormitorio"] = {
-        "thermostatTemperatureAmbient": homeware.get("thermostat_dormitorio", "thermostatTemperatureAmbient"),
-        "thermostatMode": homeware.get("thermostat_dormitorio", "thermostatMode"),
-        "thermostatTemperatureSetpoint": homeware.get("thermostat_dormitorio", "thermostatTemperatureSetpoint")
-      }
-    if topic == "device/thermostat_dormitorio":
-      cache["thermostat_dormitorio"] = payload
-
-    if not "thermostat_bathroom" in cache.keys():  
-      cache["thermostat_bathroom"] = {
-        "thermostatTemperatureAmbient": homeware.get("thermostat_bathroom", "thermostatTemperatureAmbient"),
-        "thermostatMode": homeware.get("thermostat_bathroom", "thermostatMode"),
-        "thermostatTemperatureSetpoint": homeware.get("thermostat_bathroom", "thermostatTemperatureSetpoint")
-      }
-    if topic == "device/thermostat_bathroom":
-      cache["thermostat_bathroom"] = payload
-
     # Verify power consumption and generate both pre alert and alert
-    if cache["power"] >= 100:
+    power = homeware.get("current001", "brightness")
+    if power >= 100:
       if power_pre_alert:
         if (time.time() - power_timestamp) > TIME_TO_ENABLE_POWER_ALERT:
           power_alert = True
@@ -103,23 +53,23 @@ def powerManagment(homeware, topic, payload):
         power_pre_alert = True
         power_timestamp = time.time()
     # Diable pre alert
-    if power_pre_alert and cache["power"] < 100:
+    if power_pre_alert and power < 100:
       power_pre_alert = False
     # Disable alert
-    if cache["power"] < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
+    if power < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
       power_alert = False
       power_pre_alert = False
     # Power distribution
     if not power_alert:
-      if not cache["scene_ducha"]:
+      if not homeware.get("scene_ducha", "deactivate"):
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         livingroom = not bathroom
         heater = (not bathroom) and (not livingroom)
         bedroom = False
       else:
-        rule_14 = not cache["switch_at_home"]
+        rule_14 = not homeware.get("switch_at_home", "on")
         livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
-        controled_by = "thermostat_dormitorio" if not cache["switch_radiator"] else "thermostat_livingroom"
+        controled_by = "thermostat_dormitorio" if not homeware.get("switch_radiator", "on") else "thermostat_livingroom"
         bedroom = shouldHeat(homeware, controled_by, "radiator002", rule_14)
         bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
         heater = not livingroom
