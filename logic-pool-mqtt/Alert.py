@@ -9,7 +9,7 @@ class Alert:
     self.__openai_client = openai_client
 
   # Send a voice alert
-  def voice(self, input_text, gpt3=False):
+  def voice(self, input_text, speaker="all", gpt3=False):
     output_text = input_text
     # Process the message using GPT3 if required
     if gpt3:
@@ -21,6 +21,7 @@ class Alert:
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
     # Send the message
+    self.__mqtt_client.publish("voice-alert/speakers", speaker)
     self.__mqtt_client.publish("voice-alert/text", output_text)
 
   # Send a message alert

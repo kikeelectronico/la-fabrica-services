@@ -14,7 +14,7 @@ MQTT_HOST = os.environ.get("MQTT_HOST_LOCAL_NETWORK", "no_set")
 
 # Define constants
 MQTT_PORT = 1883
-TOPICS = ["heartbeats/request","voice-alert/text"]
+TOPICS = ["heartbeats/request","voice-alert/text", "voice-alert/speakers"]
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="voice-alert")
@@ -35,6 +35,8 @@ def on_message(client, userdata, msg):
       # Send the message to the Smart Speakers
       payload = msg.payload.decode('utf-8').replace("\'", "\"")
       voice.getAndPlay(payload)
+    elif msg.topic == "voice-alert/speakers":
+      voice.setSpeakers(msg.payload.decode('utf-8'))
 
 # Main entry point
 if __name__ == "__main__":
