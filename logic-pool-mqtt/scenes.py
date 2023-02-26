@@ -65,15 +65,29 @@ def shower(homeware, alert, topic, payload):
 
 # Set a relax scene
 def relax(homeware, topic, payload):
-  if topic == "device/scene_relajacion/deactivate" and not payload:
-    # Turn on some lights
-    turn_on_devices = ["light003", "rgb001", "rgb002", "rgb003"]
-    for control_id in turn_on_devices:
-      homeware.execute(control_id, "on", True)
-    # Turn off some lights
-    turn_off_devices = ["light001", "light002", "light004", "hue_1"]
-    for control_id in turn_off_devices:
-      homeware.execute(control_id, "on", False)
+  if topic == "device/scene_relajacion/deactivate":
+    global scene_pre_state
+    if not payload:
+      # Activate scenes
+      # Save current status
+      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
+      for device_id in devices_id:
+        scene_pre_state[device_id] = homeware.get(device_id, "all")
+      # Turn on some lights
+      turn_on_devices = ["light003", "rgb001", "rgb002", "rgb003"]
+      for control_id in turn_on_devices:
+        homeware.execute(control_id, "on", True)
+      # Turn off some lights
+      turn_off_devices = ["light001", "light002", "light004", "hue_1"]
+      for control_id in turn_off_devices:
+        homeware.execute(control_id, "on", False)
+    else:
+      # Deactivate scene
+      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
+      for device_id in devices_id:
+        device_state = scene_pre_state[device_id]
+        for param in device_state:
+          homeware.execute(device_id, param, device_state[param])
 
 # Set the power alert scene
 def powerAlert(homeware, alert, topic, payload):
