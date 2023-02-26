@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import os
 import time
-from functions import getHomewareTest
+import functions
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "pass") == "pass":
@@ -47,10 +47,14 @@ if __name__ == "__main__":
   mqtt_client.publish("message-alerts", "Alert system request: operativo")
   # Main loop
   while True:
-    # Verify homeware connectivity
-    if not getHomewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY):
+    # Verify Homeware connectivity
+    if not functions.homewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY):
       mqtt_client.publish("voice-alerts", "Homeware no responde")
       mqtt_client.publish("message-alerts", "Homeware no responde")
+    # Verify Hue Bridge connectivity
+    if not functions.hueTest(HOMEWARE_API_URL, HOMEWARE_API_KEY):
+      mqtt_client.publish("voice-alerts", "Hue bridge no responde")
+      mqtt_client.publish("message-alerts", "Hue bridge no responde")
     # Send heartbeart
     mqtt_client.publish("heartbeats", "alert-system-requests")
     # Wait until next iteration
