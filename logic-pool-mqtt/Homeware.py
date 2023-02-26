@@ -27,4 +27,6 @@ class Homeware:
     url = self.__url + "/api/status/get/" + id
     headers = {"Authorization": "baerer " + self.__token}
     response = requests.get(url, headers=headers)
+    if param == "all":
+      return response.json()
     return response.json()[param]

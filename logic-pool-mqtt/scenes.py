@@ -6,27 +6,42 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
+film_pre_state = {}
+
 # Set the film scene
 def film(homeware, alert, topic, payload):
-  if topic == "device/scene_pelicula/deactivate" and not payload:
-    alert.voice("¡me encantan las películas!", gpt3=True)
-    # Turn off some lights
-    turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
-    for control_id in turn_off_devices:
-      homeware.execute(control_id, "on", False)
-    # Change the color of some lights and turn them on
-    turn_on_devices = ["rgb001", "rgb002"]
-    color = {
-      "spectrumRGB": 16741656,
-      "spectrumRgb": 16741656
-    }
-    # Change color
-    for control_id in turn_on_devices:
-      homeware.execute(control_id, "color", color)
-    # Turn on
-    for control_id in turn_on_devices:
-      homeware.execute(control_id, "on", True)
-    homeware.execute("scene_pelicula", "deactivate", True)
+  if topic == "device/scene_pelicula/deactivate":
+    global film_pre_state
+    if not payload:
+      # Activate scene
+      alert.voice("¡me encantan las películas!", gpt3=True)
+      # Save current status
+      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
+      for device_id in devices_id:
+        film_pre_state[device_id] = homeware.get(device_id, "all")
+      # Turn off some lights
+      turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
+      for control_id in turn_off_devices:
+        homeware.execute(control_id, "on", False)
+      # Change the color of some lights and turn them on
+      turn_on_devices = ["rgb001", "rgb002"]
+      color = {
+        "spectrumRGB": 16741656,
+        "spectrumRgb": 16741656
+      }
+      # Change color
+      for control_id in turn_on_devices:
+        homeware.execute(control_id, "color", color)
+      # Turn on
+      for control_id in turn_on_devices:
+        homeware.execute(control_id, "on", True)
+    else:
+      # Deactivate scene
+      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
+      for device_id in devices_id:
+        device_state = film_pre_state[device_id]
+        for param in device_state:
+          homeware.execute(device_id, param, device_state[param])
 
 # Set the shower scene
 def shower(homeware, alert, topic, payload):
