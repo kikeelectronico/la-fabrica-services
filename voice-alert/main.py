@@ -4,33 +4,58 @@ import time
 
 from Voice import Voice
 
-if os.environ.get("MQTT_PASS", "pass") == "pass":
+if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
   load_dotenv(dotenv_path="../.env")
 
-MQTT_USER = os.environ.get("MQTT_USER", "user")
-MQTT_PASS = os.environ.get("MQTT_PASS", "pass")
-MQTT_HOST = os.environ.get("MQTT_HOST_LOCAL_NETWORK", "localhost")
-MQTT_PORT = 1883
+MQTT_USER = os.environ.get("MQTT_USER", "no_set")
+MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
+MQTT_HOST = os.environ.get("MQTT_HOST_LOCAL_NETWORK", "no_set")
 
+# Define constants
+MQTT_PORT = 1883
 TOPICS = ["heartbeats/request","voice-alerts"]
 
+# Instantiate objects
 mqtt_client = mqtt.Client(client_id="voice-alert")
 voice = Voice()
 
-def on_message(client, userdata, msg):
-  if msg.topic in TOPICS:
-    if msg.topic == "heartbeats/request":
-      mqtt_client.publish("heartbeats", "voice-alert")
-    elif msg.topic == "voice-alerts":
-      payload = msg.payload.decode('utf-8').replace("\'", "\"")
-      voice.getAndPlay(payload)
-
+# Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
     for topic in TOPICS:
         client.subscribe(topic)
-	
-def main():
+
+# Do tasks when a message is received
+def on_message(client, userdata, msg):
+  if msg.topic in TOPICS:
+    if msg.topic == "heartbeats/request":
+      # Send heartbeart
+      mqtt_client.publish("heartbeats", "voice-alert")
+    elif msg.topic == "voice-alerts":
+      # Send the message to the Smart Speakers
+      payload = msg.payload.decode('utf-8').replace("\'", "\"")
+      voice.getAndPlay(payload)
+
+# Main entry point
+if __name__ == "__main__":
+  # Check env vars
+  if MQTT_HOST == "no_set":
+    print("MQTT_HOST env vars no set")
+    exit()
+  if MQTT_PASS == "no_set":
+    print("MQTT_PASS env vars no set")
+    exit()
+  if MQTT_HOST == "no_set":
+    print("MQTT_HOST env vars no set")
+    exit()
+  
+  # Declare the callback functions
+  mqtt_client.on_message = on_message
+  mqtt_client.on_connect = on_connect
+  # Connect to the mqtt broker
+  mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+  mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  # Wake up alert
   hour = int(time.strftime("%H"))
   message = ""
   if hour >= 22 or (hour > 0 and hour < 7):
@@ -40,15 +65,8 @@ def main():
   elif hour >= 15 and hour < 22:
     message = "buenas tardes. Ya estoy operativo"
   voice.getAndPlay(message)
-  
-  mqtt_client.on_message = on_message
-  mqtt_client.on_connect = on_connect
-
-  mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
-  mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  # Main loop
   mqtt_client.loop_forever()
 
-if __name__ == "__main__":
-  main()
 
     
