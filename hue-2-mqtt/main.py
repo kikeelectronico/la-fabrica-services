@@ -22,6 +22,9 @@ HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_set")
 MQTT_PORT = 1883
 SLEEP_TIME = 10
 
+# Declare variables
+cache = {}
+
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="hue-2-mqtt")
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
@@ -65,7 +68,14 @@ if __name__ == "__main__":
       device = devices[device_id]
       if "state" in device:
         if "reachable" in device["state"]:
-          homeware.execute("hue_" + device_id,
-                          "online",
-                          device["state"]["reachable"])
+          if "hue_" + device_id in cache:
+            if not cache["hue_" + device_id]["reachable"] == device["state"]["reachable"]
+              homeware.execute("hue_" + device_id,
+                              "online",
+                              device["state"]["reachable"])
+          else:
+            cache["hue_" + device_id] = device["state"]
+            homeware.execute("hue_" + device_id,
+                              "online",
+                              device["state"]["reachable"])
     time.sleep(SLEEP_TIME)
