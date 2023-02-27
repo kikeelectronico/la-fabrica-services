@@ -1,7 +1,7 @@
 import json
 
 def entry(id, state, homeware):
-    print("test", id, state)
+    #print(id, state)
     mirrorLights(id, state, homeware)
 
 def mirrorLights(id, state, homeware):

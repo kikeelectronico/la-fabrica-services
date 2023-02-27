@@ -24,6 +24,7 @@ MQTT_PORT = 1883
 SLEEP_TIME = 0.1
 
 # Declare variables
+last_heartbeat_timestamp = 0
 last_pressed = {}
 
 # Instantiate objects
@@ -76,5 +77,10 @@ if __name__ == "__main__":
             last_pressed[device_id] = device["state"]
         else:
           last_pressed[device_id] = device["state"]
+
+    # Send the heartbeat
+    if time.time() - last_heartbeat_timestamp > 10:
+      mqtt_client.publish("heartbeats", "logic-pool-hue")
+      last_heartbeat_timestamp = time.time()
 
     time.sleep(SLEEP_TIME)
