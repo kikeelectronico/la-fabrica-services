@@ -163,8 +163,8 @@ def night(homeware, topic, payload):
     # Change color temp on lights
     devices_ids = ["hue_2","hue_3"]
     for device_id in devices_ids:
-      homeware.execute(devices_id, "color", {"temperature": 2700})
+      homeware.execute(device_id, "color", {"temperature": 2700})
     # Attenuate some lights
     devices_ids = ["hue_2","hue_3"]
     for device_id in devices_ids:
-      homeware.execute(devices_id, "brightness", 40)
+      homeware.execute(device_id, "brightness", 40)
