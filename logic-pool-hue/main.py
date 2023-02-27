@@ -60,7 +60,7 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   # Wake up alert
-  #mqtt_client.publish("message-alerts", "Logic pool Hue: operativo")
+  mqtt_client.publish("message-alerts", "Logic pool Hue: operativo")
   # Main loop
   while True:
     # Loop over sensors
