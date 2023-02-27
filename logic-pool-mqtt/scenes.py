@@ -142,11 +142,11 @@ def night(homeware, topic, payload):
       homeware.execute(device_id, "color", color)
     # Change color temp on lights
     devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_id:
+    for device_id in devices_ids:
       homeware.execute(devices_id, "color", {"temperature": 6000})
     # Attenuate some lights
     devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_id:
+    for device_id in devices_ids:
       homeware.execute(devices_id, "brightness", 80)
   # Night
   elif topic == "device/scene_noche/deactivate" and not payload:
