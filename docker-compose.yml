@@ -64,6 +64,15 @@ services:
     network_mode: "host"
     env_file:
      - .env
+
+  # Logic pool hue
+  logic-pool-hue:
+    image: ghcr.io/kikeelectronico/logic-pool-hue:latest
+    container_name: logic-pool-hue
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
       
   # Logic pool time
   logic-pool-time:
