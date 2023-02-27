@@ -32,8 +32,11 @@ def mirrorLights(id, state, homeware):
       if state["buttonevent"] == 4002:
           current_temperature = homeware.get("hue_2","color")["temperature"]
           TEMPERATURE_LOOP = [2700, 6000]
-          new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
-          if new_index == len(TEMPERATURE_LOOP): new_index = 0 
+          try:
+              new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
+              if new_index == len(TEMPERATURE_LOOP): new_index = 0 
+          except ValueError:
+              new_index = 0
           new_temperature = TEMPERATURE_LOOP[new_index]
           homeware.execute("hue_2","color",{"temperature": new_temperature})
           homeware.execute("hue_3","color",{"temperature": new_temperature})
