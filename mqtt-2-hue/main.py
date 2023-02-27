@@ -17,7 +17,7 @@ HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_set")
 # Define constants
 MQTT_PORT = 1883
 POWER_CONSTANT = 35
-TOPICS = ["heartbeats/request","device/hue_1"]
+TOPICS = ["heartbeats/request","device/hue_1","device/hue_2","device/hue_3"]
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="mqtt-2-hue")
