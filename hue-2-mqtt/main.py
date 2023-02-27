@@ -69,7 +69,7 @@ if __name__ == "__main__":
       if "state" in device:
         if "reachable" in device["state"]:
           if "hue_" + device_id in cache:
-            if not cache["hue_" + device_id]["reachable"] == device["state"]["reachable"]
+            if not cache["hue_" + device_id]["reachable"] == device["state"]["reachable"]:
               homeware.execute("hue_" + device_id,
                               "online",
                               device["state"]["reachable"])
