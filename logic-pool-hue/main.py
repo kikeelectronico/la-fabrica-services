@@ -28,7 +28,7 @@ last_pressed = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="logic-pool-hue")
-homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
+homeware = Homeware(mqtt_client, HOMEWARE_API_URL_LOCAL_NETWORK, HOMEWARE_API_KEY)
 hue = Hue(HUE_HOST, HUE_TOKEN)
 
 # Main entry point
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print("MQTT_HOST env vars no set")
     exit()
   if HOMEWARE_API_URL_LOCAL_NETWORK == "no_set":
-    print("HOMEWARE_API_URL env vars no set")
+    print("HOMEWARE_API_URL_LOCAL_NETWORK env vars no set")
     exit()
   if HOMEWARE_API_KEY == "no_set":
     print("HOMEWARE_API_KEY env vars no set")
