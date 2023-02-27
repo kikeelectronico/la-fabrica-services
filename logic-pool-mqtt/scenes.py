@@ -137,17 +137,17 @@ def night(homeware, topic, payload):
       "spectrumRGB": 16741656,
       "spectrumRgb": 16741656
     }
-    devices_id = ["rgb001", "rgb002", "rgb003"]
-    for device_id in devices_id:
+    devices_ids = ["rgb001", "rgb002", "rgb003"]
+    for device_id in devices_ids:
       homeware.execute(device_id, "color", color)
     # Change color temp on lights
     devices_ids = ["hue_2","hue_3"]
     for device_id in devices_ids:
-      homeware.execute(devices_id, "color", {"temperature": 6000})
+      homeware.execute(device_id, "color", {"temperature": 6000})
     # Attenuate some lights
     devices_ids = ["hue_2","hue_3"]
     for device_id in devices_ids:
-      homeware.execute(devices_id, "brightness", 80)
+      homeware.execute(device_id, "brightness", 80)
   # Night
   elif topic == "device/scene_noche/deactivate" and not payload:
     # Change some devices color
@@ -155,16 +155,16 @@ def night(homeware, topic, payload):
       "spectrumRGB": 16729344,
       "spectrumRgb": 16729344
     }
-    devices_id = ["rgb001", "rgb002", "rgb003"]
-    for device_id in devices_id:
+    devices_ids = ["rgb001", "rgb002", "rgb003"]
+    for device_id in devices_ids:
       homeware.execute(device_id, "color", color)
     # Change a thermostat
     homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 20)
     # Change color temp on lights
     devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_id:
+    for device_id in devices_ids:
       homeware.execute(devices_id, "color", {"temperature": 2700})
     # Attenuate some lights
     devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_id:
+    for device_id in devices_ids:
       homeware.execute(devices_id, "brightness", 40)
