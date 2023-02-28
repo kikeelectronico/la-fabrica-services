@@ -6,12 +6,16 @@ def entry(id, state, homeware):
 
 def mirrorLights(id, state, homeware):
     if id == "2":
-      if state["buttonevent"] == 1002:
+      if state["buttonevent"] == 1001:
+          value = not homeware.get("switch_hood","on")
+          homeware.execute("switch_hood","on",value)
+
+      elif state["buttonevent"] == 1002:
           value = not homeware.get("hue_2","on")
           homeware.execute("hue_2","on",value)
           homeware.execute("hue_3","on",value)
       
-      if state["buttonevent"] == 2002:
+      elif state["buttonevent"] == 2002:
           value = homeware.get("hue_2","brightness")
           if value < 90:
             value += 10
@@ -20,7 +24,7 @@ def mirrorLights(id, state, homeware):
           homeware.execute("hue_2","brightness",value)
           homeware.execute("hue_3","brightness",value)
         
-      if state["buttonevent"] == 3002:
+      elif state["buttonevent"] == 3002:
           value = homeware.get("hue_2","brightness")
           if value > 10:
             value -= 10
@@ -29,7 +33,7 @@ def mirrorLights(id, state, homeware):
           homeware.execute("hue_2","brightness",value)
           homeware.execute("hue_3","brightness",value)
 
-      if state["buttonevent"] == 4002:
+      elif state["buttonevent"] == 4002:
           current_temperature = homeware.get("hue_2","color")["temperature"]
           TEMPERATURE_LOOP = [2700, 6000]
           try:
