@@ -1,7 +1,7 @@
 # la-fabrica
 Microservices that run my smarthome
 
-![My home architecture](https://github.com/kikeelectronico/la-fabrica/raw/main/resources/Arquitectura.jpg)
+![My home architecture](https://assets.enriquegomez.me/Arquitectura-La-fabrica.jpg)
 
 ### Alert system rquest
 
