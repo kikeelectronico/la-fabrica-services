@@ -5,7 +5,7 @@ from google.cloud import storage
 import functions
 
 # Load env vars
-if os.environ.get("BOT_TOKEN", "no_token") == "no_set":
+if os.environ.get("BOT_TOKEN", "no_set") == "no_set":
   from dotenv import load_dotenv
   load_dotenv(dotenv_path="../.env")
 
@@ -15,9 +15,6 @@ HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 GET_IP_ENDPOINT = os.environ.get("GET_IP_ENDPOINT", "no_set")
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "no_set")
-
-# Declare variables
-wait_flag = ""
 
 # Instantiate objects
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -44,11 +41,6 @@ def send_welcome(message):
             # Get the public IP
             response = functions.getPublicIP(GET_IP_ENDPOINT)
             bot.send_message(ENRIQUE_CHAT_ID, response, parse_mode= 'Markdown')
-        elif 'yt' in message.text:
-            # Download a YouTube video
-            global wait_flag
-            wait_flag = "yt"
-            bot.send_message(ENRIQUE_CHAT_ID, "¿Qué URL quieres descargar?", parse_mode= 'Markdown')
     else:
         bot.reply_to(message, "I am sorry but I don't know you.")
 
@@ -57,7 +49,7 @@ def send_welcome(message):
 def echo_message(message):
     if str(message.from_user.id) == ENRIQUE_CHAT_ID:
         # Download the YouTube video once the URL is given
-        if wait_flag == "yt":
+        if "youtube.com" in message.text or "youtu.be" in message.text:
             bot.send_message(ENRIQUE_CHAT_ID, "Descargando...", parse_mode= 'Markdown')
             url = message.text
             urls = functions.downloadYouTubeVideo(url, storage_client, BUCKET_NAME)
