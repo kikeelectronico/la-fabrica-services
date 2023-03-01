@@ -2,11 +2,7 @@ import json
 
 long_pressing = False
 
-def entry(id, state, homeware):
-    #print(id, state)
-    mirrorLights(id, state, homeware)
-
-def mirrorLights(id, state, homeware):
+def mirrorDimmer(id, state, homeware):
     global long_pressing
     if id == "2":
       if state["buttonevent"] == 1001:

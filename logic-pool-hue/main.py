@@ -73,7 +73,7 @@ if __name__ == "__main__":
         if device_id in last_pressed:
           if not last_pressed[device_id]["lastupdated"] == device["state"]["lastupdated"] or \
               not last_pressed[device_id]["buttonevent"] == device["state"]["buttonevent"]:
-            buttons.entry(device_id,device["state"],homeware)
+            buttons.mirrorDimmer(device_id,device["state"],homeware)
             last_pressed[device_id] = device["state"]
         else:
           last_pressed[device_id] = device["state"]
