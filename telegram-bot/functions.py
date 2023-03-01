@@ -25,7 +25,7 @@ def getHomewareTest(api_url, api_key):
 def test():
   return "I think this is broken. It has a hole."
 
-def downloadYouTubeVideo(url, storage_client, bucket):
+def downloadYouTubeVideo(url, storage_client, bucket_name):
     if not 'list' in url:
         video = YouTube(url)
         video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
@@ -41,12 +41,12 @@ def downloadYouTubeVideo(url, storage_client, bucket):
     urls = []
     for file in files:
         # Upload to the bucket
-        bucket = storage_client.bucket(bucket)
+        bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(file)
         blob.upload_from_filename(file)
         # Delete the local file
         os.remove(file)
         # Add URL
-        urls.append("https://storage.cloud.google.com/" + bucket + "/" + file.replace(" ", "%20"))
+        urls.append("https://storage.cloud.google.com/" + bucket_name + "/" + file.replace(" ", "%20"))
     # Return URL
     return urls
