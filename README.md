@@ -35,6 +35,10 @@ This microservice requests heartbeats to the passive microservices. A microservi
 
 This microservice gets data from the Philips Hue Bridge and push it to Homeware via MQTT
 
+### Logic pool Hue
+
+This microservice is in charge of making logic relationships between Philips Hue switches and other devices and scenes. It interacts with Hue bridge API for detecting trigger events in the switches and making changes in devices.
+
 ### Logic pool MQTT
 
 This microservice is in charge of making logic relationships between devices and scenes. It interacts with Homeware MQTT API for detecting trigger events and making changes in devices.
