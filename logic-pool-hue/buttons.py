@@ -1,14 +1,22 @@
 import json
 
+long_pressing = False
+
 def entry(id, state, homeware):
     #print(id, state)
     mirrorLights(id, state, homeware)
 
 def mirrorLights(id, state, homeware):
+    global long_pressing
     if id == "2":
       if state["buttonevent"] == 1001:
-          value = not homeware.get("switch_hood","on")
-          homeware.execute("switch_hood","on",value)
+          if not long_pressing:
+            value = not homeware.get("switch_hood","on")
+            homeware.execute("switch_hood","on",value)
+            long_pressing = True
+
+      elif state["buttonevent"] == 1003:
+          long_pressing = False
 
       elif state["buttonevent"] == 1002:
           value = not homeware.get("hue_2","on")
