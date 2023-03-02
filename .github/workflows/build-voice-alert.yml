@@ -60,7 +60,7 @@ jobs:
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest
-    neds: build-publish
+    needs: build-publish
     steps:
       - name: Request update
         run: |
