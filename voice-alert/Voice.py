@@ -20,7 +20,7 @@ class Voice:
     )
     self.audio_config = texttospeech.AudioConfig(
         audio_encoding=texttospeech.AudioEncoding.MP3,
-        pitch=1.2
+        pitch=1.4
     )
 
   # Genereate mp3 file if needed
