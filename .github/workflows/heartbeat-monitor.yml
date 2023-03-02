@@ -1,4 +1,4 @@
-name: Build Heartbeat monitor
+name: Heartbeat monitor
 
 on:
   workflow_dispatch:
@@ -12,11 +12,10 @@ on:
       - "heartbeat-monitor/**"
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
 jobs:
-  heartbeat-monitor:
+  build-publish:
     name: Build and publish the service
     runs-on: ubuntu-latest
     permissions:
@@ -44,3 +43,15 @@ jobs:
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-monitor:latest
+  deploy:
+    name: Deploy to the server
+    runs-on: ubuntu-latest
+    needs: build-publish
+    steps:
+      - name: Request update
+        run: |
+          curl --location '${{ secrets.DIP_BASE_URL }}/images/pull' \
+          --header 'Content-Type: application/x-www-form-urlencoded' \
+          --data-urlencode 'token=${{ secrets.DIP_TOKEN }}' \
+          --data-urlencode 'restart_containers=true' \
+          --data-urlencode 'image=ghcr.io/kikeelectronico/heartbeat-monitor:latest'

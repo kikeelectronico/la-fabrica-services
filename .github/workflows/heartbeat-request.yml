@@ -1,22 +1,21 @@
-name: Build Logic pool time
+name: Heartbeat request
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "logic-pool-time/**"
+      - "heartbeat-request/**"
   pull_request:
     branches: [ main ]
     paths:
-      - "logic-pool-time/**"
+      - "heartbeat-request/**"
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
 
 jobs:
-  mqtt-pool-time:
+  build-publish:
     name: Build and publish the service
     runs-on: ubuntu-latest
     permissions:
@@ -39,8 +38,20 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: logic-pool-time
-          file: logic-pool-time/Dockerfile
+          context: heartbeat-request
+          file: heartbeat-request/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/logic-pool-time:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-request:latest
+  deploy:
+    name: Deploy to the server
+    runs-on: ubuntu-latest
+    needs: build-publish
+    steps:
+      - name: Request update
+        run: |
+          curl --location '${{ secrets.DIP_BASE_URL }}/images/pull' \
+          --header 'Content-Type: application/x-www-form-urlencoded' \
+          --data-urlencode 'token=${{ secrets.DIP_TOKEN }}' \
+          --data-urlencode 'restart_containers=true' \
+          --data-urlencode 'image=ghcr.io/kikeelectronico/heartbeat-request:latest'
