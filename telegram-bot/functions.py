@@ -8,7 +8,7 @@ def getPublicIP(endpoint):
 
 def getHomewareTest(api_url, api_key):
     try:
-        url = api_url + "/api/status/get/scene_noche"
+        url = api_url + "/api/status/get/scene_warm"
         headers = {
             "Authorization": "baerer " + api_key
         }

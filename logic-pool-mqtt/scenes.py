@@ -131,7 +131,7 @@ def powerAlert(homeware, alert, topic, payload):
 # Set night scene
 def night(homeware, topic, payload):
   # Day
-  if topic == "device/scene_noche/deactivate" and payload:
+  if topic == "device/scene_warm/deactivate" and payload:
     # Change some devices color
     color = {
       "spectrumRGB": 16741656,
@@ -149,7 +149,7 @@ def night(homeware, topic, payload):
     for device_id in devices_ids:
       homeware.execute(device_id, "brightness", 80)
   # Night
-  elif topic == "device/scene_noche/deactivate" and not payload:
+  elif topic == "device/scene_warm/deactivate" and not payload:
     # Change some devices color
     color = {
       "spectrumRGB": 16729344,

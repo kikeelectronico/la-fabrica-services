@@ -37,7 +37,7 @@ TOPICS = [
   "device/thermostat_dormitorio",
   "device/scene_relajacion/deactivate",
   "device/control",
-  "device/scene_noche/deactivate",
+  "device/scene_warm/deactivate",
   "device/switch003/on",
   "device/switch_at_home/on",
   "device/switch_hood/on",
