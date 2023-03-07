@@ -14,7 +14,7 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
-HOMEWARE_API_URL_LOCAL_NETWORK = os.environ.get("HOMEWARE_API_URL_LOCAL_NETWORK", "no_set")
+HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
 HUE_HOST = os.environ.get("HUE_HOST", "no_set")
 HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_set")
@@ -29,7 +29,7 @@ last_pressed = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="logic-pool-hue")
-homeware = Homeware(mqtt_client, HOMEWARE_API_URL_LOCAL_NETWORK, HOMEWARE_API_KEY)
+homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
 hue = Hue(HUE_HOST, HUE_TOKEN)
 
 # Main entry point
@@ -44,8 +44,8 @@ if __name__ == "__main__":
   if MQTT_HOST == "no_set":
     print("MQTT_HOST env vars no set")
     exit()
-  if HOMEWARE_API_URL_LOCAL_NETWORK == "no_set":
-    print("HOMEWARE_API_URL_LOCAL_NETWORK env vars no set")
+  if HOMEWARE_API_URL == "no_set":
+    print("HOMEWARE_API_URL env vars no set")
     exit()
   if HOMEWARE_API_KEY == "no_set":
     print("HOMEWARE_API_KEY env vars no set")
