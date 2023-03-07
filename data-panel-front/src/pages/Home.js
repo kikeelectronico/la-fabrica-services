@@ -43,18 +43,20 @@ export default function Home(props) {
         <div className="title">
           <h1>La fábrica</h1>
         </div>
-        <Clock/>
-        <Internet/>
-        <Thermostat homeware={homeware} api_requested={api_requested}/>
-        <Weather/>
-        <Air/>
-        <Power homeware={homeware} api_requested={api_requested}/>
-        <Alerts/>
-        <Launches/>
-        <Shower homeware={homeware} api_requested={api_requested}/>
-        <Bedroom homeware={homeware} api_requested={api_requested}/>
-        <NotAtHome homeware={homeware} api_requested={api_requested}/>
-        <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
+        <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : "")}>
+          <Clock/>
+          <Internet/>
+          <Thermostat homeware={homeware} api_requested={api_requested}/>
+          <Weather/>
+          <Air/>
+          <Power homeware={homeware} api_requested={api_requested}/>
+          <Alerts/>
+          <Launches/>
+          <Shower homeware={homeware} api_requested={api_requested}/>
+          <Bedroom homeware={homeware} api_requested={api_requested}/>
+          <NotAtHome homeware={homeware} api_requested={api_requested}/>
+          <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
+        </div>
     </div>
   )
 }

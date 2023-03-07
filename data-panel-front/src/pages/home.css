@@ -1,15 +1,29 @@
 .homePage {
   width: 90%;
+  height: 100%;
   margin-left: 5%;
   padding-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
 }
 
 .title {
   width: 100%;
   color: white;
   font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.homeCardsContainer {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.homeCardsContainerPlaying {
+  width: 30%;
+  height: 90%;
+  flex-direction: column;
+
 }
