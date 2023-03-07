@@ -19,6 +19,7 @@ export default function Home(props) {
 
   const [homeware, setHomeware] = useState({status_flag: false});
   const [api_requested, setApiRequested] = useState(false);
+  const [playing_spotify, setPlayingSpotify] = useState(false);
 
   useEffect(() => {
     let random_delay = Math.random() * 900
@@ -53,7 +54,7 @@ export default function Home(props) {
         <Shower homeware={homeware} api_requested={api_requested}/>
         <Bedroom homeware={homeware} api_requested={api_requested}/>
         <NotAtHome homeware={homeware} api_requested={api_requested}/>
-        <Spotify setBackgroundImage={props.setBackgroundImage} />
+        <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
     </div>
   )
 }
