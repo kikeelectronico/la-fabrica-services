@@ -38,6 +38,7 @@ TOPICS = [
   "device/scene_relajacion/deactivate",
   "device/control",
   "device/scene_warm/deactivate",
+  "device/scene_dim/deactivate",
   "device/switch003/on",
   "device/switch_at_home/on",
   "device/switch_hood/on",
