@@ -63,9 +63,14 @@ def powerManagment(homeware, topic, payload):
       power_pre_alert = False
     # Power distribution
     if not power_alert:
-      if not homeware.get("scene_ducha", "deactivate") or not homeware.get("secne_drying", "deactivate"):
+      if not homeware.get("scene_ducha", "deactivate"):
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         livingroom = not bathroom
+        heater = (not bathroom) and (not livingroom)
+        bedroom = False
+      elif not homeware.get("secne_drying", "deactivate"):
+        bathroom = True
+        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
         heater = (not bathroom) and (not livingroom)
         bedroom = False
       else:
