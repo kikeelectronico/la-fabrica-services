@@ -128,43 +128,46 @@ def powerAlert(homeware, alert, topic, payload):
           if power_alert_counter == 1:
             power_alert_counter = 0
 
-# Set night scene
-def night(homeware, topic, payload):
-  # Day
-  if topic == "device/scene_warm/deactivate" and payload:
-    # Change some devices color
-    color = {
-      "spectrumRGB": 16741656,
-      "spectrumRgb": 16741656
-    }
-    devices_ids = ["rgb001", "rgb002", "rgb003"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "color", color)
-    # Change color temp on lights
-    devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "color", {"temperature": 6000})
-    # Attenuate some lights
-    devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "brightness", 80)
-  # Night
-  elif topic == "device/scene_warm/deactivate" and not payload:
-    # Change some devices color
-    color = {
-      "spectrumRGB": 16729344,
-      "spectrumRgb": 16729344
-    }
-    devices_ids = ["rgb001", "rgb002", "rgb003"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "color", color)
-    # Change a thermostat
-    homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 20)
-    # Change color temp on lights
-    devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "color", {"temperature": 2700})
-    # Attenuate some lights
-    devices_ids = ["hue_2","hue_3"]
-    for device_id in devices_ids:
-      homeware.execute(device_id, "brightness", 20)
+# Set warm scene
+def warm(homeware, topic, payload):
+  if topic == "device/scene_warm/deactivate":
+    if payload:
+      # Change some devices color
+      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      color = {
+        "spectrumRGB": 16741656,
+        "spectrumRgb": 16741656
+      }
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", color)
+      # Change color temp on lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", {"temperature": 6000})
+    else:
+      # Change some devices color
+      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      color = {
+        "spectrumRGB": 16729344,
+        "spectrumRgb": 16729344
+      }
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", color)
+      # Change color temp on lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", {"temperature": 2700})
+
+# Set dim scene
+def dim(homeware, topic, payload):
+  if topic == "device/scene_dim/deactivate":
+    if payload:
+      # Increase some lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 80)
+    else:
+      # Attenuate some lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 20)
