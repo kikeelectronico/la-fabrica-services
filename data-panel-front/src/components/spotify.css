@@ -1,11 +1,13 @@
 .spotifyCard {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
   width: 650px;
   height: 200px;
   padding: 10px;
   border-radius: 20px;
   background-color: rgb(44, 43, 43);
   box-shadow: 0 0.1rem 1rem rgba(0,0,0,0.8);
-  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center; 
