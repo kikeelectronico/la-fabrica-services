@@ -31,6 +31,7 @@ TOPICS = [
   "device/rgb001/on",
   "device/scene_pelicula/deactivate",
   "device/scene_ducha/deactivate",
+  "device/secne_drying/deactivate",
   "device/current001/brightness",
   "device/thermostat_livingroom",
   "device/thermostat_bathroom",
