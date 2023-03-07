@@ -43,7 +43,7 @@ export default function Home(props) {
         <div className="title">
           <h1>La fábrica</h1>
         </div>
-        <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : "")}>
+        <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
           <Internet/>
           <Thermostat homeware={homeware} api_requested={api_requested}/>
