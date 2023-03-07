@@ -19,7 +19,7 @@
 }
 
 .homeCardsContainerPlaying {
-  transition: width 1s ease-out;
+  transition: width 2s ease-out;
   flex-direction: column;
   justify-content: unset;
   height: 90%;
@@ -27,7 +27,7 @@
 }
 
 .homeCardsContainerNotPlaying {
-  transition: height 1s ease-out;
+  transition: height 2s ease-out;
   flex-direction: row;
   justify-content: center;
   height: 20%;
