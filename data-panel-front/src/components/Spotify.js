@@ -8,7 +8,7 @@ var loading = false
 
 export default function Spotify(props) {
 
-  const [playing, setPlaying] = useState({});
+  const [spotify, setSpotify] = useState({});
   const [api_requested, setApiRequested] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function Spotify(props) {
       loading = true
       fetch(API + "/spotify")
       .then((response) => response.json())
-      .then((spotify) => {setPlaying(spotify); props.setBackgroundImage({url: spotify.image, position: spotify.image_position})})
+      .then((data) => {setSpotify(data); props.setBackgroundImage({url: data.image, position: data.image_position})})
       .catch((error) => console.log(error))
       .finally(() => setApiRequested(true))
       setTimeout(() => {loading = false}, 2000)
@@ -35,35 +35,35 @@ export default function Spotify(props) {
   return (
     <>
       {
-        playing.playing && api_requested ? 
+        spotify.playing && api_requested ? 
           <>
           <div
             className="spotifyCard"
           >
             <div className="spotifyData">
               <div className="spotifyTitle">
-                {playing.track_name.length > 60 ? playing.track_name.substring(0, 60) + "..." : playing.track_name}
+                {spotify.track_name.length > 60 ? spotify.track_name.substring(0, 60) + "..." : spotify.track_name}
               </div>
               <hr className="spotifyArtistsSeparator"/>
               <div className="spotifyArtist">
-                {playing.artists.length > 40 ? playing.artists.substring(0, 40) + "..." : playing.artists}
+                {spotify.artists.length > 40 ? spotify.artists.substring(0, 40) + "..." : spotify.artists}
               </div>
               <hr className="spotifyArtistsSeparator"/>
               <div className="spotifyDevice">
-                {playing.device} ({playing.volume})
+                {spotify.device} ({spotify.volume})
               </div>
             </div>
 
             <div
               className="spotifyImageCard"
               style={{ 
-                backgroundImage:  "url(" + playing.image + ")"
+                backgroundImage:  "url(" + spotify.image + ")"
               }}
             >
             </div>
 
             <div className="spotifyProgressBar">
-              <ProgressBar animated variant="info" now={playing.time} max={playing.duration} />
+              <ProgressBar animated variant="info" now={spotify.time} max={spotify.duration} />
             </div>
             
             
@@ -74,7 +74,7 @@ export default function Spotify(props) {
         : <></>
       }
       {
-        playing.quota_exceeded && api_requested ? 
+        spotify.quota_exceeded && api_requested ? 
           <div className="spotifyCard">
             <div className="spotifyTitle">
               Excedida la cuota de Spotify WEB API
