@@ -23,12 +23,12 @@ export default function Home(props) {
   useEffect(() => {
     let random_delay = Math.random() * 900
     setTimeout(() => {
-      getData()
-      const interval = setInterval(() => getData(), 2000)
+      getHomeware()
+      const interval = setInterval(() => getHomeware(), 2000)
     },random_delay)
   }, [])
 
-  const getData = () => {
+  const getHomeware = () => {
     fetch(API + "/homeware")
     .then((response) => response.json())
     .then((homeware) => setHomeware(homeware))
@@ -53,7 +53,7 @@ export default function Home(props) {
         <Shower homeware={homeware} api_requested={api_requested}/>
         <Bedroom homeware={homeware} api_requested={api_requested}/>
         <NotAtHome homeware={homeware} api_requested={api_requested}/>
-        <Spotify setBackgroundImage={props.setBackgroundImage}/>
+        <Spotify setBackgroundImage={props.setBackgroundImage} />
     </div>
   )
 }
