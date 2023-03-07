@@ -25,5 +25,5 @@
   width: 20%;
   height: 90%;
   flex-direction: column;
-
+  justify-content: unset;
 }
