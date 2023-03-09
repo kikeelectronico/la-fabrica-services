@@ -98,6 +98,7 @@ if __name__ == "__main__":
           # Get API RX the characteristic
           rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
           rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
+          time.sleep(5)
         if device in ble_link:
           if ble_link[device].waitForNotifications(5):
               continue
