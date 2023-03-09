@@ -46,7 +46,7 @@ class MyDelegate(btle.DefaultDelegate):
             temp_dec = data[1] if data[1] < 16 else 0
             temp = temp_int + (temp_dec/10)
             hum = data[3] if data[3] < 128 else (data[3] - 128)
-            print(temp, hum)
+            print(round(time.time()), temp, hum)
             if cHandle in cHandles:
               device_id = cHandles[cHandle]
               homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
