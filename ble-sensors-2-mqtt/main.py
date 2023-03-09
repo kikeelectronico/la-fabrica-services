@@ -26,6 +26,9 @@ API_SERVICE_UUID ="cba20d00-224d-11e6-9fb8-0002a5d5c51b"
 API_TX_CHARACTERISTIC_UUID= "cba20003-224d-11e6-9fb8-0002a5d5c51b"
 API_RX_CHARACTERISTIC_UUID= "cba20002-224d-11e6-9fb8-0002a5d5c51b"
 
+# Declare vars
+cHandles = {}
+
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="ble-sensors-2-mqtt")
 homeware = Homeware(mqtt_client, )
@@ -42,7 +45,11 @@ class MyDelegate(btle.DefaultDelegate):
             temp = temp_int + (temp_dec/10)
             hum = data[3] if data[3] < 128 else (data[3] - 128)
             print(temp, hum)
-            homeware.execute(DEVICES["livingroom"]["homeware_id"],"thermostatTemperatureAmbient",temp)
+            if cHandle in cHandles:
+              device_id = cHandles[cHandle]
+              homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatTemperatureAmbient",temp)
+            else:
+               print("Unknown handle")
         elif data[0] == 7:
             print("low batery")
 
@@ -75,7 +82,9 @@ if __name__ == "__main__":
   tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
   tx_char = ble_service.getCharacteristics(tx_uuid)[0]
   setup_data = b"\x01\x00"
-  dev.writeCharacteristic(tx_char.valHandle + 1, setup_data)
+  cHandle = tx_char.valHandle
+  dev.writeCharacteristic(cHandle + 1, setup_data)
+  cHandles[cHandle] = "livingroom"
 
   while True:
     if dev.waitForNotifications(5):
