@@ -17,9 +17,8 @@ MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 MQTT_PORT = 1883
 # MAC address
 DEVICES = {
-  "livingroom": {
+  "thermostat_livingroom": {
     "mac": "F1:1C:1C:76:7F:3C",
-    "homeware_id": "thermostat_livingroom"
   }
 }
 # API UUIDs
@@ -30,7 +29,6 @@ API_RX_CHARACTERISTIC_UUID= "cba20002-224d-11e6-9fb8-0002a5d5c51b"
 # Declare vars
 cHandles = {}
 ble_link = {}
-tx_char = {}
 rx_char = {}
 
 # Instantiate objects
@@ -51,14 +49,14 @@ class MyDelegate(btle.DefaultDelegate):
             print(temp, hum)
             if cHandle in cHandles:
               device_id = cHandles[cHandle]
-              homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatTemperatureAmbient",temp)
-              homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatHumidityAmbient",hum)
-              homeware.execute(DEVICES[device_id]["homeware_id"],"online",True)
+              homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
+              homeware.execute(device_id,"thermostatHumidityAmbient",hum)
+              homeware.execute(device_id,"online",True)
             else:
                print("Unknown handle")
         elif data[0] == 7:
             print("low batery")
-            homeware.execute(DEVICES[device_id]["homeware_id"],"online",False)
+            homeware.execute(device_id,"online",False)
 
 # Main entry point
 if __name__ == "__main__":
@@ -92,22 +90,21 @@ if __name__ == "__main__":
           ble_service = ble_link[device].getServiceByUUID(service_uuid)
           # Set the notifications
           tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
-          tx_char[device] = ble_service.getCharacteristics(tx_uuid)[0]
+          tx_char = ble_service.getCharacteristics(tx_uuid)[0]
           setup_data = b"\x01\x00"
-          cHandle = tx_char[device].valHandle
+          cHandle = tx_char.valHandle
           ble_link[device].writeCharacteristic(cHandle + 1, setup_data)
           cHandles[cHandle] = device
           # Get API RX the characteristic
           rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
           rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
-
-        if ble_link[device].waitForNotifications(5):
-            continue
-        # Request temperature and humidity
-        rx_char[device].write(bytes.fromhex("570f31"))
+        if device in ble_link:
+          if ble_link[device].waitForNotifications(5):
+              continue
+          # Request temperature and humidity
+          rx_char[device].write(bytes.fromhex("570f31"))
       except btle.BTLEDisconnectError:
-        print("Lost connection")
-        print(len(ble_link))
-        for d in ble_link:
-          print(d)
+        homeware.execute(device,"online",False)
+        if device in ble_link:
+          del ble_link[device]
     time.sleep(1)
