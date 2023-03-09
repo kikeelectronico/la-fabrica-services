@@ -11,7 +11,7 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
-MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
+MQTT_HOST = os.environ.get("MQTT_HOST_NETWORK", "no_set")
 
 # Define constants
 MQTT_PORT = 1883
