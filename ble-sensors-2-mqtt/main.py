@@ -73,24 +73,31 @@ if __name__ == "__main__":
   #mqtt_client.publish("message-alerts", "Hue 2 MQTT: operativo")
 
   print("Connecting...")
-  dev = btle.Peripheral(DEVICES["livingroom"]["mac"], btle.ADDR_TYPE_RANDOM)
-  dev.withDelegate( MyDelegate() )
-  # Get the API service
-  service_uuid = btle.UUID(API_SERVICE_UUID)
-  ble_service = dev.getServiceByUUID(service_uuid)
-  # Set the notifications
-  tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
-  tx_char = ble_service.getCharacteristics(tx_uuid)[0]
-  setup_data = b"\x01\x00"
-  cHandle = tx_char.valHandle
-  dev.writeCharacteristic(cHandle + 1, setup_data)
-  cHandles[cHandle] = "livingroom"
+  dev = {}
+  tx_char = {}
+  rx_char = {}
+  for device in DEVICES:
+    # Connect to device
+    dev[device] = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
+    dev[device].withDelegate( MyDelegate() )
+    # Get the API service
+    service_uuid = btle.UUID(API_SERVICE_UUID)
+    ble_service = dev[device].getServiceByUUID(service_uuid)
+    # Set the notifications
+    tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
+    tx_char[device] = ble_service.getCharacteristics(tx_uuid)[0]
+    setup_data = b"\x01\x00"
+    cHandle = tx_char[device].valHandle
+    dev[device].writeCharacteristic(cHandle + 1, setup_data)
+    cHandles[cHandle] = device
+    # Get API RX the characteristic
+    rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
+    rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
 
   while True:
-    if dev.waitForNotifications(5):
-        continue
+    for device in DEVICES:
+      if dev[device].waitForNotifications(5):
+          continue
+      # Request temperature and humidity
+      rx_char[device].write(bytes.fromhex("570f31"))
     print("Waiting...")
-    # Request temperature and humidity
-    rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
-    rx_char = ble_service.getCharacteristics(rx_uuid)[0]
-    rx_char.write(bytes.fromhex("570f31"))
