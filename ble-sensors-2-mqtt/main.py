@@ -1,6 +1,7 @@
 from bluepy import btle
 import os
 import paho.mqtt.client as mqtt
+import time
 
 from homeware import Homeware
 
@@ -28,10 +29,13 @@ API_RX_CHARACTERISTIC_UUID= "cba20002-224d-11e6-9fb8-0002a5d5c51b"
 
 # Declare vars
 cHandles = {}
+ble_link = {}
+tx_char = {}
+rx_char = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id="ble-sensors-2-mqtt")
-homeware = Homeware(mqtt_client, )
+homeware = Homeware(mqtt_client)
 
 class MyDelegate(btle.DefaultDelegate):
     def __init__(self):
@@ -49,10 +53,12 @@ class MyDelegate(btle.DefaultDelegate):
               device_id = cHandles[cHandle]
               homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatTemperatureAmbient",temp)
               homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatHumidityAmbient",hum)
+              homeware.execute(DEVICES[device_id]["homeware_id"],"online",True)
             else:
                print("Unknown handle")
         elif data[0] == 7:
             print("low batery")
+            homeware.execute(DEVICES[device_id]["homeware_id"],"online",False)
 
 # Main entry point
 if __name__ == "__main__":
@@ -73,32 +79,35 @@ if __name__ == "__main__":
   # Wake up alert
   #mqtt_client.publish("message-alerts", "Hue 2 MQTT: operativo")
 
-  print("Connecting...")
-  dev = {}
-  tx_char = {}
-  rx_char = {}
-  for device in DEVICES:
-    # Connect to device
-    dev[device] = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
-    dev[device].withDelegate( MyDelegate() )
-    # Get the API service
-    service_uuid = btle.UUID(API_SERVICE_UUID)
-    ble_service = dev[device].getServiceByUUID(service_uuid)
-    # Set the notifications
-    tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
-    tx_char[device] = ble_service.getCharacteristics(tx_uuid)[0]
-    setup_data = b"\x01\x00"
-    cHandle = tx_char[device].valHandle
-    dev[device].writeCharacteristic(cHandle + 1, setup_data)
-    cHandles[cHandle] = device
-    # Get API RX the characteristic
-    rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
-    rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
-
   while True:
     for device in DEVICES:
-      if dev[device].waitForNotifications(5):
-          continue
-      # Request temperature and humidity
-      rx_char[device].write(bytes.fromhex("570f31"))
-    print("Waiting...")
+      try:
+        if not device in ble_link:
+          # Connect to device
+          print("Connecting...", device)
+          ble_link[device] = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM, )
+          ble_link[device].withDelegate( MyDelegate() )
+          # Get the API service
+          service_uuid = btle.UUID(API_SERVICE_UUID)
+          ble_service = ble_link[device].getServiceByUUID(service_uuid)
+          # Set the notifications
+          tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
+          tx_char[device] = ble_service.getCharacteristics(tx_uuid)[0]
+          setup_data = b"\x01\x00"
+          cHandle = tx_char[device].valHandle
+          ble_link[device].writeCharacteristic(cHandle + 1, setup_data)
+          cHandles[cHandle] = device
+          # Get API RX the characteristic
+          rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
+          rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
+
+        if ble_link[device].waitForNotifications(5):
+            continue
+        # Request temperature and humidity
+        rx_char[device].write(bytes.fromhex("570f31"))
+      except btle.BTLEDisconnectError:
+        print("Lost connection")
+        print(len(ble_link))
+        for d in ble_link:
+          print(d)
+    time.sleep(1)
