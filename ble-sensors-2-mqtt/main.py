@@ -1,6 +1,6 @@
 from bluepy import btle
 
-# MAC address.
+# MAC address
 BLE_ADDRESS = "F1:1C:1C:76:7F:3C"
 # API UUIDs
 API_SERVICE_UUID ="cba20d00-224d-11e6-9fb8-0002a5d5c51b"
