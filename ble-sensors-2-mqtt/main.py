@@ -48,6 +48,7 @@ class MyDelegate(btle.DefaultDelegate):
             if cHandle in cHandles:
               device_id = cHandles[cHandle]
               homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatTemperatureAmbient",temp)
+              homeware.execute(DEVICES[device_id]["homeware_id"],"thermostatHumidityAmbient",hum)
             else:
                print("Unknown handle")
         elif data[0] == 7:
