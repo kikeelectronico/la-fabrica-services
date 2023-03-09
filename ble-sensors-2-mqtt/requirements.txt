@@ -1,1 +1,2 @@
 bluepy
+paho-mqtt
