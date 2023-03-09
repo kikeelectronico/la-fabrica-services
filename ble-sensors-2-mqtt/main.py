@@ -75,7 +75,7 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   # Wake up alert
-  mqtt_client.publish("ble-sensors-2-mqtt", "BLE sensors 2 MQTT: operativo")
+  mqtt_client.publish("message-alerts", "BLE sensors 2 MQTT: operativo")
 
   while True:
     for device in DEVICES:
