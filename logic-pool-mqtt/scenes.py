@@ -48,19 +48,19 @@ def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/deactivate" and not payload:
     # Start preparing the bathroom
-    alert.voice("voy a preparar el baño para que te duches.", gpt3=True)
+    alert.voice("voy a preparar el baño para que te duches.", speaker="livingroom,bedroom", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     waiting_for_shower = True
   elif topic == "device/scene_ducha/deactivate" and payload:
     # Return the bathroom to normal
-    alert.voice("espero que te hayas disfrutado de la ducha.", gpt3=True)
+    alert.voice("espero que te hayas disfrutado de la ducha.", speaker="bathroom", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     waiting_for_shower = False
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      alert.voice("disfruta de la ducha.", gpt3=True)
+      alert.voice("disfruta de la ducha.", speaker="livingroom,bedroom", gpt3=True)
       waiting_for_shower = False
 
 # Set a relax scene
