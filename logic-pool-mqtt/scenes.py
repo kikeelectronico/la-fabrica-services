@@ -143,7 +143,7 @@ def warm(homeware, topic, payload):
       # Change color temp on lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
-        homeware.execute(device_id, "color", {"temperature": 6000})
+        homeware.execute(device_id, "color", {"temperature": 5000})
     else:
       # Change some devices color
       devices_ids = ["rgb001", "rgb002", "rgb003"]
