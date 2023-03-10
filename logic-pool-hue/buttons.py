@@ -57,7 +57,7 @@ def mirrorDimmer(id, state, homeware):
 
       elif state["buttonevent"] == 4002:
           current_temperature = homeware.get("hue_2","color")["temperature"]
-          TEMPERATURE_LOOP = [2700, 3500, 5000]
+          TEMPERATURE_LOOP = [2700, 5000]
           try:
               new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
               if new_index == len(TEMPERATURE_LOOP): new_index = 0 
