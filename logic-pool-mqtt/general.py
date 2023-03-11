@@ -1,5 +1,5 @@
 
-HUMIDITY_TRIGGER = 40
+HUMIDITY_TRIGGER = 50
 
 # Control the bathroom hood
 def hood(homeware, topic, payload):
