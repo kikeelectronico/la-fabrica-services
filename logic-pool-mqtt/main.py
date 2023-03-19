@@ -10,6 +10,7 @@ import scenes
 import lights
 import power
 import general
+import switches
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -44,6 +45,7 @@ TOPICS = [
   "device/switch_at_home/on",
   "device/switch_hood/on",
   "device/switch_radiator/on",
+  "device/hue_sensor_12/on"
 ]
 
 # Instantiate objects
@@ -77,6 +79,7 @@ def on_message(client, userdata, msg):
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
+        switches.bedroom(homeware, msg.topic, payload)
   # except Exception as e:
   #   mqtt_client.publish("message-alerts", "Excepción en Logic pool mqtt")
   #   mqtt_client.publish("message-alerts", str(e)) 

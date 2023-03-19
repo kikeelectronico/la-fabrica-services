@@ -80,11 +80,6 @@ def bedroomButton(id, state, homeware):
           long_pressing = False
 
       elif state["buttonevent"] == 1002:
-          scene_dim = homeware.get("scene_dim","deactivate")
-          if scene_dim:
-            value = not homeware.get("light001","on")
-            homeware.execute("light001","on",value)
-          else:
-            value = not homeware.get("rgb003","on")
-            homeware.execute("rgb003","on",value)
+          value = not homeware.get("hue_sensor_12","on")
+          homeware.execute("hue_sensor_12","on",value)
              
