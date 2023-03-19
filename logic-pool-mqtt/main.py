@@ -39,7 +39,6 @@ TOPICS = [
   "device/thermostat_dormitorio",
   "device/scene_relajacion/deactivate",
   "device/control",
-  "device/scene_warm/deactivate",
   "device/scene_dim/deactivate",
   "device/switch003/on",
   "device/switch_at_home/on",
@@ -73,7 +72,6 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.relax(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
-        scenes.warm(homeware, msg.topic, payload)
         scenes.dim(homeware, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
         general.hood(homeware, msg.topic, payload)

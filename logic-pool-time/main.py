@@ -75,9 +75,9 @@ def main():
         homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
         homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
         homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
-    elif hour == "08:00:00" and not hour == just_executed:
-      just_executed = hour
-      homeware.execute("scene_warm", "deactivate", True)
+    # elif hour == "08:00:00" and not hour == just_executed:
+    #   just_executed = hour
+    #   homeware.execute("scene_dim", "deactivate", True)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
@@ -107,7 +107,7 @@ def main():
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
-      homeware.execute("scene_warm", "deactivate", False)
+      homeware.execute("scene_dim", "deactivate", False)
       homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block

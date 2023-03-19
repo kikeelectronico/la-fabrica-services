@@ -46,15 +46,6 @@ def mirrorDimmer(id, state, homeware):
           homeware.execute("hue_2","brightness",value)
           homeware.execute("hue_3","brightness",value)
 
-      elif state["buttonevent"] == 4001:
-          if not long_pressing:
-            value = not homeware.get("scene_warm","deactivate")
-            homeware.execute("scene_warm","deactivate",value)
-            long_pressing = True
-
-      elif state["buttonevent"] == 4003:
-          long_pressing = False
-
       elif state["buttonevent"] == 4002:
           current_temperature = homeware.get("hue_2","color")["temperature"]
           TEMPERATURE_LOOP = [2700, 5000]
