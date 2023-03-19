@@ -66,3 +66,25 @@ def mirrorDimmer(id, state, homeware):
           new_temperature = TEMPERATURE_LOOP[new_index]
           homeware.execute("hue_2","color",{"temperature": new_temperature})
           homeware.execute("hue_3","color",{"temperature": new_temperature})
+
+def bedroomButton(id, state, homeware):
+    global long_pressing
+    if id == "12":
+      if state["buttonevent"] == 1001:
+          if not long_pressing:
+            value = not homeware.get("scene_dim","deactivate")
+            homeware.execute("scene_dim","deactivate",value)
+            long_pressing = True
+
+      elif state["buttonevent"] == 1003:
+          long_pressing = False
+
+      elif state["buttonevent"] == 1002:
+          scene_dim = not homeware.get("scene_dim","deactivate")
+          if scene_dim:
+            value = not homeware.get("light001","on")
+            homeware.execute("light001","on",value)
+          else:
+            value = not homeware.get("rgb003","on")
+            homeware.execute("rgb003","on",value)
+             
