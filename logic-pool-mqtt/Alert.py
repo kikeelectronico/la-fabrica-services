@@ -16,7 +16,7 @@ class Alert:
       openai_response = self.__openai_client.Completion.create(
         model="text-davinci-003",
         prompt="crea una frase parecida a: " + input_text,
-        max_tokens=20,
+        max_tokens=256,
         temperature=1
       )
       output_text = openai_response["choices"][0]["text"].replace("\n", "")
