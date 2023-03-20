@@ -32,7 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-spotify = Spotify()
+spotify = Spotify(logger)
 weatherapi = Weather(logger)
 homeware = Homeware()
 launchesapi = Launches()
@@ -44,7 +44,7 @@ async def root():
 
 @app.get("/spotify")
 async def spotifyEndPoint():
-  playing = spotify.getPlaying(logger, max_tries=2)
+  playing = spotify.getPlaying(max_tries=2)
   return playing
 
 @app.get("/weather")
