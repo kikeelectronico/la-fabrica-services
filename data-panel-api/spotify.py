@@ -68,7 +68,7 @@ class Spotify:
               self._track_image = track['album']['images'][0]['url']
               self._last_track = playing['item']['id']
 
-              self.analyzeTrackImage()
+              self.analyzeTrackImage(logger)
 
               # Save the image url
               self._bigquery_client.query(
@@ -229,17 +229,26 @@ class Spotify:
 
     return self._playing
 
-  def analyzeTrackImage(self):
-    response = requests.get(self._track_image)
-    image = Image.open(BytesIO(response.content)).convert("RGB")
+  def analyzeTrackImage(self, logger):
+    try:
+      response = requests.get(self._track_image)
+      image = Image.open(BytesIO(response.content)).convert("RGB")
 
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    image_array = np.asarray(image)
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    self._track_image_data[0] = normalized_image_array
+      if response.status_code == 200:
+        try:
+          size = (224, 224)
+          image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
+          image_array = np.asarray(image)
+          normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
+          self._track_image_data[0] = normalized_image_array
 
-    prediction = self._track_image_model.predict(self._track_image_data)
-    index = np.argmax(prediction)
-    class_name = self._track_image_class_names[index]
-    self._track_image_position = class_name[2:-1]
+          prediction = self._track_image_model.predict(self._track_image_data)
+          index = np.argmax(prediction)
+          class_name = self._track_image_class_names[index]
+          self._track_image_position = class_name[2:-1]
+        except:
+          logger.log_text("Fail to analyze a track image from Spotify", severity="WARNING")
+      else:
+        logger.log_text("Fail to get a track image from Spotify. Error code: " + response.status_code, severity="WARNING")
+    except (requests.ConnectionError, requests.Timeout) as exception:
+      logger.log_text("Fail to get a track image from Spotify. Conection error.", severity="WARNING")
