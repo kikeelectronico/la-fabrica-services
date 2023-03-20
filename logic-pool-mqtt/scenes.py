@@ -14,7 +14,7 @@ def film(homeware, alert, topic, payload):
     global scene_pre_state
     if not payload:
       # Activate scene
-      alert.voice("¡me encantan las películas!", speaker="livingroom", gpt3=True)
+      alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
@@ -48,19 +48,19 @@ def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/deactivate" and not payload:
     # Start preparing the bathroom
-    alert.voice("voy a preparar el baño para que te duches.", speaker="livingroom,bedroom", gpt3=True)
+    alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
     homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     waiting_for_shower = True
   elif topic == "device/scene_ducha/deactivate" and payload:
     # Return the bathroom to normal
-    alert.voice("espero que te hayas disfrutado de la ducha.", speaker="bathroom", gpt3=True)
+    alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
     homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     waiting_for_shower = False
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      alert.voice("disfruta de la ducha.", speaker="livingroom,bedroom", gpt3=True)
+      alert.voice("Crea una frase que informe al usuario de que el baño está preparado.", speaker="livingroom,bedroom", gpt3=True)
       waiting_for_shower = False
 
 # Set a relax scene

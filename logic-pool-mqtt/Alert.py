@@ -15,7 +15,7 @@ class Alert:
     if gpt3:
       openai_response = self.__openai_client.Completion.create(
         model="text-davinci-003",
-        prompt="crea una frase parecida a: " + input_text,
+        prompt=input_text,
         max_tokens=256,
         temperature=1
       )
