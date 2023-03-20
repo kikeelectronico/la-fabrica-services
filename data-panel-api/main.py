@@ -33,7 +33,7 @@ app.add_middleware(
 )
 
 spotify = Spotify()
-weatherapi = Weather()
+weatherapi = Weather(logger)
 homeware = Homeware()
 launchesapi = Launches()
 internet = Internet()
