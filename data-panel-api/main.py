@@ -44,7 +44,7 @@ async def root():
 
 @app.get("/spotify")
 async def spotifyEndPoint():
-  playing = spotify.getPlaying(max_tries=2, logger)
+  playing = spotify.getPlaying(logger, max_tries=2)
   return playing
 
 @app.get("/weather")

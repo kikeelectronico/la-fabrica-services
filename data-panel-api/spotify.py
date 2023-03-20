@@ -35,7 +35,7 @@ class Spotify:
     # Connect with bigquery
     self._bigquery_client = bigquery.Client()
 
-  def updatePlaying(self, max_tries=2, logger=None):
+  def updatePlaying(self, logger, max_tries=2):
     self._tries += 1
     if self.__access_token == "":
       self.updateAccessToken(logger)
@@ -197,7 +197,7 @@ class Spotify:
     except (requests.ConnectionError, requests.Timeout) as exception:
       logger.log_text("Fail to get Spotify player data. Conection error.", severity="WARNING")
       spotify = {
-        "playing": False,
+        "playing": Falsappe,
         "tries": self._tries,
         "quota_exceeded": False
       }
@@ -224,8 +224,8 @@ class Spotify:
       logger.log_text("Fail to update Spotify access token. Conection error.", severity="WARNING")
       return False
 
-  def getPlaying(self, max_tries=2, logger=None):
-    self.updatePlaying(max_tries, logger)
+  def getPlaying(self, logger, max_tries=2):
+    self.updatePlaying(logger, max_tries)
 
     return self._playing
 
