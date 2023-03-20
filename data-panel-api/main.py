@@ -1,13 +1,28 @@
 import imp
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import google.cloud.logging as logging
+import os
 from spotify import Spotify
 from weather import Weather
 from homeware import Homeware
 from launches import Launches
 from internet import Internet
 
+# Load env vars
+if os.environ.get("ENV", "dev") == "dev":
+  from dotenv import load_dotenv
+  load_dotenv(dotenv_path="../.env")
+
+ENV = os.environ.get("ENV", "dev")
+
+# Define constants
+SERVICE = "data-panel-api-" + ENV
+
+# Instantiate objects
 app = FastAPI()
+logger = logging.Client().logger(SERVICE)
+logger.log_text("Starting", severity="INFO")
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,7 +31,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 spotify = Spotify()
 weatherapi = Weather()
@@ -30,7 +44,7 @@ async def root():
 
 @app.get("/spotify")
 async def spotifyEndPoint():
-  playing = spotify.getPlaying(max_tries=2)
+  playing = spotify.getPlaying(max_tries=2, logger)
   return playing
 
 @app.get("/weather")

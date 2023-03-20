@@ -35,10 +35,10 @@ class Spotify:
     # Connect with bigquery
     self._bigquery_client = bigquery.Client()
 
-  def updatePlaying(self, max_tries=2):
+  def updatePlaying(self, max_tries=2, logger):
     self._tries += 1
     if self.__access_token == "":
-      self.updateAccessToken()
+      self.updateAccessToken(logger)
     try:
       # Plaiyng
       url = "https://api.spotify.com/v1/me/player/"
@@ -97,6 +97,7 @@ class Spotify:
               self._playing = spotify
 
             elif response.status_code == 429:
+              logger.log_text("Spotify API quota exceeded", severity="WARNING")
               self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
 
               spotify = {
@@ -144,6 +145,7 @@ class Spotify:
           self._playing = spotify
 
       elif response.status_code == 204:
+        logger.log_text("Spotify API returns a 204 code", severity="INFO")
         spotify = {
           "playing": False,
           "tries": self._tries,
@@ -153,6 +155,7 @@ class Spotify:
         self._playing = spotify
 
       elif response.status_code == 429:
+        logger.log_text("Spotify API quota exceeded", severity="WARNING")
         spotify = {
           "playing": False,
           "tries": self._tries,
@@ -162,6 +165,7 @@ class Spotify:
         self._playing = spotify
 
       elif response.status_code == 503:
+        logger.log_text("Spotify API returns a 503 code", severity="INFO")
         if self._service_unavailable_counter == 0:
           self._service_unavailable_counter += 1
         else:
@@ -175,7 +179,7 @@ class Spotify:
 
       else:
         error = response.json()['error']
-
+        logger.log_text("Spotify API returns a " + error['status'] + " code", severity="INFO")
         spotify = {
           "playing": False,
           "tries": self._tries,
@@ -191,14 +195,16 @@ class Spotify:
           self._playing = spotify
 
     except (requests.ConnectionError, requests.Timeout) as exception:
+      logger.log_text("Fail to get Spotify player data. Conection error.", severity="WARNING")
       spotify = {
         "playing": False,
         "tries": self._tries,
         "quota_exceeded": False
       }
 
-  def updateAccessToken(self):
+  def updateAccessToken(self, logger):
     try:
+      logger.log_text("Updating Spotify access token", severity="INFO")
       url = "https://accounts.spotify.com/api/token"
       payload='grant_type=refresh_token&refresh_token=' + self.__refresh_token
       headers = {
@@ -209,14 +215,17 @@ class Spotify:
       response = requests.request("POST", url, headers=headers, data=payload, timeout=5)
       if response.status_code == 200:
         self.__access_token = response.json()['access_token']
+        logger.log_text("Spotify access token updated", severity="INFO")
         return True
       else:
+        logger.log_text("Fail to update Spotify access token. Status code: " + response.status_code, severity="WARNING")
         return False
     except (requests.ConnectionError, requests.Timeout) as exception:
+      logger.log_text("Fail to update Spotify access token. Conection error.", severity="WARNING")
       return False
 
-  def getPlaying(self, max_tries=2):
-    self.updatePlaying(max_tries)
+  def getPlaying(self, max_tries=2, logger):
+    self.updatePlaying(max_tries, logger)
 
     return self._playing
 
