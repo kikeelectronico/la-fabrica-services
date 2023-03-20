@@ -26,7 +26,7 @@ class Weather:
     self.logger = logger
 
   def updateWeather(self):
-    if self.__api_key == "no_set" or not self._query == "no_set":
+    if self.__api_key == "no_set" or self._query == "no_set":
       self._fail_to_update = True
       self.logger.log_text("Wheather env vars aren't set", severity="ERROR")
     else:
