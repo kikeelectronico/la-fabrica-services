@@ -43,33 +43,13 @@ def film(homeware, alert, topic, payload):
         for param in device_state:
           homeware.execute(device_id, param, device_state[param])
 
-# Set the shower scene
-def shower(homeware, alert, topic, payload):
-  global waiting_for_shower
-  if topic == "device/scene_ducha/deactivate" and not payload:
-    # Start preparing the bathroom
-    alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
-    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
-    homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
-    waiting_for_shower = True
-  elif topic == "device/scene_ducha/deactivate" and payload:
-    # Return the bathroom to normal
-    alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
-    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
-    waiting_for_shower = False
-  # Announce that the bathroom is ready to taking a shower
-  if topic == "device/thermostat_bathroom" and waiting_for_shower:
-    if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      alert.voice("Crea una frase que informe al usuario de que el baño está preparado.", speaker="livingroom,bedroom", gpt3=True)
-      waiting_for_shower = False
-
 # Set a relax scene
 def relax(homeware, alert, topic, payload):
   if topic == "device/scene_relajacion/deactivate":
     global scene_pre_state
     if not payload:
       # Activate scenes
-      alert.voice("configuro un ambiente de relajación.", speaker="livingroom,bedroom", gpt3=True)
+      alert.voice("Crea una frase en la que expreses que es hora de relajarse.", speaker="livingroom,bedroom", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
       for device_id in devices_id:
@@ -89,6 +69,26 @@ def relax(homeware, alert, topic, payload):
         device_state = scene_pre_state[device_id]
         for param in device_state:
           homeware.execute(device_id, param, device_state[param])
+
+# Set the shower scene
+def shower(homeware, alert, topic, payload):
+  global waiting_for_shower
+  if topic == "device/scene_ducha/deactivate" and not payload:
+    # Start preparing the bathroom
+    alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
+    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
+    homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
+    waiting_for_shower = True
+  elif topic == "device/scene_ducha/deactivate" and payload:
+    # Return the bathroom to normal
+    alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
+    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
+    waiting_for_shower = False
+  # Announce that the bathroom is ready to taking a shower
+  if topic == "device/thermostat_bathroom" and waiting_for_shower:
+    if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
+      alert.voice("Crea una frase que informe al usuario de que el baño está preparado.", speaker="livingroom,bedroom", gpt3=True)
+      waiting_for_shower = False
 
 # Set the power alert scene
 def powerAlert(homeware, alert, topic, payload):
