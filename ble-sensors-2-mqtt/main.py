@@ -1,6 +1,7 @@
 from bluepy import btle
-import os
 import paho.mqtt.client as mqtt
+import google.cloud.logging as logging
+import os
 import time
 
 from homeware import Homeware
@@ -12,9 +13,11 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST_NETWORK", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
+SERVICE = "ble-sensors-2-mqtt-" + ENV
 # MAC address
 DEVICES = {
   "thermostat_livingroom": {
@@ -32,11 +35,13 @@ ble_link = {}
 rx_char = {}
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="ble-sensors-2-mqtt")
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
 homeware = Homeware(mqtt_client)
 
 class MyDelegate(btle.DefaultDelegate):
-    def __init__(self):
+    def __init__(self, logger):
+        self.logger = logger
         btle.DefaultDelegate.__init__(self)
 
     def handleNotification(self, cHandle, data):
@@ -53,38 +58,44 @@ class MyDelegate(btle.DefaultDelegate):
               homeware.execute(device_id,"thermostatHumidityAmbient",hum)
               homeware.execute(device_id,"online",True)
             else:
-               print("Unknown handle")
+              self.logger.log_text("Unknown handle", severity="WARNING")
+              print("Unknown handle")
         elif data[0] == 7:
+            self.logger.log_text("Low battery: " + device, severity="WARNING")
             print("low batery")
             homeware.execute(device_id,"online",False)
 
 # Main entry point
 if __name__ == "__main__":
+  logger.log_text("Starting", severity="INFO")
   # Check env vars
+  def report(message):
+    print(message)
+    logger.log_text(message, severity="ERROR")
+    exit()
   if MQTT_USER == "no_set":
-    print("MQTT_USER env vars no set")
+    report("MQTT_USER env vars no set")
     exit()
   if MQTT_PASS == "no_set":
-    print("MQTT_PASS env vars no set")
+    report("MQTT_PASS env vars no set")
     exit()
   if MQTT_HOST == "no_set":
-    print("MQTT_HOST env vars no set")
+    report("MQTT_HOST env vars no set")
     exit()
   
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  # Wake up alert
-  mqtt_client.publish("message-alerts", "BLE sensors 2 MQTT: operativo")
 
   while True:
     for device in DEVICES:
       try:
         if not device in ble_link:
           # Connect to device
-          print("Connecting...", device)
+          logger.log_text("Connecting to: " + device, severity="INFO")
+          print("Connecting to:", device)
           ble_link[device] = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM, )
-          ble_link[device].withDelegate( MyDelegate() )
+          ble_link[device].withDelegate( MyDelegate(logger) )
           # Get the API service
           service_uuid = btle.UUID(API_SERVICE_UUID)
           ble_service = ble_link[device].getServiceByUUID(service_uuid)
@@ -105,6 +116,7 @@ if __name__ == "__main__":
           # Request temperature and humidity
           rx_char[device].write(bytes.fromhex("570f31"))
       except btle.BTLEDisconnectError:
+        logger.log_text("Device offline: " + device, severity="WARNING")
         homeware.execute(device,"online",False)
         if device in ble_link:
           del ble_link[device]
