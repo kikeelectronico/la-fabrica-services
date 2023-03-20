@@ -28,7 +28,7 @@ class Weather:
   def updateWeather(self):
     if self.__api_key == "no_set" or not self._query == "no_set":
       self._fail_to_update = True
-      self.logger.log_text("Env vars aren't set", severity="ERROR")
+      self.logger.log_text("Wheather env vars aren't set", severity="ERROR")
     else:
       try:
         url = "https://api.weatherapi.com/v1/forecast.json?key=" + self.__api_key + "&q=" + self._query + "&days=2&aqi=yes&alerts=no"

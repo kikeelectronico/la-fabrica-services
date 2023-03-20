@@ -52,7 +52,7 @@ class Spotify:
       }
 
       self._playing = spotify
-      self.logger.log_text("Env vars aren't set", severity="ERROR")
+      self.logger.log_text("Spotify env vars aren't set", severity="ERROR")
     else:
       self._tries += 1
       if self.__access_token == "":
