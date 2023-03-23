@@ -197,7 +197,7 @@ class Spotify:
 
         else:
           error = response.json()['error']
-          self.logger.log_text("Spotify API returns a " + error['status'] + " code", severity="INFO")
+          self.logger.log_text("Spotify API returns a " + str(error['status']) + " code", severity="INFO")
           spotify = {
             "playing": False,
             "tries": self._tries,
