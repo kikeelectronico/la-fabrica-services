@@ -37,7 +37,7 @@ class Weather:
           self._weather = response.json()
           self._fail_to_update = False
         else:
-          self.logger.log_text("Fail to update weather data. Status code: " + response.status_code, severity="WARNING")
+          self.logger.log_text("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
           self._fail_to_update = True
       except (requests.ConnectionError, requests.Timeout) as exception:
         self.logger.log_text("Fail to update weather data. Conection error.", severity="WARNING")
