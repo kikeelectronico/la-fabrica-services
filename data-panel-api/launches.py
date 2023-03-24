@@ -12,6 +12,10 @@ class Launches:
   _last_update = 0
   _fail_to_update = True
 
+  def __init__(self, logger):
+    # Set the logger
+    self.logger = logger
+
   def updateLaunches(self):
     try:
       url = "https://ll.thespacedevs.com/2.2.0/launch/upcoming/"
@@ -27,8 +31,10 @@ class Launches:
 
         self._fail_to_update = False
       else:
+        self.logger.log_text("Fail to update launches. Status code: " + str(response.status_code), severity="WARNING")
         self._fail_to_update = True
     except (requests.ConnectionError, requests.Timeout) as exception:
+      self.logger.log_text("Fail to update launches. Conection error.", severity="WARNING")
       self._fail_to_update = False
 
   def getLaunches(self):

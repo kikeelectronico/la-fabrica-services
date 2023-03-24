@@ -35,8 +35,8 @@ app.add_middleware(
 spotify = Spotify(logger)
 weatherapi = Weather(logger)
 homeware = Homeware(logger)
-launchesapi = Launches()
-internet = Internet()
+launchesapi = Launches(logger)
+internet = Internet(logger)
 
 @app.get("/")
 async def root():
