@@ -44,7 +44,7 @@ def on_message(client, userdata, msg):
 		services_to_delete = []
 		for service in microservices_heartbeats.keys():
 			if current_time - microservices_heartbeats[service] > 70:
-				logger.log_text(service.decode("utf-8") + ": caido", severity="INFO")
+				logger.log_text(service.decode("utf-8") + ": caido", severity="WARNING")
 				services_to_delete.append(service)
 		# Delete the microservices on the delete queue
 		if len(services_to_delete) > 0:
@@ -54,7 +54,7 @@ def on_message(client, userdata, msg):
 		services_to_delete = []
 		for service in devices_heartbeats.keys():
 			if current_time - devices_heartbeats[service] > 70:
-				logger.log_text(service.decode("utf-8") + ": caido", severity="INFO")
+				logger.log_text(service.decode("utf-8") + ": caido", severity="WARNING")
 				homeware.execute(service.decode("utf-8"), "online", False)
 				services_to_delete.append(service)
 		# Delete the devices on the delete queue
