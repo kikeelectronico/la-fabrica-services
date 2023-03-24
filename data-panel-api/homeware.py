@@ -21,41 +21,50 @@ class Homeware:
     self.logger = logger
 
   def getStatus(self):
-    try:
-      url = self.__url + "/api/status/get/"
-      headers = {
-          "Authorization": "baerer " + self.__api_key
-      }
-      response = requests.get(url, headers=headers)
-      if response.status_code == 200:
-        status = response.json()
-        return (True, status)
-      else:
-        self.logger.log_text("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
-        return (False, {})
-    except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to get Homeware status. Conection error.", severity="WARNING")
-      self._fail_to_update = False
+    if self.__api_key == "no_set" or self.__url == "no_set":
+      self._fail_to_update = True
+      self.logger.log_text("Homeware env vars aren't set", severity="ERROR")
+    else:
+      try:
+        url = self.__url + "/api/status/get/"
+        headers = {
+            "Authorization": "baerer " + self.__api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+          status = response.json()
+          return (True, status)
+        else:
+          self.logger.log_text("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
+          return (False, {})
+      except (requests.ConnectionError, requests.Timeout) as exception:
+        self.logger.log_text("Fail to get Homeware status. Conection error.", severity="WARNING")
+        self._fail_to_update = False
+
 
   def getDevices(self):
-    try:
-      url = self.__url + "/api/devices/get/"
-      headers = {
-          "Authorization": "baerer " + self.__api_key
-      }
-      response = requests.get(url, headers=headers)
-      if response.status_code == 200:
-        unorderedDevices = response.json()
-        devices = {}
-        for device in unorderedDevices:
-            devices[device['id']] = device
-        return (True, devices)
-      else:
-        self.logger.log_text("Fail to get Homeware devices. Status code: " + str(response.status_code), severity="WARNING")
-        return (False, {})    
-    except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to get Homeware devices. Conection error.", severity="WARNING")
-      self._fail_to_update = False
+    if self.__api_key == "no_set" or self.__url == "no_set":
+      self._fail_to_update = True
+      self.logger.log_text("Homeware env vars aren't set", severity="ERROR")
+    else:
+      try:
+        url = self.__url + "/api/devices/get/"
+        headers = {
+            "Authorization": "baerer " + self.__api_key
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+          unorderedDevices = response.json()
+          devices = {}
+          for device in unorderedDevices:
+              devices[device['id']] = device
+          return (True, devices)
+        else:
+          self.logger.log_text("Fail to get Homeware devices. Status code: " + str(response.status_code), severity="WARNING")
+          return (False, {})    
+      except (requests.ConnectionError, requests.Timeout) as exception:
+        self.logger.log_text("Fail to get Homeware devices. Conection error.", severity="WARNING")
+        self._fail_to_update = False
 
 
     
