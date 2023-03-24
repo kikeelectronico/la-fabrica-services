@@ -2,6 +2,7 @@ import requests
 import os
 import time
 import paho.mqtt.client as mqtt
+import google.cloud.logging as logging
 
 # Load env vars
 if os.environ.get("GET_IP_ENDPOINT", "no_set") == "no_set":
@@ -16,50 +17,48 @@ CLOUDFLARE_TOKEN = os.environ.get("CLOUDFLARE_TOKEN", "no_set")
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
 SLEEP_TIME = 10
+SERVICE = "dns-updater-" + ENV
 
 # Declare variables
 last_ip = "unknown"
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="dns-updater")
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
 
 def main():
   global last_ip
+  logger.log_text("Starting", severity="INFO")
   # Check env vars
+  def report(message):
+    print(message)
+    logger.log_text(message, severity="ERROR")
+    exit()
   if GET_IP_ENDPOINT == "no_set":
-    print("GET_IP_ENDPOINT env vars no set")
-    exit()
+    report("GET_IP_ENDPOINT env vars no set")
   if CLOUDFLARE_ZONE == "no_set":
-    print("CLOUDFLARE_ZONE env vars no set")
-    exit()
+    report("CLOUDFLARE_ZONE env vars no set")
   if CLOUDFLARE_DNS_ID == "no_set":
-    print("CLOUDFLARE_DNS_ID env vars no set")
-    exit()
+    report("CLOUDFLARE_DNS_ID env vars no set")
   if CLOUDFLARE_DNS_ID_DIP == "no_set":
-    print("CLOUDFLARE_DNS_ID_DIP env vars no set")
-    exit()
+    report("CLOUDFLARE_DNS_ID_DIP env vars no set")
   if CLOUDFLARE_TOKEN == "no_set":
-    print("CLOUDFLARE_TOKEN env vars no set")
-    exit()
+    report("CLOUDFLARE_TOKEN env vars no set")
   if MQTT_USER == "no_set":
-    print("MQTT_USER env vars no set")
-    exit()
+    report("MQTT_USER env vars no set")
   if MQTT_PASS == "no_set":
-    print("MQTT_PASS env vars no set")
-    exit()
+    report("MQTT_PASS env vars no set")
   if MQTT_HOST == "no_set":
-    print("MQTT_HOST env vars no set")
-    exit()
+    report("MQTT_HOST env vars no set")
 
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  # Wake up alert
-  mqtt_client.publish("message-alerts", "DNS updater: operativo")
   # Main loop
   while True:
     # Get current public IP
@@ -77,8 +76,9 @@ def main():
       response = requests.request("PATCH", url, headers=headers, data=payload).json()
       # Verify the response from Cloudflare
       if response["success"]:
-        mqtt_client.publish("message-alerts", "IP de Homeware actualizada")
+        logger.log_text("IP de Homeware actualizada", severity="INFO")
       else:
+        logger.log_text("Problemas al actualizar la IP de Homeware", severity="ERROR")
         mqtt_client.publish("message-alerts", "Problemas al actualizar la IP de Homeware")
       # DIP
       # Make an update request to the Cloudflare API
@@ -91,8 +91,10 @@ def main():
       response = requests.request("PATCH", url, headers=headers, data=payload).json()
       # Verify the response from Cloudflare
       if response["success"]:
+        logger.log_text("IP de DIP actualizada", severity="INFO")
         mqtt_client.publish("message-alerts", "IP de DIP actualizada")
       else:
+        logger.log_text("Problemas al actualizar la IP de DIP", severity="ERROR")
         mqtt_client.publish("message-alerts", "Problemas al actualizar la IP de DIP")
       last_ip = ip
     # Send heartbeat
