@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import google.cloud.logging as logging
 import os
 import time
 from Homeware import Homeware
@@ -13,17 +14,20 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
 TOPICS = ["heartbeats", "heartbeats/request", "device/heartbeat"]
+SERVICE = "heartbeat-monitor-" + ENV
 
 # Declare variables
 microservices_heartbeats = {}
 devices_heartbeats = {}
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="heartbeat-monitor")
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
 
 # Suscribe to topics on connect
@@ -40,7 +44,7 @@ def on_message(client, userdata, msg):
 		services_to_delete = []
 		for service in microservices_heartbeats.keys():
 			if current_time - microservices_heartbeats[service] > 70:
-				mqtt_client.publish("message-alerts", service.decode("utf-8") + ": caido")
+				logger.log_text(service.decode("utf-8") + ": caido", severity="INFO")
 				services_to_delete.append(service)
 		# Delete the microservices on the delete queue
 		if len(services_to_delete) > 0:
@@ -50,7 +54,7 @@ def on_message(client, userdata, msg):
 		services_to_delete = []
 		for service in devices_heartbeats.keys():
 			if current_time - devices_heartbeats[service] > 70:
-				mqtt_client.publish("message-alerts", service.decode("utf-8") + ": caido")
+				logger.log_text(service.decode("utf-8") + ": caido", severity="INFO")
 				homeware.execute(service.decode("utf-8"), "online", False)
 				services_to_delete.append(service)
 		# Delete the devices on the delete queue
@@ -60,31 +64,35 @@ def on_message(client, userdata, msg):
 	elif msg.topic == "heartbeats":
 		# Save the timestamp when a microservice sends a heartbeat
 		service = msg.payload
+		if not service in microservices_heartbeats:
+				logger.log_text(service.decode("utf-8") + ": arriba", severity="INFO")
 		microservices_heartbeats[service] = time.time()
 	elif msg.topic == "device/heartbeat":
 		# Save the timestamp when a device sends a heartbeat
 		service = msg.payload
+		if not service in devices_heartbeats:
+				logger.log_text(service.decode("utf-8") + ": arriba", severity="INFO")
 		devices_heartbeats[service] = time.time()
 		homeware.execute(service.decode("utf-8"), "online", True)
 
 # Main entry point
 if __name__ == "__main__":
+	logger.log_text("Starting", severity="INFO")
 	# Check env vars
+	def report(message):
+		print(message)
+		logger.log_text(message, severity="ERROR")
+		exit()
 	if MQTT_USER == "no_set":
-		print("MQTT_USER env vars no set")
-		exit()
+		report("MQTT_USER env vars no set")
 	if MQTT_PASS == "no_set":
-		print("MQTT_PASS env vars no set")
-		exit()
+		report("MQTT_PASS env vars no set")
 	if MQTT_HOST == "no_set":
-		print("MQTT_HOST env vars no set")
-		exit()
+		report("MQTT_HOST env vars no set")
 	if HOMEWARE_API_URL == "no_set":
-		print("HOMEWARE_API_URL env vars no set")
-		exit()
+		report("HOMEWARE_API_URL env vars no set")
 	if HOMEWARE_API_KEY == "no_set":
-		print("HOMEWARE_API_KEY env vars no set")
-		exit()
+		report("HOMEWARE_API_KEY env vars no set")
     
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
@@ -92,8 +100,6 @@ if __name__ == "__main__":
 	# Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-	# Wake up alert
-	mqtt_client.publish("message-alerts", "Heartbeat monitor: operativo")
 	# Main loop
 	mqtt_client.loop_forever()
  

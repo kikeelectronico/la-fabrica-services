@@ -21,10 +21,3 @@ class Homeware:
       "intent": "execute"
     }
     self.__mqtt_client.publish("device/control", json.dumps(control_payload))
-
-  # Make a get status request to Homeware API
-  def get(self, id, param):
-    url = self.__url + "/api/status/get/" + id
-    headers = {"Authorization": "baerer " + self.__token}
-    response = requests.get(url, headers=headers)
-    return response.json()[param]
