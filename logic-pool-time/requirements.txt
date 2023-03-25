@@ -1,3 +1,4 @@
 paho-mqtt
 python-dotenv
 requests
+google-cloud-logging
