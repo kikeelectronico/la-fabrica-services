@@ -46,7 +46,7 @@ TOPICS = [
   "device/switch_at_home/on",
   "device/switch_hood/on",
   "device/switch_radiator/on",
-  "device/hue_sensor_12/on"
+  "device/hue_sensor_12/on",
   "device/switch_temp_1/on"
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
