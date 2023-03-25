@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import google.cloud.logging as logging
 import os
 import time
 
@@ -11,14 +12,17 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST_NETWORK", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
 TOPICS = ["heartbeats/request","voice-alert/text", "voice-alert/speakers"]
+SERVICE = "voice-alert-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="voice-alert")
-voice = Voice()
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
+voice = Voice(SERVICE)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
@@ -40,16 +44,18 @@ def on_message(client, userdata, msg):
 
 # Main entry point
 if __name__ == "__main__":
+  logger.log_text("Starting", severity="INFO")
   # Check env vars
+  def report(message):
+    print(message)
+    logger.log_text(message, severity="ERROR")
+    exit()
   if MQTT_USER == "no_set":
-    print("MQTT_USER env vars no set")
-    exit()
+    report("MQTT_USER env vars no set")
   if MQTT_PASS == "no_set":
-    print("MQTT_PASS env vars no set")
-    exit()
+    report("MQTT_PASS env vars no set")
   if MQTT_HOST == "no_set":
-    print("MQTT_HOST env vars no set")
-    exit()
+    report("MQTT_HOST env vars no set")
   
   # Declare the callback functions
   mqtt_client.on_message = on_message

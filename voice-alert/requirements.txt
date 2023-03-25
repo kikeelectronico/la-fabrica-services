@@ -4,3 +4,4 @@ google.cloud
 google-cloud-speech
 google-cloud-texttospeech
 python-dotenv
+google-cloud-logging

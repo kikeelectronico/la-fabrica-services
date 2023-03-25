@@ -12,7 +12,7 @@ class Voice:
 
   speakers = "all"
 
-  def __init__(self):
+  def __init__(self, logger):
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
     self.voice = texttospeech.VoiceSelectionParams(
       language_code="es-ES",
@@ -22,6 +22,7 @@ class Voice:
         audio_encoding=texttospeech.AudioEncoding.MP3,
         pitch=1.4
     )
+    self.logger = logger
 
   # Genereate mp3 file if needed
   def getFile(self, text):
