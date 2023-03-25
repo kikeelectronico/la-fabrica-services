@@ -7,10 +7,11 @@ class Homeware:
   __url = "localhost"
   __token = "token"
 
-  def __init__(self, mqtt_client, host, token):
+  def __init__(self, mqtt_client, host, token, logger):
     self.__mqtt_client = mqtt_client
     self.__url = host
     self.__token = token
+    self.logger = logger
 
   # Make an execution request to Homeware API
   def execute(self, id, param, value):    
