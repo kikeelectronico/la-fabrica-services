@@ -47,6 +47,7 @@ TOPICS = [
   "device/switch_hood/on",
   "device/switch_radiator/on",
   "device/hue_sensor_12/on"
+  "device/switch_temp_1/on"
 ]
 SERVICE = "alert-system-requests-" + ENV
 
@@ -82,6 +83,7 @@ def on_message(client, userdata, msg):
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
+        switches.livingroom(homeware, msg.topic, payload)
   except Exception as e:
     logger.log_text("Excepción en Logic pool mqtt", severity="WARNING")
     logger.log_text(str(e), severity="WARNING") 
