@@ -49,7 +49,7 @@ TOPICS = [
   "device/hue_sensor_12/on"
   "device/switch_temp_1/on"
 ]
-SERVICE = "alert-system-requests-" + ENV
+SERVICE = "logic-pool-mqtt-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
