@@ -92,7 +92,6 @@ def main():
       # Verify the response from Cloudflare
       if response["success"]:
         logger.log_text("IP de DIP actualizada", severity="INFO")
-        mqtt_client.publish("message-alerts", "IP de DIP actualizada")
       else:
         logger.log_text("Problemas al actualizar la IP de DIP", severity="ERROR")
         mqtt_client.publish("message-alerts", "Problemas al actualizar la IP de DIP")
