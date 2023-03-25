@@ -2,6 +2,7 @@ import time
 import paho.mqtt.client as mqtt
 import os
 from google.cloud import bigquery
+import google.cloud.logging as logging
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -13,6 +14,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 POWER_DDBB = os.environ.get("POWER_DDBB", "no_set")
 AMBIENT_DDBB = os.environ.get("AMBIENT_DDBB", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
@@ -27,6 +29,7 @@ TOPICS = [
 	"device/thermostat_dormitorio/thermostatTemperatureAmbient",
 	"device/thermostat_dormitorio/thermostatHumidityAmbient"
 ]
+SERVICE = "mqtt-2-bigquery-" + ENV
 
 # Declare variables
 latest_power = 0
@@ -38,7 +41,8 @@ latest_bathroom_humidity = 0
 latest_bedroom_humidity = 0
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="mqtt-2-bigquery")
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
 bigquery_client = bigquery.Client()
 
 # Change the type of the payload
@@ -153,22 +157,22 @@ def sendThermostatRequest(payload, last_value, location, magnitude, units):
 
 # Main entry point
 if __name__ == "__main__":
+	logger.log_text("Starting", severity="INFO")
 	# Check env vars
+	def report(message):
+		print(message)
+		logger.log_text(message, severity="ERROR")
+		exit()
 	if MQTT_USER == "no_set":
-		print("MQTT_USER env vars no set")
-		exit()
+		report("MQTT_USER env vars no set")
 	if MQTT_PASS == "no_set":
-		print("MQTT_PASS env vars no set")
-		exit()
+		report("MQTT_PASS env vars no set")
 	if MQTT_HOST == "no_set":
-		print("MQTT_HOST env vars no set")
-		exit()
+		report("MQTT_HOST env vars no set")
 	if POWER_DDBB == "no_set":
-		print("POWER_DDBB env vars no set")
-		exit()
+		report("POWER_DDBB env vars no set")
 	if AMBIENT_DDBB == "no_set":
-		print("AMBIENT_DDBB env vars no set")
-		exit()
+		report("AMBIENT_DDBB env vars no set")
 		
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
@@ -176,8 +180,6 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-  # Wake up alert
-	mqtt_client.publish("message-alerts", "MQTT 2 BigQuery: operativo")
   # Main loop
 	mqtt_client.loop_forever()
  

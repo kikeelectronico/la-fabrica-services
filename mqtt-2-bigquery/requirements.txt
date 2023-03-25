@@ -2,3 +2,4 @@ requests
 paho-mqtt
 python-dotenv
 google-cloud-bigquery
+google-cloud-logging
