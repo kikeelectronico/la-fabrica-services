@@ -1,5 +1,6 @@
 import requests
 import paho.mqtt.client as mqtt
+import google.cloud.logging as logging
 import json
 import os
 
@@ -13,14 +14,17 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 HUE_HOST = os.environ.get("HUE_HOST", "no_set")
 HUE_TOKEN = os.environ.get("HUE_TOKEN", "no_set")
+ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
 POWER_CONSTANT = 35
 TOPICS = ["heartbeats/request","device/hue_1","device/hue_2","device/hue_3"]
+SERVICE = "mqtt-2-hue-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id="mqtt-2-hue")
+mqtt_client = mqtt.Client(client_id=SERVICE)
+logger = logging.Client().logger(SERVICE)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
@@ -45,32 +49,39 @@ def on_message(client, userdata, msg):
 
 # Send an update request to Hue bridge API
 def sendToHue(hue_id, hue_status):
-	url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
-	headers = {
-		"Content-Type": "application/json"
-	}
-	r = requests.put(url, data = json.dumps(hue_status), headers = headers)
-	if not "success" in r.text:
-		print(r.text)
+	if HUE_TOKEN == "no_set" or HUE_HOST == "no_set":
+		logger.log_text("Hue env vars aren't set", severity="ERROR")
+	else:
+		try:
+			url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
+			headers = {
+				"Content-Type": "application/json"
+			}
+			response = requests.put(url, data = json.dumps(hue_status), headers = headers)
+			if not response.status_code == 200:
+				logger.log_text("Fail to update to Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
+		except (requests.ConnectionError, requests.Timeout) as exception:
+			logger.log_text("Fail to update Hue Bridge lights. Conection error.", severity="WARNING")
+
 
 # Main entry point
 if __name__ == "__main__":
+	logger.log_text("Starting", severity="INFO")
 	# Check env vars
+	def report(message):
+		print(message)
+		logger.log_text(message, severity="ERROR")
+		exit()
 	if MQTT_USER == "no_set":
-		print("MQTT_USER env vars no set")
-		exit()
+		report("MQTT_USER env vars no set")
 	if MQTT_PASS == "no_set":
-		print("MQTT_PASS env vars no set")
-		exit()
+		report("MQTT_PASS env vars no set")
 	if MQTT_HOST == "no_set":
-		print("MQTT_HOST env vars no set")
-		exit()
+		report("MQTT_HOST env vars no set")
 	if HUE_HOST == "no_set":
-		print("HUE_HOST env vars no set")
-		exit()
+		report("HUE_HOST env vars no set")
 	if HUE_TOKEN == "no_set":
-		print("HUE_TOKEN env vars no set")
-		exit()
+		report("HUE_TOKEN env vars no set")
 
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
@@ -78,8 +89,6 @@ if __name__ == "__main__":
 	# Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-	# Wake up alert
-	mqtt_client.publish("message-alerts", "MQTT 2 Hue: operativo")
 	# Main loop
 	mqtt_client.loop_forever()
  
