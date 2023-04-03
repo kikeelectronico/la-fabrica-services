@@ -38,3 +38,10 @@ def livingroom(homeware, topic, payload):
       homeware.execute("rgb002","on",False)
       homeware.execute("hue_1","on",False)
       homeware.execute("light003","on",False)
+
+def kitchen(homeware, topic, payload):
+  if topic == "device/hue_sensor_13/on":
+    if payload:
+      homeware.execute("light004","on",True)
+    else:
+      homeware.execute("light004","on",False)
