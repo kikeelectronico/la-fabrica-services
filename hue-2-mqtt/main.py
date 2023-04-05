@@ -79,4 +79,26 @@ if __name__ == "__main__":
             homeware.execute("hue_" + device_id,
                               "online",
                               device["state"]["reachable"])
+            
+    # Check sensors lights
+    devices = hue.getSensors()
+    for device_id in devices:
+      device = devices[device_id]
+      if "config" in device:
+        if "reachable" in device["config"]:
+          if "hue_sensor_" + device_id in cache:
+            if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
+              homeware.execute("hue_sensor_" + device_id,
+                              "online",
+                              device["config"]["reachable"])
+              if device["config"]["battery"] < 5:
+                logger.log_text(device_id + ": batería muy baja", severity="ERROR")
+              elif device["config"]["battery"] < 10:
+                logger.log_text(device_id + ": batería baja", severity="WARNING")
+              logger.log_text(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
+          else:
+            cache["hue_sensor_" + device_id] = device["config"]
+            homeware.execute("hue_sensor_" + device_id,
+                              "online",
+                              device["config"]["reachable"])
     time.sleep(SLEEP_TIME)
