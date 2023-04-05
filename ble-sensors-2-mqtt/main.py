@@ -122,4 +122,4 @@ if __name__ == "__main__":
         homeware.execute(device,"online",False)
         if device in ble_link:
           del ble_link[device]
-    time.sleep(1)
+    time.sleep(30)
