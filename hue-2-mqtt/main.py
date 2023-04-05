@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import google.cloud.logging as logging
 import os
 import time
+import json
 
 from hue import Hue
 from homeware import Homeware
@@ -85,20 +86,24 @@ if __name__ == "__main__":
     for device_id in devices:
       device = devices[device_id]
       if "config" in device:
-        if "reachable" in device["config"]:
-          if "hue_sensor_" + device_id in cache:
-            if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
+        if "reachable" in device["config"] and "battery" in device["config"]:
+          def sendData():
               homeware.execute("hue_sensor_" + device_id,
                               "online",
                               device["config"]["reachable"])
+              homeware.execute("hue_sensor_" + device_id,
+                              "capacityRemaining",
+                              [{"rawValue": device["config"]["battery"], "unit":"PERCENTAGE"}])
+          if "hue_sensor_" + device_id in cache:
+            if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
+              sendData()
               if device["config"]["battery"] < 5:
                 logger.log_text(device_id + ": batería muy baja", severity="ERROR")
               elif device["config"]["battery"] < 10:
                 logger.log_text(device_id + ": batería baja", severity="WARNING")
               logger.log_text(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
           else:
+            sendData()
             cache["hue_sensor_" + device_id] = device["config"]
-            homeware.execute("hue_sensor_" + device_id,
-                              "online",
-                              device["config"]["reachable"])
+            
     time.sleep(SLEEP_TIME)
