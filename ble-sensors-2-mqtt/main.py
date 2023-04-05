@@ -46,25 +46,28 @@ class MyDelegate(btle.DefaultDelegate):
 
     def handleNotification(self, cHandle, data):
         data = bytearray(data)
-        if data[0] == 1:
-            temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
-            temp_dec = data[1] if data[1] < 16 else 0
-            temp = temp_int + (temp_dec/10)
-            hum = data[3] if data[3] < 128 else (data[3] - 128)
-            print(round(time.time()), temp, hum)
-            if cHandle in cHandles:
-              device_id = cHandles[cHandle]
-              homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
-              homeware.execute(device_id,"thermostatHumidityAmbient",hum)
-              homeware.execute(device_id,"online",True)
-            else:
-              self.logger.log_text("Unknown handle", severity="WARNING")
-              print("Unknown handle")
-        elif data[0] == 7:
-            self.logger.log_text("Low battery: " + device, severity="WARNING")
-            print("low batery")
-            homeware.execute(device_id,"online",False)
-
+        if cHandle in cHandles:
+          device_id = cHandles[cHandle]
+          if data[0] == 1:
+              if len(data) == 5:
+                  # Update batery
+                  homeware.execute(device_id,"capacityRemaining",[{"rawValue": data[1], "unit":"PERCENTAGE"}])
+              elif len(data) == 4:
+                  # Update temperature and humidity
+                  temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
+                  temp_dec = data[1] if data[1] < 16 else 0
+                  temp = temp_int + (temp_dec/10)
+                  hum = data[3] if data[3] < 128 else (data[3] - 128)           
+                  homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
+                  homeware.execute(device_id,"thermostatHumidityAmbient",hum)
+                  homeware.execute(device_id,"online",True)
+              else:
+                  self.logger.log_text("Unknown package from " + device, severity="WARNING")
+          elif data[0] == 7:
+              self.logger.log_text("Low battery: " + device, severity="WARNING")
+              homeware.execute(device_id,"online",False)
+        else:
+            self.logger.log_text("Unknown handle", severity="WARNING")
 # Main entry point
 if __name__ == "__main__":
   logger.log_text("Starting", severity="INFO")
@@ -108,13 +111,15 @@ if __name__ == "__main__":
           rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
           time.sleep(5)
         if device in ble_link:
-          if ble_link[device].waitForNotifications(5):
-              continue
           # Request temperature and humidity
           rx_char[device].write(bytes.fromhex("570f31"))
+          ble_link[device].waitForNotifications(5)
+          # Request device info
+          rx_char[device].write(bytes.fromhex("570200"))
+          ble_link[device].waitForNotifications(5)
       except btle.BTLEDisconnectError:
         logger.log_text("Device offline: " + device, severity="WARNING")
         homeware.execute(device,"online",False)
         if device in ble_link:
           del ble_link[device]
-    time.sleep(10)
+    time.sleep(1)
