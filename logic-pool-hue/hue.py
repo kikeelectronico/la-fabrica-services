@@ -29,7 +29,7 @@ class Hue:
         self._fail_to_update = False
         return {}
   
-  # Get lights json
+  # Get sesnors json
   def getSensors(self):
     if self.__token == "no_set" or self.__url == "no_set":
       self._fail_to_update = True
