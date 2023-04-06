@@ -57,6 +57,12 @@ class MyDelegate(btle.DefaultDelegate):
                   elif data[1] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
                   elif data[1] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
                   else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
+
+                  if data[1] < 5:
+                    logger.log_text(device_id + ": batería muy baja", severity="ERROR")
+                  elif data[1] < 10:
+                    logger.log_text(device_id + ": batería baja", severity="WARNING")
+
               elif len(data) == 4:
                   # Update temperature and humidity
                   temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
