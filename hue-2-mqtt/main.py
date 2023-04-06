@@ -87,13 +87,16 @@ if __name__ == "__main__":
       device = devices[device_id]
       if "config" in device:
         if "reachable" in device["config"] and "battery" in device["config"]:
+
           def sendData():
-              homeware.execute("hue_sensor_" + device_id,
-                              "online",
-                              device["config"]["reachable"])
-              homeware.execute("hue_sensor_" + device_id,
-                              "capacityRemaining",
-                              [{"rawValue": device["config"]["battery"], "unit":"PERCENTAGE"}])
+              homeware.execute("hue_sensor_" + device_id, "online", device["config"]["reachable"])
+              homeware.execute("hue_sensor_" + device_id, "capacityRemaining", [{"rawValue": device["config"]["battery"], "unit":"PERCENTAGE"}])
+              if device["config"]["battery"] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
+              elif device["config"]["battery"] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
+              elif device["config"]["battery"] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
+              elif device["config"]["battery"] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
+              else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
+              
           if "hue_sensor_" + device_id in cache:
             if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
               sendData()
