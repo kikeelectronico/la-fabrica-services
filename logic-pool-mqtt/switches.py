@@ -45,3 +45,12 @@ def kitchen(homeware, topic, payload):
       homeware.execute("light004","on",True)
     else:
       homeware.execute("light004","on",False)
+
+def mirror(homeware, topic, payload):
+  if topic == "device/hue_sensor_2/on":
+    if payload:
+      homeware.execute("hue_2","on",True)
+      homeware.execute("hue_3","on",True)
+    else:
+      homeware.execute("hue_2","on",False)
+      homeware.execute("hue_3","on",False)

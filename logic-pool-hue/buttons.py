@@ -15,9 +15,8 @@ def mirrorDimmer(id, state, homeware):
           long_pressing = False
 
       elif state["buttonevent"] == 1002:
-          value = not homeware.get("hue_2","on")
-          homeware.execute("hue_2","on",value)
-          homeware.execute("hue_3","on",value)
+          value = not homeware.get("hue_sensor_2","on")
+          homeware.execute("hue_sensor_2","on",value)
 
       elif state["buttonevent"] == 2001:
           if not long_pressing:
