@@ -46,7 +46,7 @@ def mirrorDimmer(id, state, homeware):
           homeware.execute("hue_3","brightness",value)
 
       elif state["buttonevent"] == 4002:
-          current_temperature = homeware.get("hue_2","color")["temperature"]
+          current_temperature = homeware.get("hue_2","color")["temperatureK"]
           TEMPERATURE_LOOP = [2700, 5000]
           try:
               new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
@@ -54,8 +54,8 @@ def mirrorDimmer(id, state, homeware):
           except ValueError:
               new_index = 0
           new_temperature = TEMPERATURE_LOOP[new_index]
-          homeware.execute("hue_2","color",{"temperature": new_temperature})
-          homeware.execute("hue_3","color",{"temperature": new_temperature})
+          homeware.execute("hue_2","color",{"temperatureK": new_temperature})
+          homeware.execute("hue_3","color",{"temperatureK": new_temperature})
 
 def bedroomButton(id, state, homeware):
     global long_pressing

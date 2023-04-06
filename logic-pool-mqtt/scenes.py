@@ -143,7 +143,7 @@ def dim(homeware, topic, payload):
       # Change color temp on lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
-        homeware.execute(device_id, "color", {"temperature": 5000})
+        homeware.execute(device_id, "color", {"temperatureK": 5000})
       # Increase some lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
@@ -160,7 +160,7 @@ def dim(homeware, topic, payload):
       # Change color temp on lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
-        homeware.execute(device_id, "color", {"temperature": 2700})
+        homeware.execute(device_id, "color", {"temperatureK": 2700})
       # Attenuate some lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
