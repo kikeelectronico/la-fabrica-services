@@ -52,6 +52,11 @@ class MyDelegate(btle.DefaultDelegate):
               if len(data) == 5:
                   # Update batery
                   homeware.execute(device_id,"capacityRemaining",[{"rawValue": data[1], "unit":"PERCENTAGE"}])
+                  if data[1] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
+                  elif data[1] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
+                  elif data[1] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
+                  elif data[1] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
+                  else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
               elif len(data) == 4:
                   # Update temperature and humidity
                   temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
@@ -65,6 +70,7 @@ class MyDelegate(btle.DefaultDelegate):
                   self.logger.log_text("Unknown package from " + device, severity="WARNING")
           elif data[0] == 7:
               self.logger.log_text("Low battery: " + device, severity="WARNING")
+              homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
               homeware.execute(device_id,"online",False)
         else:
             self.logger.log_text("Unknown handle", severity="WARNING")
