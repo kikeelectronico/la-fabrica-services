@@ -10,10 +10,10 @@ scene_pre_state = {}
 
 # Set the film scene
 def film(homeware, alert, topic, payload):
-  if topic == "device/scene_pelicula/deactivate":
+  if topic == "device/scene_pelicula/enable":
     global scene_pre_state
-    if not payload:
-      # Activate scene
+    if payload:
+      # Enable scene
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
@@ -36,7 +36,7 @@ def film(homeware, alert, topic, payload):
       for control_id in turn_on_devices:
         homeware.execute(control_id, "on", True)
     else:
-      # Deactivate scene
+      # Disable scene
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
         device_state = scene_pre_state[device_id]
@@ -45,10 +45,10 @@ def film(homeware, alert, topic, payload):
 
 # Set a relax scene
 def relax(homeware, alert, topic, payload):
-  if topic == "device/scene_relajacion/deactivate":
+  if topic == "device/scene_relajacion/enable":
     global scene_pre_state
-    if not payload:
-      # Activate scenes
+    if payload:
+      # Enable scenes
       alert.voice("Crea una frase en la que expreses que es hora de relajarse.", speaker="livingroom,bedroom", gpt3=True)
       # Save current status
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
@@ -63,7 +63,7 @@ def relax(homeware, alert, topic, payload):
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
     else:
-      # Deactivate scene
+      # Disable scene
       devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
       for device_id in devices_id:
         device_state = scene_pre_state[device_id]
@@ -73,17 +73,18 @@ def relax(homeware, alert, topic, payload):
 # Set the shower scene
 def shower(homeware, alert, topic, payload):
   global waiting_for_shower
-  if topic == "device/scene_ducha/deactivate" and not payload:
-    # Start preparing the bathroom
-    alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
-    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
-    homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
-    waiting_for_shower = True
-  elif topic == "device/scene_ducha/deactivate" and payload:
-    # Return the bathroom to normal
-    alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
-    homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
-    waiting_for_shower = False
+  if topic == "device/scene_ducha/enable":
+    if payload:
+      # Start preparing the bathroom
+      alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
+      homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
+      homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
+      waiting_for_shower = True
+    else:
+      # Return the bathroom to normal
+      alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
+      homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
+      waiting_for_shower = False
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
@@ -130,8 +131,25 @@ def powerAlert(homeware, alert, topic, payload):
 
 # Set dim scene
 def dim(homeware, topic, payload):
-  if topic == "device/scene_dim/deactivate":
+  if topic == "device/scene_dim/enable":
     if payload:
+      # Change some devices color
+      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      color = {
+        "spectrumRGB": 16729344,
+        "spectrumRgb": 16729344
+      }
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", color)
+      # Change color temp on lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", {"temperatureK": 2700})
+      # Attenuate some lights
+      devices_ids = ["hue_2","hue_3"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 20)
+    else:
       # Change some devices color
       devices_ids = ["rgb001", "rgb002", "rgb003"]
       color = {
@@ -148,23 +166,6 @@ def dim(homeware, topic, payload):
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 80)
-    else:
-       # Change some devices color
-      devices_ids = ["rgb001", "rgb002", "rgb003"]
-      color = {
-        "spectrumRGB": 16729344,
-        "spectrumRgb": 16729344
-      }
-      for device_id in devices_ids:
-        homeware.execute(device_id, "color", color)
-      # Change color temp on lights
-      devices_ids = ["hue_2","hue_3"]
-      for device_id in devices_ids:
-        homeware.execute(device_id, "color", {"temperatureK": 2700})
-      # Attenuate some lights
-      devices_ids = ["hue_2","hue_3"]
-      for device_id in devices_ids:
-        homeware.execute(device_id, "brightness", 20)
 
     # Run the Switches logic
     value = homeware.get("hue_sensor_12","on")

@@ -20,8 +20,8 @@ def mirrorDimmer(id, state, homeware):
 
       elif state["buttonevent"] == 2001:
           if not long_pressing:
-            value = not homeware.get("scene_dim","deactivate")
-            homeware.execute("scene_dim","deactivate",value)
+            value = not homeware.get("scene_dim","enable")
+            homeware.execute("scene_dim","enable",value)
             long_pressing = True
 
       elif state["buttonevent"] == 2003:
@@ -62,8 +62,8 @@ def bedroomButton(id, state, homeware):
     if id == "12":
       if state["buttonevent"] == 1001:
           if not long_pressing:
-            value = not homeware.get("scene_dim","deactivate")
-            homeware.execute("scene_dim","deactivate",value)
+            value = not homeware.get("scene_dim","enable")
+            homeware.execute("scene_dim","enable",value)
             long_pressing = True
 
       elif state["buttonevent"] == 1003:

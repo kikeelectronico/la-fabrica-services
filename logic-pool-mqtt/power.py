@@ -34,8 +34,8 @@ def powerManagment(homeware, topic, payload):
   global power_alert
 
   TOPICS = [
-    "device/scene_ducha/deactivate",
-    "device/secne_drying/deactivate",
+    "device/scene_ducha/enable",
+    "device/secne_drying/enable",
     "device/current001/brightness",
     "device/thermostat_livingroom",
     "device/thermostat_bathroom",
@@ -63,12 +63,12 @@ def powerManagment(homeware, topic, payload):
       power_pre_alert = False
     # Power distribution
     if not power_alert:
-      if not homeware.get("scene_ducha", "deactivate"):
+      if homeware.get("scene_ducha", "enable"):
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         heater = (not bathroom) and (not livingroom)
         bedroom = False
-      elif not homeware.get("secne_drying", "deactivate"):
+      elif homeware.get("secne_drying", "enable"):
         bathroom = True
         livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         heater = (not bathroom) and (not livingroom)

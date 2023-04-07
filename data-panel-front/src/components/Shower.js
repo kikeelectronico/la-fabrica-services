@@ -5,7 +5,7 @@ export default function Shower(props) {
   return (
     <>
       {
-        props.api_requested && props.homeware.status_flag && !props.homeware.status.scene_ducha.deactivate ? 
+        props.api_requested && props.homeware.status_flag && props.homeware.status.scene_ducha.enable ? 
           <div
             className="showerCard"
             style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.homeware.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}

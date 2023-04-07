@@ -69,8 +69,8 @@ def main():
       homeware.execute("hood001", "on", False)
       # Weekday control
       weekday = today.weekday()
-      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and homeware.get("scene_on_vacation", "deactivate"):
-        if not homeware.get("scene_winter", "deactivate"):
+      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
+        if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
@@ -79,17 +79,17 @@ def main():
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     # elif hour == "08:00:00" and not hour == just_executed:
     #   just_executed = hour
-    #   homeware.execute("scene_dim", "deactivate", True)
+    #   homeware.execute("scene_dim", "enable", False)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
-      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and homeware.get("scene_on_vacation", "deactivate"):
-        if not homeware.get("scene_winter", "deactivate"):
+      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
+        if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
-      elif (weekday in [5,6] or not homeware.get("scene_on_vacation", "deactivate")) and homeware.get("switch_at_home", "on"):
-        if not homeware.get("scene_winter", "deactivate"):
+      elif (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
+        if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
@@ -100,13 +100,13 @@ def main():
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
-      if (weekday in [5,6] or not homeware.get("scene_on_vacation", "deactivate")) and homeware.get("switch_at_home", "on"):
-        if not homeware.get("scene_winter", "deactivate"):
+      if (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
+        if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
-      homeware.execute("scene_dim", "deactivate", False)
+      homeware.execute("scene_dim", "enable", True)
       homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block

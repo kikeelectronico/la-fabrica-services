@@ -12,7 +12,7 @@ def homewareTest(api_url, api_key, logger):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
       status = response.json()
-      return "deactivate" in status
+      return "enable" in status
     else:
       logger.log_text("Homeware response with " + response.status_code + " code", severity="WARNING")
       return False

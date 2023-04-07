@@ -16,7 +16,7 @@ def getHomewareTest(api_url, api_key):
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             status = response.json()
-            return "deactivate" in status
+            return "enable" in status
         else:
             return False
     except ConnectionError:
