@@ -65,12 +65,12 @@ def powerManagment(homeware, topic, payload):
     if not power_alert:
       if not homeware.get("scene_ducha", "deactivate"):
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
-        livingroom = not bathroom
+        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         heater = (not bathroom) and (not livingroom)
         bedroom = False
       elif not homeware.get("secne_drying", "deactivate"):
         bathroom = True
-        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
+        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         heater = (not bathroom) and (not livingroom)
         bedroom = False
       else:
