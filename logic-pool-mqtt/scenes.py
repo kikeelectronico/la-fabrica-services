@@ -1,6 +1,6 @@
 import time
 
-DELAY_BETWEEN_POWER_ALERTS = 30
+DELAY_BETWEEN_POWER_ALERTS = 40
 
 power_alert_counter = 0
 last_power_check = 0
