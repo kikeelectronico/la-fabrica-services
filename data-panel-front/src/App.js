@@ -10,14 +10,14 @@ import React, { useState } from "react";
 
 function App() {
 
-  const [background_image, setBackgroundImage] = useState({url: "./black.png", position: "center"});
+  const [background_image, setBackgroundImage] = useState({url: "./black.png", position: "0% 0%"});
   
   return (
     <div
       className="App"
       style={{ 
         backgroundImage: "url(" + (background_image.url ? background_image.url : "./black.png" )  + ")",
-        backgroundPosition: background_image.position ? background_image.position : "center"
+        backgroundPosition: background_image.position ? background_image.position : "0% 0%"
       }}
     >
       <div className="appOverlay"></div>

@@ -27,7 +27,8 @@ export default function Spotify(props) {
       .then((data) => {
         setSpotify(data)
         props.setPlayingSpotify(data.playing)
-        props.setBackgroundImage({url: data.image, position: data.image_position})
+        let background_position = "0% " + data.image_position*10 + "%"
+        props.setBackgroundImage({url: data.image, position: background_position})
       })
       .catch((error) => console.log(error))
       .finally(() => setApiRequested(true))

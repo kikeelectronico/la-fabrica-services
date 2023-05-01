@@ -16,7 +16,7 @@ class Spotify:
   _playing = {}
   _last_track = ""
   _track_image = ""
-  _track_image_position = "middle"
+  _track_image_position = "0"
   _stop_until = 0
   _service_unavailable_counter = 0
 
