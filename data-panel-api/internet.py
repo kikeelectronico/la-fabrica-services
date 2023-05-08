@@ -9,11 +9,12 @@ class Internet:
 
   def checkConnectivity(self):
     try:
-      request = requests.get("https://www.google.com", timeout=5)
+      requests.get("https://www.google.com", timeout=5)
+      requests.get("https://www.cloudflare.com/", timeout=5)
       self._connected = True
       return True
     except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to reach Google. Conection error.", severity="WARNING")
+      self.logger.log_text("Fail to reach Google or Cloudflare. Conection error.", severity="WARNING")
       self._connected = False
       return False
 
