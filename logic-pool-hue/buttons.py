@@ -83,7 +83,17 @@ def kitchenButton(id, state, homeware):
 def bathroomButton(id, state, homeware):
     global long_pressing
     if id == "14":
-      if state["buttonevent"] == 1002:
+      if state["buttonevent"] == 1001:
+          if not long_pressing:
+            value = not homeware.get("scene_dim","enable")
+            homeware.execute("scene_dim","enable",value)
+            long_pressing = True
+
+      elif state["buttonevent"] == 1003:
+          long_pressing = False
+
+      elif state["buttonevent"] == 1002:
           value = not homeware.get("hue_sensor_14","on")
           homeware.execute("hue_sensor_14","on",value)
+      
              
