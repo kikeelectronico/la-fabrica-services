@@ -16,11 +16,11 @@ def film(homeware, alert, topic, payload):
       # Enable scene
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Save current status
-      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
+      devices_id = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
         scene_pre_state[device_id] = homeware.get(device_id, "all")
       # Turn off some lights
-      turn_off_devices = ["light001", "light002", "light003", "light004", "hue_1"]
+      turn_off_devices = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1"]
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
       # Change the color of some lights and turn them on
@@ -37,7 +37,7 @@ def film(homeware, alert, topic, payload):
         homeware.execute(control_id, "on", True)
     else:
       # Disable scene
-      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002"]
+      devices_id = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1", "rgb001", "rgb002"]
       for device_id in devices_id:
         device_state = scene_pre_state[device_id]
         for param in device_state:
@@ -51,7 +51,7 @@ def relax(homeware, alert, topic, payload):
       # Enable scenes
       alert.voice("Crea una frase en la que expreses que es hora de relajarse.", speaker="livingroom,bedroom", gpt3=True)
       # Save current status
-      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
+      devices_id = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
       for device_id in devices_id:
         scene_pre_state[device_id] = homeware.get(device_id, "all")
       # Turn on some lights
@@ -59,12 +59,12 @@ def relax(homeware, alert, topic, payload):
       for control_id in turn_on_devices:
         homeware.execute(control_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["light001", "light002", "light004", "hue_1"]
+      turn_off_devices = ["hue_6", "hue_4", "hue_5", "light004", "hue_1"]
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
     else:
       # Disable scene
-      devices_id = ["light001", "light002", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
+      devices_id = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1", "rgb001", "rgb002", "rgb003"]
       for device_id in devices_id:
         device_state = scene_pre_state[device_id]
         for param in device_state:
