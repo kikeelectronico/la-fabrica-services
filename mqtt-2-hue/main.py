@@ -19,7 +19,16 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 POWER_CONSTANT = 35
-TOPICS = ["heartbeats/request","device/hue_1","device/hue_2","device/hue_3"]
+TOPICS = [
+	"heartbeats/request",
+	"device/hue_1",
+	"device/hue_2",
+	"device/hue_3",
+	"device/hue_4",
+	"device/hue_5",
+	"device/hue_6",
+	"device/hue_7"
+]
 SERVICE = "mqtt-2-hue-" + ENV
 
 # Instantiate objects
