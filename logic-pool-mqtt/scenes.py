@@ -172,3 +172,5 @@ def dim(homeware, topic, payload):
     homeware.execute("hue_sensor_12","on",value)
     value = homeware.get("switch_temp_1","on")
     homeware.execute("switch_temp_1","on",value)
+    value = homeware.get("hue_sensor_14","on")
+    homeware.execute("hue_sensor_14","on",value)
