@@ -80,7 +80,7 @@ def kitchenButton(id, state, homeware):
           value = not homeware.get("hue_sensor_13","on")
           homeware.execute("hue_sensor_13","on",value)
 
-def kitchenButton(id, state, homeware):
+def bathroomButton(id, state, homeware):
     global long_pressing
     if id == "14":
       if state["buttonevent"] == 1002:
