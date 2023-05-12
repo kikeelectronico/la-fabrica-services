@@ -2,7 +2,7 @@ import json
 
 long_pressing = False
 
-def mirrorDimmer(id, state, homeware):
+def mirror(id, state, homeware):
     global long_pressing
     if id == "2":
       if state["buttonevent"] == 1001:
@@ -57,7 +57,7 @@ def mirrorDimmer(id, state, homeware):
           homeware.execute("hue_2","color",{"temperatureK": new_temperature})
           homeware.execute("hue_3","color",{"temperatureK": new_temperature})
 
-def bedroomButton(id, state, homeware):
+def bedroom(id, state, homeware):
     global long_pressing
     if id == "12":
       if state["buttonevent"] == 1001:
@@ -73,14 +73,14 @@ def bedroomButton(id, state, homeware):
           value = not homeware.get("hue_sensor_12","on")
           homeware.execute("hue_sensor_12","on",value)
 
-def kitchenButton(id, state, homeware):
+def kitchen(id, state, homeware):
     global long_pressing
     if id == "13":
       if state["buttonevent"] == 1002:
           value = not homeware.get("hue_sensor_13","on")
           homeware.execute("hue_sensor_13","on",value)
 
-def bathroomButton(id, state, homeware):
+def bathroom(id, state, homeware):
     global long_pressing
     if id == "14":
       if state["buttonevent"] == 1001:
