@@ -136,4 +136,4 @@ if __name__ == "__main__":
         print("error")
         logger.log_text("Device offline: " + device, severity="WARNING")
         homeware.execute(device,"online",False)
-      time.sleep(2)
+    time.sleep(30)
