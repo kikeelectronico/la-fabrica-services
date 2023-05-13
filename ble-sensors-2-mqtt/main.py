@@ -22,6 +22,12 @@ SERVICE = "ble-sensors-2-mqtt-" + ENV
 DEVICES = {
   "thermostat_livingroom": {
     "mac": "F1:1C:1C:76:7F:3C",
+  },
+  "thermostat_dormitorio": {
+    "mac": "E5:DC:2A:7B:6C:4F",
+  },
+  "thermostat_bathroom": {
+    "mac": "F6:5C:6E:AA:3E:C8",
   }
 }
 # API UUIDs
@@ -30,9 +36,9 @@ API_TX_CHARACTERISTIC_UUID= "cba20003-224d-11e6-9fb8-0002a5d5c51b"
 API_RX_CHARACTERISTIC_UUID= "cba20002-224d-11e6-9fb8-0002a5d5c51b"
 
 # Declare vars
-cHandles = {}
-ble_link = {}
-rx_char = {}
+cHandles = ""
+ble_link = None
+rx_char = None
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -46,40 +52,38 @@ class MyDelegate(btle.DefaultDelegate):
 
     def handleNotification(self, cHandle, data):
         data = bytearray(data)
-        if cHandle in cHandles:
-          device_id = cHandles[cHandle]
-          if data[0] == 1:
-              if len(data) == 5:
-                  # Update batery
-                  homeware.execute(device_id,"capacityRemaining",[{"rawValue": data[1], "unit":"PERCENTAGE"}])
-                  if data[1] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
-                  elif data[1] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
-                  elif data[1] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
-                  elif data[1] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
-                  else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
+        device_id = cHandles
+        if data[0] == 1:
+            if len(data) == 5:
+                # Update batery
+                homeware.execute(device_id,"capacityRemaining",[{"rawValue": data[1], "unit":"PERCENTAGE"}])
+                if data[1] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
+                elif data[1] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
+                elif data[1] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
+                elif data[1] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
+                else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
 
-                  if data[1] < 5:
-                    logger.log_text(device_id + ": batería muy baja", severity="ERROR")
-                  elif data[1] < 10:
-                    logger.log_text(device_id + ": batería baja", severity="WARNING")
+                if data[1] < 5:
+                  logger.log_text(device_id + ": batería muy baja", severity="ERROR")
+                elif data[1] < 10:
+                  logger.log_text(device_id + ": batería baja", severity="WARNING")
 
-              elif len(data) == 4:
-                  # Update temperature and humidity
-                  temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
-                  temp_dec = data[1] if data[1] < 16 else 0
-                  temp = temp_int + (temp_dec/10)
-                  hum = data[3] if data[3] < 128 else (data[3] - 128)           
-                  homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
-                  homeware.execute(device_id,"thermostatHumidityAmbient",hum)
-                  homeware.execute(device_id,"online",True)
-              else:
-                  self.logger.log_text("Unknown package from " + device, severity="WARNING")
-          elif data[0] == 7:
-              self.logger.log_text("Low battery: " + device, severity="WARNING")
-              homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
-              homeware.execute(device_id,"online",False)
-        else:
-            self.logger.log_text("Unknown handle", severity="WARNING")
+            elif len(data) == 4:
+                # Update temperature and humidity
+                temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
+                temp_dec = data[1] if data[1] < 16 else 0
+                temp = temp_int + (temp_dec/10)
+                hum = data[3] if data[3] < 128 else (data[3] - 128)           
+                homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
+                homeware.execute(device_id,"thermostatHumidityAmbient",hum)
+                homeware.execute(device_id,"online",True)
+                print(device_id, temp)
+            else:
+                self.logger.log_text("Unknown package from " + device, severity="WARNING")
+        elif data[0] == 7:
+            self.logger.log_text("Low battery: " + device, severity="WARNING")
+            homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
+            homeware.execute(device_id,"online",False)
 # Main entry point
 if __name__ == "__main__":
   logger.log_text("Starting", severity="INFO")
@@ -102,36 +106,34 @@ if __name__ == "__main__":
   while True:
     for device in DEVICES:
       try:
-        if not device in ble_link:
-          # Connect to device
-          logger.log_text("Connecting to: " + device, severity="INFO")
-          print("Connecting to:", device)
-          ble_link[device] = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM, )
-          ble_link[device].withDelegate( MyDelegate(logger) )
-          # Get the API service
-          service_uuid = btle.UUID(API_SERVICE_UUID)
-          ble_service = ble_link[device].getServiceByUUID(service_uuid)
-          # Set the notifications
-          tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
-          tx_char = ble_service.getCharacteristics(tx_uuid)[0]
-          setup_data = b"\x01\x00"
-          cHandle = tx_char.valHandle
-          ble_link[device].writeCharacteristic(cHandle + 1, setup_data)
-          cHandles[cHandle] = device
-          # Get API RX the characteristic
-          rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
-          rx_char[device] = ble_service.getCharacteristics(rx_uuid)[0]
-          time.sleep(5)
-        if device in ble_link:
-          # Request temperature and humidity
-          rx_char[device].write(bytes.fromhex("570f31"))
-          ble_link[device].waitForNotifications(5)
-          # Request device info
-          rx_char[device].write(bytes.fromhex("570200"))
-          ble_link[device].waitForNotifications(5)
+        # Connect to device
+        logger.log_text("Connecting to: " + device, severity="INFO")
+        print("Connecting to:", device, DEVICES[device]["mac"])
+        ble_link = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
+        print("connected")
+        ble_link.withDelegate(MyDelegate(logger))
+        # Get the API service
+        service_uuid = btle.UUID(API_SERVICE_UUID)
+        ble_service = ble_link.getServiceByUUID(service_uuid)
+        # Set the notifications
+        tx_uuid = btle.UUID(API_TX_CHARACTERISTIC_UUID)
+        tx_char = ble_service.getCharacteristics(tx_uuid)[0]
+        setup_data = b"\x01\x00"
+        cHandle = tx_char.valHandle
+        ble_link.writeCharacteristic(cHandle + 1, setup_data)
+        cHandles = device
+        # Get API RX the characteristic
+        rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
+        rx_char = ble_service.getCharacteristics(rx_uuid)[0]
+        print("requesting")
+        # Request temperature and humidity
+        rx_char.write(bytes.fromhex("570f31"))
+        ble_link.waitForNotifications(10)
+        ble_link.disconnect()
+        ble_link = None
+        print("disconnect")
       except btle.BTLEDisconnectError:
+        print("error")
         logger.log_text("Device offline: " + device, severity="WARNING")
         homeware.execute(device,"online",False)
-        if device in ble_link:
-          del ble_link[device]
-    time.sleep(30)
+      time.sleep(2)
