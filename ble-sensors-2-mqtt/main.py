@@ -128,7 +128,11 @@ if __name__ == "__main__":
         print("requesting")
         # Request temperature and humidity
         rx_char.write(bytes.fromhex("570f31"))
-        ble_link.waitForNotifications(10)
+        ble_link.waitForNotifications(5)
+        # Request device info
+        rx_char[device].write(bytes.fromhex("570200"))
+        ble_link[device].waitForNotifications(5)
+        # Disconnect
         ble_link.disconnect()
         ble_link = None
         print("disconnect")
