@@ -24,14 +24,13 @@ def livingroom(homeware, topic, payload):
         homeware.execute("rgb002","on",True)
         homeware.execute("hue_1","on",True)
         homeware.execute("light003","on",True)
-        #homeware.execute("light004","on",False)
       else:
         homeware.execute("hue_4","on",True)
         homeware.execute("hue_5","on",True)
         homeware.execute("rgb001","on",True)
         homeware.execute("rgb002","on",True)
-        homeware.execute("hue_1","on",False)
-        homeware.execute("light003","on",False)
+        #homeware.execute("hue_1","on",False)
+        #homeware.execute("light003","on",False)
     else:
       homeware.execute("hue_4","on",False)
       homeware.execute("hue_5","on",False)
