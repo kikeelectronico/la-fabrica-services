@@ -18,6 +18,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 SERVICE = "ble-sensors-2-mqtt-" + ENV
+ONLINE_TIMEOUT = 300
 # MAC address
 DEVICES = {
   "thermostat_livingroom": {
@@ -39,6 +40,7 @@ API_RX_CHARACTERISTIC_UUID= "cba20002-224d-11e6-9fb8-0002a5d5c51b"
 cHandles = ""
 ble_link = None
 rx_char = None
+last_update = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -136,8 +138,12 @@ if __name__ == "__main__":
         ble_link.disconnect()
         ble_link = None
         print("disconnect")
+        # Update timestamp
+        last_update[device] = time.time()
       except btle.BTLEDisconnectError:
         print("error")
-        logger.log_text("Device offline: " + device, severity="WARNING")
-        homeware.execute(device,"online",False)
+        logger.log_text("Device unreachable: " + device, severity="WARNING")
+        if time.time() - last_update[device] > ONLINE_TIMEOUT:
+          logger.log_text("Device offline: " + device, severity="WARNING")
+          homeware.execute(device,"online",False)
     time.sleep(10)
