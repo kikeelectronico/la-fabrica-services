@@ -79,7 +79,6 @@ class MyDelegate(btle.DefaultDelegate):
                 homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
                 homeware.execute(device_id,"thermostatHumidityAmbient",hum)
                 homeware.execute(device_id,"online",True)
-                print(device_id, temp)
             else:
                 self.logger.log_text("Unknown package from " + device, severity="WARNING")
         elif data[0] == 7:
@@ -110,9 +109,7 @@ if __name__ == "__main__":
       try:
         # Connect to device
         logger.log_text("Connecting to: " + device, severity="INFO")
-        print("Connecting to:", device, DEVICES[device]["mac"])
         ble_link = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
-        print("connected")
         ble_link.withDelegate(MyDelegate(logger))
         # Get the API service
         service_uuid = btle.UUID(API_SERVICE_UUID)
@@ -127,7 +124,6 @@ if __name__ == "__main__":
         # Get API RX the characteristic
         rx_uuid = btle.UUID(API_RX_CHARACTERISTIC_UUID)
         rx_char = ble_service.getCharacteristics(rx_uuid)[0]
-        print("requesting")
         # Request temperature and humidity
         rx_char.write(bytes.fromhex("570f31"))
         ble_link.waitForNotifications(5)
@@ -137,11 +133,9 @@ if __name__ == "__main__":
         # Disconnect
         ble_link.disconnect()
         ble_link = None
-        print("disconnect")
         # Update timestamp
         last_update[device] = time.time()
       except btle.BTLEDisconnectError:
-        print("error")
         logger.log_text("Device unreachable: " + device, severity="WARNING")
         if time.time() - last_update[device] > ONLINE_TIMEOUT:
           logger.log_text("Device offline: " + device, severity="WARNING")
