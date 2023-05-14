@@ -149,6 +149,9 @@ def dim(homeware, topic, payload):
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 20)
+      devices_ids = ["hue_7"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 30)
     else:
       # Change some devices color
       devices_ids = ["rgb001", "rgb002", "rgb003"]
@@ -166,6 +169,9 @@ def dim(homeware, topic, payload):
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 80)
+      devices_ids = ["hue_7"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 100)
 
     # Run the Switches logic
     value = homeware.get("hue_sensor_12","on")
