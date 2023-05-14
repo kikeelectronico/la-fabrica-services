@@ -137,7 +137,8 @@ if __name__ == "__main__":
         last_update[device] = time.time()
       except btle.BTLEDisconnectError:
         logger.log_text("Device unreachable: " + device, severity="WARNING")
-        if time.time() - last_update[device] > ONLINE_TIMEOUT:
-          logger.log_text("Device offline: " + device, severity="WARNING")
-          homeware.execute(device,"online",False)
+        if device in last_update:
+          if time.time() - last_update[device] > ONLINE_TIMEOUT:
+            logger.log_text("Device offline: " + device, severity="WARNING")
+            homeware.execute(device,"online",False)
     time.sleep(10)
