@@ -4,6 +4,6 @@ uvicorn
 python-dotenv
 keras
 tensorflow
-Pillow==9.3.0
+Pillow==9.5.0
 google-cloud-bigquery
 google-cloud-logging
