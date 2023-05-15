@@ -11,6 +11,10 @@ on:
     paths:
       - "alert-system-request/**"
 
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+  
 env:
   REGISTRY: ghcr.io
 
