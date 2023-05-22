@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import google.cloud.logging as logging
+from google.api_core import exceptions
 import json
 import os
 
@@ -31,8 +32,10 @@ def on_connect(client, userdata, flags, rc):
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
 	payload = json.loads(msg.payload)
-	logger.log_struct(payload, severity=payload["severity"])
-  
+	try:
+		logger.log_struct(payload, severity=payload["severity"])
+	except exceptions.RetryError:
+		print("network error")
 
 # Main entry point
 if __name__ == "__main__":
