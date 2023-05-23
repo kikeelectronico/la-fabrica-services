@@ -1,9 +1,9 @@
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
 
 from Voice import Voice
+from logger import Logger
 
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
@@ -21,7 +21,7 @@ SERVICE = "voice-alert-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 voice = Voice(SERVICE)
 
 # Suscribe to topics on connect
@@ -44,11 +44,10 @@ def on_message(client, userdata, msg):
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -63,6 +62,7 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
   # Wake up alert
   hour = int(time.strftime("%H"))
   message = ""
