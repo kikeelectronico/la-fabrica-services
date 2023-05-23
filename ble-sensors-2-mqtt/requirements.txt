@@ -1,4 +1,3 @@
 bluepy
 paho-mqtt
 python-dotenv
-google-cloud-logging
