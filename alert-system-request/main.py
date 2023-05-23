@@ -1,8 +1,9 @@
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
 import functions
+
+from Logger import Logger
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "pass") == "pass":
@@ -25,15 +26,15 @@ SERVICE = "alert-system-requests-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE) 
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
+  logger.log("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -57,12 +58,12 @@ if __name__ == "__main__":
   while True:
     # Verify Homeware connectivity
     if not functions.homewareTest(HOMEWARE_API_URL, HOMEWARE_API_KEY, logger):
-      logger.log_text("Homeware no responde", severity="WARNING")
+      logger.log("Homeware no responde", severity="WARNING")
       mqtt_client.publish("voice-alert/text", "Homeware no responde")
       mqtt_client.publish("message-alerts", "Homeware no responde")
     # Verify Hue Bridge connectivity
     if not functions.hueTest(HUE_HOST, HUE_TOKEN, logger):
-      logger.log_text("Hue bridge no responde", severity="WARNING")
+      logger.log("Hue bridge no responde", severity="WARNING")
       mqtt_client.publish("voice-alert/text", "Hue bridge no responde")
       mqtt_client.publish("message-alerts", "Hue bridge no responde")
     # Send heartbeart
