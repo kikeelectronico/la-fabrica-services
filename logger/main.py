@@ -35,7 +35,9 @@ def on_message(client, userdata, msg):
 	try:
 		logger.log_struct(payload, severity=payload["severity"])
 	except exceptions.RetryError:
-		print("network error")
+		print("Network error")
+		print("Log:")
+		print(payload)
 
 # Main entry point
 if __name__ == "__main__":
