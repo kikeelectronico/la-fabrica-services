@@ -3,7 +3,7 @@ import os
 import time
 import functions
 
-from Logger import Logger
+from logger import Logger
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "pass") == "pass":
