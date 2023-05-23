@@ -56,7 +56,7 @@ def main():
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   today = datetime.datetime.now()
   hour = today.strftime("%H:%M:%S")
-  logger.log("Starting", severity="INFO")
+  logger.log("Starting " + SERVICE , severity="INFO")
   logger.log("Hora local " + str(hour), severity="INFO")
   # Main loop
   while True:

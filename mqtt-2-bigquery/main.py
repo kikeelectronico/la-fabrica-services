@@ -180,7 +180,7 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
-	logger.log("Starting", severity="INFO")
+	logger.log("Starting " + SERVICE , severity="INFO")
   # Main loop
 	mqtt_client.loop_forever()
  
