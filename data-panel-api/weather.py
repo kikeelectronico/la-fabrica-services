@@ -19,16 +19,16 @@ class Weather:
       load_dotenv(dotenv_path="../.env")
     self.__api_key = os.environ.get("WHEATHER_API_KEY", "no_set")
     if self.__api_key == "no_set": 
-      logger.log_text("WHEATHER_API_KEY no set", severity="ERROR")
+      logger.log("WHEATHER_API_KEY no set", severity="ERROR")
     self._query = os.environ.get("WHEATHER_QUERY", "no_set")
     if self._query == "no_set": 
-      logger.log_text("WHEATHER_QUERY no set", severity="ERROR")
+      logger.log("WHEATHER_QUERY no set", severity="ERROR")
     self.logger = logger
 
   def updateWeather(self):
     if self.__api_key == "no_set" or self._query == "no_set":
       self._fail_to_update = True
-      self.logger.log_text("Wheather env vars aren't set", severity="ERROR")
+      self.logger.log("Wheather env vars aren't set", severity="ERROR")
     else:
       try:
         url = "https://api.weatherapi.com/v1/forecast.json?key=" + self.__api_key + "&q=" + self._query + "&days=2&aqi=yes&alerts=no"
@@ -37,10 +37,10 @@ class Weather:
           self._weather = response.json()
           self._fail_to_update = False
         else:
-          self.logger.log_text("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
+          self.logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
           self._fail_to_update = True
       except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log_text("Fail to update weather data. Conection error.", severity="WARNING")
+        self.logger.log("Fail to update weather data. Conection error.", severity="WARNING")
         self._fail_to_update = False
 
   def getWeather(self):

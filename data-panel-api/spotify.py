@@ -26,13 +26,13 @@ class Spotify:
       load_dotenv(dotenv_path="../.env")
     self.__refresh_token = os.environ.get("SPOTIFY_REFRESH_TOKEN", "no_set")
     if self.__refresh_token == "no_set": 
-      logger.log_text("SPOTIFY_REFRESH_TOKEN no set", severity="ERROR")
+      logger.log("SPOTIFY_REFRESH_TOKEN no set", severity="ERROR")
     self.__app_auth = os.environ.get("SPOTIFY_APP_AUTH", "no_set")
     if self.__app_auth == "no_set": 
-      logger.log_text("SPOTIFY_APP_AUTH no set", severity="ERROR")
+      logger.log("SPOTIFY_APP_AUTH no set", severity="ERROR")
     self._covers_ddbb = os.environ.get("COVERS_DDBB", "no_set")
     if self._covers_ddbb == "no_set": 
-      logger.log_text("COVERS_DDBB no set", severity="ERROR")
+      logger.log("COVERS_DDBB no set", severity="ERROR")
     # Initialize the keras model
     np.set_printoptions(suppress=True)
     self._track_image_model = load_model("track_image_model/keras_model.h5", compile=False)
@@ -52,7 +52,7 @@ class Spotify:
       }
 
       self._playing = spotify
-      self.logger.log_text("Spotify env vars aren't set", severity="ERROR")
+      self.logger.log("Spotify env vars aren't set", severity="ERROR")
     else:
       self._tries += 1
       if self.__access_token == "":
@@ -115,7 +115,7 @@ class Spotify:
                 self._playing = spotify
 
               elif response.status_code == 429:
-                self.logger.log_text("Spotify API quota exceeded", severity="WARNING")
+                self.logger.log("Spotify API quota exceeded", severity="WARNING")
                 self._stop_until = time.time() + (int(response.headers['retry-after'])*1000)
 
                 spotify = {
@@ -163,7 +163,7 @@ class Spotify:
             self._playing = spotify
 
         elif response.status_code == 204:
-          self.logger.log_text("Spotify API returns a 204 code", severity="INFO")
+          self.logger.log("Spotify API returns a 204 code", severity="INFO")
           spotify = {
             "playing": False,
             "tries": self._tries,
@@ -173,7 +173,7 @@ class Spotify:
           self._playing = spotify
 
         elif response.status_code == 429:
-          self.logger.log_text("Spotify API quota exceeded", severity="WARNING")
+          self.logger.log("Spotify API quota exceeded", severity="WARNING")
           spotify = {
             "playing": False,
             "tries": self._tries,
@@ -183,7 +183,7 @@ class Spotify:
           self._playing = spotify
 
         elif response.status_code == 503:
-          self.logger.log_text("Spotify API returns a 503 code", severity="INFO")
+          self.logger.log("Spotify API returns a 503 code", severity="INFO")
           if self._service_unavailable_counter == 0:
             self._service_unavailable_counter += 1
           else:
@@ -197,7 +197,7 @@ class Spotify:
 
         else:
           error = response.json()['error']
-          self.logger.log_text("Spotify API returns a " + str(error['status']) + " code", severity="INFO")
+          self.logger.log("Spotify API returns a " + str(error['status']) + " code", severity="INFO")
           spotify = {
             "playing": False,
             "tries": self._tries,
@@ -213,7 +213,7 @@ class Spotify:
             self._playing = spotify
 
       except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log_text("Fail to get Spotify player data. Conection error.", severity="WARNING")
+        self.logger.log("Fail to get Spotify player data. Conection error.", severity="WARNING")
         spotify = {
           "playing": False,
           "tries": self._tries,
@@ -222,7 +222,7 @@ class Spotify:
 
   def updateAccessToken(self):
     try:
-      self.logger.log_text("Updating Spotify access token", severity="INFO")
+      self.logger.log("Updating Spotify access token", severity="INFO")
       url = "https://accounts.spotify.com/api/token"
       payload='grant_type=refresh_token&refresh_token=' + self.__refresh_token
       headers = {
@@ -233,13 +233,13 @@ class Spotify:
       response = requests.request("POST", url, headers=headers, data=payload, timeout=5)
       if response.status_code == 200:
         self.__access_token = response.json()['access_token']
-        self.logger.log_text("Spotify access token updated", severity="INFO")
+        self.logger.log("Spotify access token updated", severity="INFO")
         return True
       else:
-        self.logger.log_text("Fail to update Spotify access token. Status code: " + response.status_code, severity="WARNING")
+        self.logger.log("Fail to update Spotify access token. Status code: " + response.status_code, severity="WARNING")
         return False
     except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to update Spotify access token. Conection error.", severity="WARNING")
+      self.logger.log("Fail to update Spotify access token. Conection error.", severity="WARNING")
       return False
 
   def getPlaying(self, max_tries=2):
@@ -265,8 +265,8 @@ class Spotify:
           class_name = self._track_image_class_names[index]
           self._track_image_position = class_name[2:-1]
         except:
-          self.logger.log_text("Fail to analyze a track image from Spotify", severity="WARNING")
+          self.logger.log("Fail to analyze a track image from Spotify", severity="WARNING")
       else:
-        self.logger.log_text("Fail to get a track image from Spotify. Error code: " + response.status_code, severity="WARNING")
+        self.logger.log("Fail to get a track image from Spotify. Error code: " + response.status_code, severity="WARNING")
     except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to get a track image from Spotify. Conection error.", severity="WARNING")
+      self.logger.log("Fail to get a track image from Spotify. Conection error.", severity="WARNING")

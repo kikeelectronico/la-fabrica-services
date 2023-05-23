@@ -1,19 +1,25 @@
 import imp
+import paho.mqtt.client as mqtt
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import google.cloud.logging as logging
 import os
+
 from spotify import Spotify
 from weather import Weather
 from homeware import Homeware
 from launches import Launches
 from internet import Internet
+from logger import Logger
 
 # Load env vars
 if os.environ.get("ENV", "dev") == "dev":
   from dotenv import load_dotenv
   load_dotenv(dotenv_path="../.env")
 
+MQTT_USER = os.environ.get("MQTT_USER", "no_set")
+MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
+MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
+MQTT_PORT = 1883
 ENV = os.environ.get("ENV", "dev")
 
 # Define constants
@@ -21,8 +27,25 @@ SERVICE = "data-panel-api-" + ENV
 
 # Instantiate objects
 app = FastAPI()
-logger = logging.Client().logger(SERVICE)
-logger.log_text("Starting", severity="INFO")
+mqtt_client = mqtt.Client(client_id=SERVICE) 
+logger = Logger(mqtt_client, SERVICE)
+
+# Check env vars
+def report(message):
+  print(message)
+  #logger.log(message, severity="ERROR")
+  exit()
+if MQTT_USER == "no_set":
+  report("MQTT_USER env vars no set")
+if MQTT_PASS == "no_set":
+  report("MQTT_PASS env vars no set")
+if MQTT_HOST == "no_set":
+  report("MQTT_HOST env vars no set")
+
+ # Connect to the mqtt broker
+mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+logger.log("Starting", severity="INFO")
 
 app.add_middleware(
     CORSMiddleware,

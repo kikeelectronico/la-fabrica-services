@@ -31,10 +31,10 @@ class Launches:
 
         self._fail_to_update = False
       else:
-        self.logger.log_text("Fail to update launches. Status code: " + str(response.status_code), severity="WARNING")
+        self.logger.log("Fail to update launches. Status code: " + str(response.status_code), severity="WARNING")
         self._fail_to_update = True
     except (requests.ConnectionError, requests.Timeout) as exception:
-      self.logger.log_text("Fail to update launches. Conection error.", severity="WARNING")
+      self.logger.log("Fail to update launches. Conection error.", severity="WARNING")
       self._fail_to_update = False
 
   def getLaunches(self):

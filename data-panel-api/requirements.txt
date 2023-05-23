@@ -7,3 +7,4 @@ tensorflow
 Pillow==9.5.0
 google-cloud-bigquery
 google-cloud-logging
+paho-mqtt
