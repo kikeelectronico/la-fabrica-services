@@ -1,8 +1,9 @@
 import requests
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import json
 import os
+
+from logger import Logger
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -33,7 +34,7 @@ SERVICE = "mqtt-2-hue-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
@@ -59,7 +60,7 @@ def on_message(client, userdata, msg):
 # Send an update request to Hue bridge API
 def sendToHue(hue_id, hue_status):
 	if HUE_TOKEN == "no_set" or HUE_HOST == "no_set":
-		logger.log_text("Hue env vars aren't set", severity="ERROR")
+		logger.log("Hue env vars aren't set", severity="ERROR")
 	else:
 		try:
 			url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
@@ -68,18 +69,17 @@ def sendToHue(hue_id, hue_status):
 			}
 			response = requests.put(url, data = json.dumps(hue_status), headers = headers)
 			if not response.status_code == 200:
-				logger.log_text("Fail to update to Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
+				logger.log("Fail to update to Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
 		except (requests.ConnectionError, requests.Timeout) as exception:
-			logger.log_text("Fail to update Hue Bridge lights. Conection error.", severity="WARNING")
+			logger.log("Fail to update Hue Bridge lights. Conection error.", severity="WARNING")
 
 
 # Main entry point
 if __name__ == "__main__":
-	logger.log_text("Starting", severity="INFO")
 	# Check env vars
 	def report(message):
 		print(message)
-		logger.log_text(message, severity="ERROR")
+		#logger.log(message, severity="ERROR")
 		exit()
 	if MQTT_USER == "no_set":
 		report("MQTT_USER env vars no set")
@@ -98,6 +98,7 @@ if __name__ == "__main__":
 	# Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+	logger.log("Starting", severity="INFO")
 	# Main loop
 	mqtt_client.loop_forever()
  
