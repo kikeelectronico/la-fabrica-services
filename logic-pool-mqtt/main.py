@@ -1,11 +1,11 @@
 from cmath import e
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import openai
 
 import functions
 from Homeware import Homeware
+from logger import Logger
 from Alert import Alert
 import scenes
 import lights
@@ -56,7 +56,7 @@ SERVICE = "logic-pool-mqtt-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
 alert = Alert(mqtt_client, openai, SERVICE)
 
@@ -91,15 +91,14 @@ def on_message(client, userdata, msg):
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
   except Exception as e:
-    logger.log_text("Excepción en Logic pool mqtt", severity="WARNING")
-    logger.log_text(str(e), severity="WARNING") 
+    logger.log("Excepción en Logic pool mqtt", severity="WARNING")
+    logger.log(str(e), severity="WARNING") 
 
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -121,5 +120,6 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
   # Main loop
   mqtt_client.loop_forever()

@@ -27,7 +27,7 @@ class Homeware:
   def get(self, id, param):
     if self.__token == "no_set" or self.__url == "no_set":
       self._fail_to_update = True
-      self.logger.log_text("Homeware env vars aren't set", severity="ERROR")
+      self.logger.log("Homeware env vars aren't set", severity="ERROR")
     else:
       try:
         url = self.__url + "/api/status/get/" + id
@@ -38,8 +38,8 @@ class Homeware:
             return response.json()
           return response.json()[param]
         else:
-          self.logger.log_text("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
+          self.logger.log("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
           return (False, {})
       except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log_text("Fail to get Homeware status. Conection error.", severity="WARNING")
+        self.logger.log("Fail to get Homeware status. Conection error.", severity="WARNING")
         self._fail_to_update = False
