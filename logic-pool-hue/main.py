@@ -1,10 +1,10 @@
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
 
 from hue import Hue
 from homeware import Homeware
+from logger import Logger
 import buttons
 import dimmers
 
@@ -33,17 +33,16 @@ last_pressed = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 hue = Hue(HUE_HOST, HUE_TOKEN, logger)
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -63,6 +62,7 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
   # Main loop
   while True:
     # Loop over sensors

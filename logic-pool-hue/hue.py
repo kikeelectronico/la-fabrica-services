@@ -14,7 +14,7 @@ class Hue:
   def getLights(self):
     if self.__token == "no_set" or self.__url == "no_set":
       self._fail_to_update = True
-      self.logger.log_text("Hue env vars aren't set", severity="ERROR")
+      self.logger.log("Hue env vars aren't set", severity="ERROR")
     else:
       try:
         url = "http://" + self.__url + "/api/" +	self.__token + "/lights"
@@ -22,10 +22,10 @@ class Hue:
         if response.status_code == 200:
           return response.json()
         else:
-          self.logger.log_text("Fail to get Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
+          self.logger.log("Fail to get Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
           return {}
       except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log_text("Fail to get Hue Bridge lights. Conection error.", severity="WARNING")
+        self.logger.log("Fail to get Hue Bridge lights. Conection error.", severity="WARNING")
         self._fail_to_update = False
         return {}
   
@@ -33,7 +33,7 @@ class Hue:
   def getSensors(self):
     if self.__token == "no_set" or self.__url == "no_set":
       self._fail_to_update = True
-      self.logger.log_text("Hue env vars aren't set", severity="ERROR")
+      self.logger.log("Hue env vars aren't set", severity="ERROR")
     else:
       try:
         url = "http://" + self.__url + "/api/" +	self.__token + "/sensors"
@@ -41,9 +41,9 @@ class Hue:
         if response.status_code == 200:
           return response.json()
         else:
-          self.logger.log_text("Fail to get Hue Bridge sensors. Status code: " + str(response.status_code), severity="WARNING")
+          self.logger.log("Fail to get Hue Bridge sensors. Status code: " + str(response.status_code), severity="WARNING")
           return {}
       except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log_text("Fail to get Hue Bridge sensors. Conection error.", severity="WARNING")
+        self.logger.log("Fail to get Hue Bridge sensors. Conection error.", severity="WARNING")
         self._fail_to_update = False
         return {}
