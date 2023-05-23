@@ -1,10 +1,10 @@
 from bluepy import btle
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
 
 from homeware import Homeware
+from logger import Logger
 
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
@@ -44,7 +44,7 @@ last_update = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client)
 
 class MyDelegate(btle.DefaultDelegate):
@@ -66,9 +66,9 @@ class MyDelegate(btle.DefaultDelegate):
                 else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
 
                 if data[1] < 5:
-                  logger.log_text(device_id + ": batería muy baja", severity="ERROR")
+                  logger.log(device_id + ": batería muy baja", severity="ERROR")
                 elif data[1] < 10:
-                  logger.log_text(device_id + ": batería baja", severity="WARNING")
+                  logger.log(device_id + ": batería baja", severity="WARNING")
 
             elif len(data) == 4:
                 # Update temperature and humidity
@@ -80,18 +80,17 @@ class MyDelegate(btle.DefaultDelegate):
                 homeware.execute(device_id,"thermostatHumidityAmbient",hum)
                 homeware.execute(device_id,"online",True)
             else:
-                self.logger.log_text("Unknown package from " + device, severity="WARNING")
+                self.logger.log("Unknown package from " + device, severity="WARNING")
         elif data[0] == 7:
-            self.logger.log_text("Low battery: " + device, severity="WARNING")
+            self.logger.log("Low battery: " + device, severity="WARNING")
             homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
             homeware.execute(device_id,"online",False)
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -103,12 +102,13 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
 
   while True:
     for device in DEVICES:
       try:
         # Connect to device
-        logger.log_text("Connecting to: " + device, severity="INFO")
+        logger.log("Connecting to: " + device, severity="INFO")
         ble_link = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
         ble_link.withDelegate(MyDelegate(logger))
         # Get the API service
@@ -136,9 +136,9 @@ if __name__ == "__main__":
         # Update timestamp
         last_update[device] = time.time()
       except btle.BTLEDisconnectError:
-        logger.log_text("Device unreachable: " + device, severity="WARNING")
+        logger.log("Device unreachable: " + device, severity="WARNING")
         if device in last_update:
           if time.time() - last_update[device] > ONLINE_TIMEOUT:
-            logger.log_text("Device offline: " + device, severity="WARNING")
+            logger.log("Device offline: " + device, severity="WARNING")
             homeware.execute(device,"online",False)
     time.sleep(10)
