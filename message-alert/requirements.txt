@@ -1,4 +1,3 @@
 paho-mqtt
 pyTelegramBotAPI
 python-dotenv
-google-cloud-logging
