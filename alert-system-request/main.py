@@ -30,11 +30,10 @@ logger = Logger(mqtt_client, SERVICE)
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -54,6 +53,8 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
+
   # Main loop
   while True:
     # Verify Homeware connectivity
