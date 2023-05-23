@@ -1,7 +1,8 @@
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
+
+from logger import Logger
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -20,15 +21,14 @@ SERVICE = "heartbeat-request-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -40,6 +40,7 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
   # Wake up alert
   while True:
     # Send the heartbeat request and wait
