@@ -1,11 +1,11 @@
 import paho.mqtt.client as mqtt
-import google.cloud.logging as logging
 import os
 import time
 import json
 
 from hue import Hue
 from homeware import Homeware
+from logger import Logger
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -31,17 +31,16 @@ cache = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
-logger = logging.Client().logger(SERVICE)
+logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY)
 hue = Hue(HUE_HOST, HUE_TOKEN, logger)
 
 # Main entry point
 if __name__ == "__main__":
-  logger.log_text("Starting", severity="INFO")
   # Check env vars
   def report(message):
     print(message)
-    logger.log_text(message, severity="ERROR")
+    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set":
     report("MQTT_USER env vars no set")
@@ -61,6 +60,7 @@ if __name__ == "__main__":
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
+  logger.log("Starting", severity="INFO")
   # Main loop
   while True:
     # Check online lights
@@ -74,7 +74,7 @@ if __name__ == "__main__":
               homeware.execute("hue_" + device_id,
                               "online",
                               device["state"]["reachable"])
-              logger.log_text(device_id + ": " + "arriba" if device["state"]["reachable"] else "caido", severity="WARNING")
+              logger.log(device_id + ": " + "arriba" if device["state"]["reachable"] else "caido", severity="WARNING")
           else:
             cache["hue_" + device_id] = device["state"]
             homeware.execute("hue_" + device_id,
@@ -101,10 +101,10 @@ if __name__ == "__main__":
             if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
               sendData()
               if device["config"]["battery"] < 5:
-                logger.log_text(device_id + ": batería muy baja", severity="ERROR")
+                logger.log(device_id + ": batería muy baja", severity="ERROR")
               elif device["config"]["battery"] < 10:
-                logger.log_text(device_id + ": batería baja", severity="WARNING")
-              logger.log_text(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
+                logger.log(device_id + ": batería baja", severity="WARNING")
+              logger.log(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
           else:
             sendData()
             cache["hue_sensor_" + device_id] = device["config"]
