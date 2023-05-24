@@ -1,10 +1,12 @@
 
-HUMIDITY_TRIGGER = 50
+HUMIDITY_TRIGGER_OFFSET = 5
 
 # Control the bathroom hood
 def hood(homeware, topic, payload):
   if topic in ["device/thermostat_bathroom","device/switch_hood/on"]:
-    state = (homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > HUMIDITY_TRIGGER) or homeware.get("switch_hood", "on")
+    bathroom_humidity = homeware.get("thermostat_bathroom", "thermostatHumidityAmbient")
+    bedroom_humidity = homeware.get("thermostat_dormitorio", "thermostatHumidityAmbient")
+    state = (bathroom_humidity > bedroom_humidity + HUMIDITY_TRIGGER_OFFSET) or homeware.get("switch_hood", "on")
     homeware.execute("hood001", "on", state)
 
 # Toggle the kitchen light
