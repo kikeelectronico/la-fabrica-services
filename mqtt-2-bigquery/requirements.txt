@@ -1,4 +1,4 @@
-requests
-paho-mqtt
-python-dotenv
-google-cloud-bigquery
+requests==2.30.0
+paho-mqtt==1.6.1
+python-dotenv==0.19.2
+google-cloud-bigquery==3.11.0

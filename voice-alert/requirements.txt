@@ -1,6 +1,6 @@
-paho-mqtt
-catt
-google.cloud
-google-cloud-speech
-google-cloud-texttospeech
-python-dotenv
+paho-mqtt==1.6.1
+catt==0.12.11
+google.cloud==0.34.0
+google-cloud-speech==2.20.0
+google-cloud-texttospeech==2.14.1
+python-dotenv==0.19.2
