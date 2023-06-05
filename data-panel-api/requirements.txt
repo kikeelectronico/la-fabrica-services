@@ -1,5 +1,5 @@
 fastapi==0.81.0
-requests==2.30.0
+requests==2.31.0
 uvicorn==0.18.3
 python-dotenv==0.19.2
 keras==2.11.0
