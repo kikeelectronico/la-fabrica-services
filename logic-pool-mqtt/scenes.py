@@ -180,3 +180,36 @@ def dim(homeware, topic, payload):
     homeware.execute("switch_temp_1","on",value)
     value = homeware.get("hue_sensor_14","on")
     homeware.execute("hue_sensor_14","on",value)
+
+# Set dinner scene
+def dinner(homeware, topic, payload):
+  if topic == "device/scene_dinner/enable":
+    global scene_pre_state
+    pre_state_devices_id = ["rgb001", "rgb002", "rgb003", "hue_1", "hue_4", "hue_1", "light003", "hue_5"]
+    if payload:
+      # Save current status
+      for device_id in pre_state_devices_id:
+        scene_pre_state[device_id] = homeware.get(device_id, "all")
+      # Change some devices color
+      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      color = {
+        "spectrumRGB": 16729344,
+        "spectrumRgb": 16729344
+      }
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", color)
+      # Turn some lights off
+      devices_ids = ["hue_1", "hue_4", "hue_sensor_13", "light003"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "on", False)
+      # Attenuate some lights
+      devices_ids = ["hue_5"]
+      for device_id in devices_ids:
+        homeware.execute(device_id, "brightness", 30)
+        homeware.execute(device_id, "on", True)
+    else:
+      # Disable scene
+      for device_id in pre_state_devices_id:
+        device_state = scene_pre_state[device_id]
+        for param in device_state:
+          homeware.execute(device_id, param, device_state[param])
