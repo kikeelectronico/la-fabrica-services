@@ -18,12 +18,12 @@ def livingroom(homeware, topic, payload):
   if topic == "device/switch_temp_1/on":
     if payload:
       if homeware.get("scene_dim","enable"):
-        homeware.execute("hue_4","on",False)
-        homeware.execute("hue_5","on",False)
         homeware.execute("rgb001","on",True)
         homeware.execute("rgb002","on",True)
         homeware.execute("hue_1","on",True)
         homeware.execute("light003","on",True)
+        homeware.execute("hue_4","on",False)
+        homeware.execute("hue_5","on",False)
       else:
         homeware.execute("hue_4","on",True)
         homeware.execute("hue_5","on",True)
@@ -53,8 +53,8 @@ def bathroom(homeware, topic, payload):
         homeware.execute("hue_sensor_2","on",True)
         homeware.execute("light001","on",False)
       else:
-        homeware.execute("hue_sensor_2","on",False)
         homeware.execute("light001","on",True)
+        homeware.execute("hue_sensor_2","on",False)
     else:
       homeware.execute("hue_sensor_2","on",False)
       homeware.execute("light001","on",False)
