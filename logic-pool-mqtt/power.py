@@ -26,6 +26,21 @@ def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
       return homeware.get(radiator_id,"on")
   else:
     return False
+  
+# Decide if a ac should be turn on or off
+def shouldCool(homeware, thermostat_id, ac_id):
+  state = homeware.get(thermostat_id, "all")
+  if state["thermostatMode"] == "cool":
+    ambient = state["thermostatTemperatureAmbient"]
+    set_point = state["thermostatTemperatureSetpoint"]
+    if ambient > set_point:
+      return True
+    elif ambient < set_point:
+      return False
+    else:
+      return homeware.get(ac_id,"on")
+  else:
+    return False
 
 # Control the power distribution
 def powerManagment(homeware, topic, payload): 
@@ -66,6 +81,7 @@ def powerManagment(homeware, topic, payload):
         bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
         livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
         heater = (not bathroom) and (not livingroom)
+        ac_unit = False
         bedroom = False
       else:
         rule_14 = not homeware.get("switch_at_home", "on")
@@ -73,6 +89,7 @@ def powerManagment(homeware, topic, payload):
         controled_by = "thermostat_dormitorio" if not homeware.get("switch_radiator", "on") else "thermostat_livingroom"
         bedroom = shouldHeat(homeware, controled_by, "radiator002", rule_14)
         bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
+        ac_unit = shouldCool(homeware, "thermostat_livingroom", "hue_8")
         heater = not livingroom
     else:
       livingroom = False
@@ -85,5 +102,6 @@ def powerManagment(homeware, topic, payload):
     homeware.execute("radiator001","on",livingroom)
     homeware.execute("radiator002","on",bedroom)
     homeware.execute("radiator003","on",bathroom)
+    homeware.execute("hue_8","on",ac_unit)
 
 
