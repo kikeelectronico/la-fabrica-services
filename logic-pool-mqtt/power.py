@@ -54,7 +54,6 @@ def powerManagment(homeware, topic, payload):
     "device/thermostat_livingroom",
     "device/thermostat_bathroom",
     "device/thermostat_dormitorio",
-    "device/switch_radiator/on",
     "device/switch_at_home/on"
   ]
 

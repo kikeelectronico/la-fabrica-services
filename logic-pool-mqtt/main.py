@@ -45,7 +45,6 @@ TOPICS = [
   "device/switch003/on",
   "device/switch_at_home/on",
   "device/switch_hood/on",
-  "device/switch_radiator/on",
   "device/hue_sensor_2/on",
   "device/hue_sensor_12/on",
   "device/hue_sensor_13/on",
