@@ -18,11 +18,7 @@ def film(homeware, alert, topic, payload):
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Save current status
       for device_id in pre_state_devices_id:
-        scene_pre_state[device_id] = homeware.get(device_id, "all")
-      # Turn off some lights
-      turn_off_devices = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1"]
-      for control_id in turn_off_devices:
-        homeware.execute(control_id, "on", False)
+        scene_pre_state[device_id] = homeware.get(device_id, "all")      
       # Change the color of some lights and turn them on
       turn_on_devices = ["rgb001", "rgb002"]
       color = {
@@ -35,6 +31,10 @@ def film(homeware, alert, topic, payload):
       # Turn on
       for control_id in turn_on_devices:
         homeware.execute(control_id, "on", True)
+      # Turn off some lights
+      turn_off_devices = ["hue_6", "hue_4", "hue_5", "light003", "light004", "hue_1"]
+      for control_id in turn_off_devices:
+        homeware.execute(control_id, "on", False)
     else:
       # Disable scene
       for device_id in pre_state_devices_id:
