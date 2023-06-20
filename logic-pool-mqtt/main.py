@@ -77,10 +77,11 @@ def on_message(client, userdata, msg):
       if payload is not None:
         lights.rgbPropagation(homeware, msg.topic, payload)
         scenes.film(homeware, alert, msg.topic, payload)
-        scenes.shower(homeware, alert, msg.topic, payload)
         scenes.relax(homeware, alert, msg.topic, payload)
-        scenes.powerAlert(homeware, alert, msg.topic, payload)
+        scenes.dinner(homeware, msg.topic, payload)
         scenes.dim(homeware, msg.topic, payload)
+        scenes.shower(homeware, alert, msg.topic, payload)
+        scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
