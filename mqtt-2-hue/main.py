@@ -28,7 +28,8 @@ TOPICS = [
 	"device/hue_4",
 	"device/hue_5",
 	"device/hue_6",
-	"device/hue_7"
+	"device/hue_7",
+	"device/hue_8"
 ]
 SERVICE = "mqtt-2-hue-" + ENV
 
@@ -50,11 +51,13 @@ def on_message(client, userdata, msg):
 			topic = msg.topic
 			payload = json.loads(msg.payload)
 			hue_id = topic.split("hue_")[1]
-			hue_status = {
-				"on": payload["on"],
-				"bri": round((payload["brightness"]/100)*254),
-				"ct": round(1000000/payload["color"]["temperatureK"])
-			}
+			hue_status = {}
+			if "on" in payload:
+				hue_status["on"] = payload["on"]
+			if "brightness" in payload:
+				hue_status["bri"] = round((payload["brightness"]/100)*254)
+			if "color" in payload:
+				hue_status["ct"] = round(1000000/payload["color"]["temperatureK"])
 			sendToHue(hue_id, hue_status)
 
 # Send an update request to Hue bridge API
