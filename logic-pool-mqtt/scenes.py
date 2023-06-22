@@ -69,11 +69,12 @@ def relax(homeware, alert, topic, payload):
           homeware.execute(device_id, param, device_state[param])
 
 # Set dinner scene
-def dinner(homeware, topic, payload):
+def dinner(homeware, alert, topic, payload):
   if topic == "device/scene_dinner/enable":
     global scene_pre_state
     pre_state_devices_id = ["rgb001", "rgb002", "rgb003", "hue_1", "hue_4", "hue_1", "light003", "hue_5"]
     if payload:
+      alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       # Save current status
       for device_id in pre_state_devices_id:
         scene_pre_state[device_id] = homeware.get(device_id, "all")
