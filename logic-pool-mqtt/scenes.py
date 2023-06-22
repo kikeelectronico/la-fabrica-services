@@ -85,17 +85,13 @@ def dinner(homeware, topic, payload):
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
-      # Turn some lights on
-      devices_ids = ["light003"]
-      for device_id in devices_ids:
-        homeware.execute(device_id, "on", True)
       # Attenuate some lights
       devices_ids = ["hue_5"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 30)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices_ids = ["hue_1", "hue_4", "hue_sensor_13"]
+      devices_ids = ["hue_1", "hue_4", "hue_sensor_13", "light003"]
       for device_id in devices_ids:
         homeware.execute(device_id, "on", False)
     else:
