@@ -2,8 +2,10 @@ import paho.mqtt.client as mqtt
 import datetime
 import os
 import time
+import openai
 
 from homeware import Homeware
+from Alert import Alert
 from logger import Logger
 
 # Load env vars
@@ -16,6 +18,7 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
 
@@ -31,6 +34,7 @@ just_executed = ""
 mqtt_client = mqtt.Client(client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
+alert = Alert(mqtt_client, openai, SERVICE)
 
 def main():
   global last_heartbeat_timestamp
@@ -106,6 +110,7 @@ def main():
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
+      alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
       homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block
