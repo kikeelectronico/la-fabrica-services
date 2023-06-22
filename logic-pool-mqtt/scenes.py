@@ -6,16 +6,16 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
-pre_state_devices_id = ["rgb001", "rgb002", "rgb003", "hue_1", "hue_4", "hue_1", "light003", "hue_5"]
+state_devices_id = ["rgb001", "rgb002", "hue_1", "hue_4", "hue_5", "light003", "hue_5"]
 scene_pre_state = {}
 
 def saveLightsState(homeware):
   global scene_pre_state
-  for device_id in pre_state_devices_id:
+  for device_id in state_devices_id:
         scene_pre_state[device_id] = homeware.get(device_id, "all")
 
 def restoreLightState(homeware):
-  for device_id in pre_state_devices_id:
+  for device_id in state_devices_id:
     device_state = scene_pre_state[device_id]
     for param in device_state:
       homeware.execute(device_id, param, device_state[param])
