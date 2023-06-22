@@ -106,7 +106,6 @@ def main():
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
-      homeware.execute("scene_dim", "enable", True)
       homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block
