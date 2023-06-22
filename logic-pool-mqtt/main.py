@@ -35,6 +35,7 @@ TOPICS = [
   "device/scene_pelicula/enable",
   "device/scene_ducha/enable",
   "device/scene_dinner/enable",
+  "device/scene_lunch/enable",
   "device/current001/brightness",
   "device/thermostat_livingroom",
   "device/thermostat_bathroom",
@@ -78,6 +79,7 @@ def on_message(client, userdata, msg):
         scenes.film(homeware, alert, msg.topic, payload)
         scenes.relax(homeware, alert, msg.topic, payload)
         scenes.dinner(homeware, alert, msg.topic, payload)
+        scenes.lunch(homeware, alert, msg.topic, payload)
         scenes.dim(homeware, msg.topic, payload)
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
