@@ -87,7 +87,7 @@ def powerManagment(homeware, topic, payload):
         livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
         bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002", rule_14)
         bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
-        ac_unit = shouldCool(homeware, "thermostat_livingroom", "hue_8")
+        #ac_unit = shouldCool(homeware, "thermostat_livingroom", "hue_8")
         heater = not livingroom
     else:
       livingroom = False
@@ -100,6 +100,6 @@ def powerManagment(homeware, topic, payload):
     homeware.execute("radiator001","on",livingroom)
     homeware.execute("radiator002","on",bedroom)
     homeware.execute("radiator003","on",bathroom)
-    homeware.execute("hue_8","on",ac_unit)
+    #homeware.execute("hue_8","on",ac_unit)
 
 
