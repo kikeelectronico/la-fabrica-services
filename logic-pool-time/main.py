@@ -121,6 +121,8 @@ def main():
     if time.time() - last_heartbeat_timestamp > 10:
       mqtt_client.publish("heartbeats", "logic-pool-time")
       last_heartbeat_timestamp = time.time()
+    
+    time.sleep(0.1)
 
 # Main entry point
 if __name__ == "__main__":
