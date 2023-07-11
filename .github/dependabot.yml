@@ -30,62 +30,62 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/dns-updater"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/heartbeat-monitor"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/heartbeat-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/hue-2-mqtt"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/logic-pool-hue"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/logic-pool-mqtt"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/logic-pool-time"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/message-alert"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/mqtt-2-bigquery"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/mqtt-2-hue"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/telegram-bot"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
-  - package-ecosystem: "npm"
+  - package-ecosystem: "pip"
     directory: "/voice-alert"
     schedule:
       interval: "weekly"
