@@ -6,10 +6,6 @@ on:
     branches: [ main ]
     paths:
       - "message-alert/**"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "message-alert/**"
 
 concurrency: 
   group: ${{ github.workflow }}

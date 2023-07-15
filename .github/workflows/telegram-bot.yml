@@ -6,10 +6,6 @@ on:
     branches: [ main ]
     paths:
       - "telegram-bot/**"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "telegram-bot/**"
 
 concurrency: 
   group: ${{ github.workflow }}

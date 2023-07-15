@@ -6,10 +6,6 @@ on:
     branches: [ main ]
     paths:
       - "logic-pool-hue/**"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "logic-pool-hue/**"
 
 concurrency: 
   group: ${{ github.workflow }}

@@ -6,10 +6,6 @@ on:
     branches: [ main ]
     paths:
       - "alert-system-request/**"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "alert-system-request/**"
 
 concurrency: 
   group: ${{ github.workflow }}
