@@ -1,4 +1,4 @@
-FROM python:3.11-buster AS base
+FROM python:slim-bullseye
 COPY . /app
 WORKDIR /app
 RUN mkdir creds
