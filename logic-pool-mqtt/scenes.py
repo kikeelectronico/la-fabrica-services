@@ -211,19 +211,19 @@ def powerAlert(homeware, alert, topic, payload):
             devices_id = ["rgb001", "rgb002", "rgb003"]
             for device_id in devices_id:
               homeware.execute(device_id, "currentToggleSettings", currentToggleSettings)
-        if power < 85:
-          if power_alert_counter > 1:
-            power_alert_counter = 0
-            # Send voice alerts
-            alert.voice("Sistemas de potencia bajo control")
-            currentToggleSettings = {
-              "emergencia": False
-            }
-            devices_id = ["rgb001", "rgb002", "rgb003"]
-            for device_id in devices_id:
-              homeware.execute(device_id, "currentToggleSettings", currentToggleSettings)
-          
-          if power_alert_counter == 1:
-            power_alert_counter = 0
+      if power < 85:
+        if power_alert_counter > 1:
+          power_alert_counter = 0
+          # Send voice alerts
+          alert.voice("Sistemas de potencia bajo control")
+          currentToggleSettings = {
+            "emergencia": False
+          }
+          devices_id = ["rgb001", "rgb002", "rgb003"]
+          for device_id in devices_id:
+            homeware.execute(device_id, "currentToggleSettings", currentToggleSettings)
+        
+        if power_alert_counter == 1:
+          power_alert_counter = 0
 
 
