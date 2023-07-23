@@ -193,10 +193,10 @@ def powerAlert(homeware, alert, topic, payload):
   if topic == "device/control":
     if payload["id"] == "current001" and payload["param"] == "brightness":
       global last_power_check
+      global power_alert_counter
+      power = payload["value"]
       if time.time() - last_power_check > DELAY_BETWEEN_POWER_ALERTS:
         last_power_check = time.time()
-        global power_alert_counter
-        power = payload["value"]
         # Power alerts
         if power >= 100:
           power_alert_counter += 1
