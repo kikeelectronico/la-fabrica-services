@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim-bullseye
+FROM python:3.11.4-slim-bullseye
 COPY . /app
 WORKDIR /app
 RUN mkdir audio
