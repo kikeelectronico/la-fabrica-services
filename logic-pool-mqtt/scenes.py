@@ -115,6 +115,30 @@ def lunch(homeware, alert, topic, payload):
     else:
       restoreLightState(homeware)
 
+# Set work scene
+def work(homeware, alert, topic, payload):
+  if topic == "device/scene_work/enable":
+    if payload:
+      saveLightsState(homeware)   
+      # Change the color of some lights and turn them on
+      turn_on_devices = ["hue_4", "hue_5"]
+      color = {
+        "temperatureK": 4000,
+      }
+      # Change color
+      for control_id in turn_on_devices:
+        homeware.execute(control_id, "color", color)
+      # Turn on
+      turn_on_devices = ["switch_temp_1", "light003", "hue_1"]
+      for control_id in turn_on_devices:
+        homeware.execute(control_id, "on", True)
+      # Turn off some lights
+      turn_off_devices = ["hue_sensor_14", "hue_sensor_13", "hue_sensor_12"]
+      for control_id in turn_off_devices:
+        homeware.execute(control_id, "on", False)
+    else:
+      restoreLightState(homeware)
+
 # Set dim scene
 def dim(homeware, topic, payload):
   if topic == "device/scene_dim/enable":
