@@ -11,9 +11,33 @@ import Launches from "../components/Launches"
 import Shower from "../components/Shower"
 import Bedroom from "../components/Bedroom"
 import NotAtHome from "../components/NotAtHome"
+import LightingScene from "../components/LightingScene"
 import React, { useState, useEffect } from "react";
 
 const API = process.env.REACT_APP_DATA_PANEL_API_URL
+
+const scenes_to_show = [
+  {
+    "name": "Cena",
+    "id": "scene_dinner"
+  },
+  {
+    "name": "Comida",
+    "id": "scene_lunch"
+  },
+  {
+    "name": "Luz tenue",
+    "id": "scene_dim"
+  },
+  {
+    "name": "Película",
+    "id": "scene_pelicula"
+  },
+  {
+    "name": "Relajación",
+    "id": "scene_relajacion"
+  },
+]
 
 export default function Home(props) {
 
@@ -56,6 +80,11 @@ export default function Home(props) {
           <Bedroom homeware={homeware} api_requested={api_requested}/>
           <NotAtHome homeware={homeware} api_requested={api_requested}/>
           <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
+          {
+            scenes_to_show.map(scene => {
+              return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
+            })
+          }
         </div>
     </div>
   )
