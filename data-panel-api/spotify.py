@@ -5,7 +5,6 @@ import time
 from keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
-from google.cloud import bigquery
 
 class Spotify:
 
@@ -38,8 +37,6 @@ class Spotify:
     self._track_image_model = load_model("track_image_model/keras_model.h5", compile=False)
     self._track_image_class_names = open("track_image_model/labels.txt", "r").readlines()
     self._track_image_data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-    # Connect with bigquery
-    self._bigquery_client = bigquery.Client()
     # Set the logger
     self.logger = logger
 
@@ -87,15 +84,6 @@ class Spotify:
                 self._last_track = playing['item']['id']
 
                 self.analyzeTrackImage()
-
-                # Save the image url
-                self._bigquery_client.query(
-                    """
-                      INSERT INTO `{}`
-                      (url, downloaded)
-                      VALUES ('{}',False);
-                    """.format(self._covers_ddbb, self._track_image)
-                )
 
                 spotify = {
                   "playing": playing['is_playing'],

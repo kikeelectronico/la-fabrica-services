@@ -5,6 +5,5 @@ python-dotenv==1.0.0
 keras==2.13.1
 tensorflow==2.13.0
 Pillow==10.0.0
-google-cloud-bigquery==3.11.3
 google-cloud-logging==3.6.0
 paho-mqtt==1.6.1
