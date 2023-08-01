@@ -30,8 +30,10 @@ def bathroom(id, state, homeware):
     if id == "14":
       if state["buttonevent"] == 1001:
           if not long_pressing:
-            value = not homeware.get("scene_dim","enable")
-            homeware.execute("scene_dim","enable",value)
+            value = not homeware.get("hue_7","on")
+            homeware.execute("hue_7","on",value)
+            # value = not homeware.get("scene_dim","enable")
+            # homeware.execute("scene_dim","enable",value)
             long_pressing = True
 
       elif state["buttonevent"] == 1003:
