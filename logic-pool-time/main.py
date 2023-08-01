@@ -81,9 +81,9 @@ def main():
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
           homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
-    # elif hour == "08:00:00" and not hour == just_executed:
-    #   just_executed = hour
-    #   homeware.execute("scene_dim", "enable", False)
+    elif hour == "08:55:00" and not hour == just_executed:
+      just_executed = hour
+      alert.voice("Quizá te interese desactivar el modo de luz tenue", speaker="all", gpt3=False)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
