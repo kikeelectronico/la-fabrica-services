@@ -37,6 +37,10 @@ const scenes_to_show = [
     "name": "Relajación",
     "id": "scene_relajacion"
   },
+  {
+    "name": "Trabajo",
+    "id": "scene_work"
+  },
 ]
 
 export default function Home(props) {
