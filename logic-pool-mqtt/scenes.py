@@ -51,7 +51,7 @@ def film(homeware, alert, topic, payload):
       for control_id in turn_on_devices:
         homeware.execute(control_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10", "hue_sensor_12", "hue_sensor_13"]
+      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
     else:
@@ -68,7 +68,7 @@ def relax(homeware, alert, topic, payload):
       for control_id in turn_on_devices:
         homeware.execute(control_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["hue_1", "hue_4", "hue_5", "hue_9", "hue_10", "hue_sensor_12", "hue_sensor_13"]
+      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
     else:
@@ -95,7 +95,7 @@ def dinner(homeware, alert, topic, payload):
         homeware.execute(device_id, "brightness", 30)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices_ids = ["light003", "hue_1", "hue_4", "hue_9", "hue_10", "hue_sensor_12", "hue_sensor_13"]
+      devices_ids = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
       for device_id in devices_ids:
         homeware.execute(device_id, "on", False)
     else:
@@ -121,7 +121,7 @@ def lunch(homeware, alert, topic, payload):
         homeware.execute(device_id, "brightness", 60)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices_ids = ["light003", "hue_1", "hue_4", "hue_9", "hue_10", "hue_sensor_12", "hue_sensor_13"]
+      devices_ids = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
       for device_id in devices_ids:
         homeware.execute(device_id, "on", False)
     else:
@@ -145,7 +145,7 @@ def work(homeware, alert, topic, payload):
         homeware.execute(control_id, "brightness", 30)
         homeware.execute(control_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["hue_sensor_14", "hue_sensor_13", "hue_sensor_12", "hue_4", "hue_5"]
+      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_4", "hue_5"]
       for control_id in turn_off_devices:
         homeware.execute(control_id, "on", False)
     else:
