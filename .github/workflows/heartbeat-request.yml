@@ -50,8 +50,5 @@ jobs:
     steps:
       - name: Request update
         run: |
-          curl --location '${{ secrets.DIP_BASE_URL }}/images/pull' \
-          --header 'Content-Type: application/x-www-form-urlencoded' \
-          --data-urlencode 'token=${{ secrets.DIP_TOKEN }}' \
-          --data-urlencode 'restart_containers=true' \
-          --data-urlencode 'image=ghcr.io/kikeelectronico/heartbeat-request:latest'
+          curl --location '${{ secrets.DIP_URL }}' \
+          --header 'Authorization: Bearer ${{ secrets.DIP_TOKEN }}'
