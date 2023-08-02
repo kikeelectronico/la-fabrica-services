@@ -38,17 +38,14 @@ def film(homeware, alert, topic, payload):
     if payload:
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       verifyLightScenesState(homeware, topic.split("/")[1])
-      # Change the color of some lights and turn them on
+      # Update the grb strips
       devices = ["rgb001", "rgb002"]
       color = {
         "spectrumRGB": 16741656,
         "spectrumRgb": 16741656
       }
-      # Change color
       for device_id in devices:
         homeware.execute(device_id, "color", color)
-      # Turn on
-      for device_id in devices:
         homeware.execute(device_id, "on", True)
       # Turn off some lights
       devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
