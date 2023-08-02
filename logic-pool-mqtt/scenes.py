@@ -39,21 +39,21 @@ def film(homeware, alert, topic, payload):
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       verifyLightScenesState(homeware, topic.split("/")[1])
       # Change the color of some lights and turn them on
-      turn_on_devices = ["rgb001", "rgb002"]
+      devices = ["rgb001", "rgb002"]
       color = {
         "spectrumRGB": 16741656,
         "spectrumRgb": 16741656
       }
       # Change color
-      for control_id in turn_on_devices:
-        homeware.execute(control_id, "color", color)
+      for device_id in devices:
+        homeware.execute(device_id, "color", color)
       # Turn on
-      for control_id in turn_on_devices:
-        homeware.execute(control_id, "on", True)
+      for device_id in devices:
+        homeware.execute(device_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
-      for control_id in turn_off_devices:
-        homeware.execute(control_id, "on", False)
+      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "on", False)
     else:
       restoreLightState(homeware, topic.split("/")[1])
 
@@ -64,13 +64,13 @@ def relax(homeware, alert, topic, payload):
       alert.voice("Crea una frase en la que expreses que es hora de relajarse.", speaker="livingroom,bedroom", gpt3=True)
       verifyLightScenesState(homeware, topic.split("/")[1])  
       # Turn on some lights
-      turn_on_devices = ["light003", "rgb001", "rgb002", "rgb003"]
-      for control_id in turn_on_devices:
-        homeware.execute(control_id, "on", True)
+      devices = ["light003", "rgb001", "rgb002", "rgb003"]
+      for device_id in devices:
+        homeware.execute(device_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
-      for control_id in turn_off_devices:
-        homeware.execute(control_id, "on", False)
+      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "on", False)
     else:
       # Disable scene
       restoreLightState(homeware, topic.split("/")[1])
@@ -82,21 +82,21 @@ def dinner(homeware, alert, topic, payload):
       alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       verifyLightScenesState(homeware, topic.split("/")[1])  
       # Change some devices color
-      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      devices = ["rgb001", "rgb002", "rgb003"]
       color = {
         "spectrumRGB": 16729344,
         "spectrumRgb": 16729344
       }
-      for device_id in devices_ids:
+      for device_id in devices:
         homeware.execute(device_id, "color", color)
       # Attenuate some lights
-      devices_ids = ["hue_5"]
-      for device_id in devices_ids:
+      devices = ["hue_5"]
+      for device_id in devices:
         homeware.execute(device_id, "brightness", 30)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices_ids = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
-      for device_id in devices_ids:
+      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
+      for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
       restoreLightState(homeware, topic.split("/")[1])
@@ -108,21 +108,21 @@ def lunch(homeware, alert, topic, payload):
       alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Change some devices color
-      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      devices = ["rgb001", "rgb002", "rgb003"]
       color = {
         "spectrumRGB": 16729344,
         "spectrumRgb": 16729344
       }
-      for device_id in devices_ids:
+      for device_id in devices:
         homeware.execute(device_id, "color", color)
       # Attenuate some lights
-      devices_ids = ["hue_5"]
-      for device_id in devices_ids:
+      devices = ["hue_5"]
+      for device_id in devices:
         homeware.execute(device_id, "brightness", 60)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices_ids = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
-      for device_id in devices_ids:
+      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
+      for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
       restoreLightState(homeware, topic.split("/")[1])
@@ -133,21 +133,21 @@ def work(homeware, alert, topic, payload):
     if payload:
       verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Adjust work lights
-      turn_on_devices = ["hue_9", "hue_10"]
-      for control_id in turn_on_devices:
-        homeware.execute(control_id, "color", { "temperatureK": 4000 })
-        homeware.execute(control_id, "brightness", 100)
-        homeware.execute(control_id, "on", True)
+      devices = ["hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 4000 })
+        homeware.execute(device_id, "brightness", 100)
+        homeware.execute(device_id, "on", True)
       # Adjust ambient lights
-      turn_on_devices = ["hue_1"]
-      for control_id in turn_on_devices:
-        homeware.execute(control_id, "color", { "temperatureK": 2700 })
-        homeware.execute(control_id, "brightness", 30)
-        homeware.execute(control_id, "on", True)
+      devices = ["hue_1"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 2700 })
+        homeware.execute(device_id, "brightness", 30)
+        homeware.execute(device_id, "on", True)
       # Turn off some lights
-      turn_off_devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_4", "hue_5"]
-      for control_id in turn_off_devices:
-        homeware.execute(control_id, "on", False)
+      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_4", "hue_5"]
+      for device_id in devices:
+        homeware.execute(device_id, "on", False)
     else:
       restoreLightState(homeware, topic.split("/")[1])
 
