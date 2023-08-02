@@ -24,7 +24,7 @@ storage_client = storage.Client()
 @bot.message_handler(commands=['start', 'help','test','office','home','directions','yt'])
 def send_welcome(message):
   if 'start' in message.text:
-    bot.reply_to(message, "Hi, I am Leia Organa")
+    bot.reply_to(message, "Hi, I am Maguna")
   elif 'help' in message.text:
     bot.reply_to(message, "I am sorry but I don't know you.")
   else:
