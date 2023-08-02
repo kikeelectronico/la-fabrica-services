@@ -29,7 +29,9 @@ TOPICS = [
 	"device/hue_5",
 	"device/hue_6",
 	"device/hue_7",
-	"device/hue_8"
+	"device/hue_8",
+	"device/hue_9",
+	"device/hue_10"
 ]
 SERVICE = "mqtt-2-hue-" + ENV
 
