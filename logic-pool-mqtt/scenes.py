@@ -138,7 +138,7 @@ def work(homeware, alert, topic, payload):
       # Adjust ambient lights
       devices = ["hue_1"]
       for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 2700 })
+        homeware.execute(device_id, "color", { "temperatureK": 3000 })
         homeware.execute(device_id, "brightness", 30)
         homeware.execute(device_id, "on", True)
       # Turn off some lights
@@ -152,7 +152,12 @@ def work(homeware, alert, topic, payload):
 def dim(homeware, topic, payload):
   if topic == "device/scene_dim/enable":
     if payload:
-      # Change some devices color
+      # Adjust work lights
+      devices = ["hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 3000 })
+        homeware.execute(device_id, "brightness", 20)
+      # Adjust RGB strips
       devices_ids = ["rgb001", "rgb002", "rgb003"]
       color = {
         "spectrumRGB": 16729344,
@@ -160,19 +165,22 @@ def dim(homeware, topic, payload):
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
-      # Change color temp on lights
+      # Adjust bathroom lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
-        homeware.execute(device_id, "color", {"temperatureK": 2700})
-      # Attenuate some lights
-      devices_ids = ["hue_2","hue_3"]
-      for device_id in devices_ids:
+        homeware.execute(device_id, "color", {"temperatureK": 3000})
         homeware.execute(device_id, "brightness", 20)
+      # Adjust hall light
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
-        homeware.execute(device_id, "brightness", 30)
+        homeware.execute(device_id, "brightness", 30) 
     else:
-      # Change some devices color
+      # Adjust work lights
+      devices = ["hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 4000 })
+        homeware.execute(device_id, "brightness", 100)
+      # Adjust RGB strips
       devices_ids = ["rgb001", "rgb002", "rgb003"]
       color = {
         "spectrumRGB": 16741656,
@@ -180,14 +188,12 @@ def dim(homeware, topic, payload):
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
-      # Change color temp on lights
+      # Adjust bathroom lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
         homeware.execute(device_id, "color", {"temperatureK": 5000})
-      # Increase some lights
-      devices_ids = ["hue_2","hue_3"]
-      for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 80)
+      # Adjust hall light      
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 100)
