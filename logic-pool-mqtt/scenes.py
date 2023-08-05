@@ -152,19 +152,6 @@ def work(homeware, alert, topic, payload):
 def dim(homeware, topic, payload):
   if topic == "device/scene_dim/enable":
     if payload:
-      # Adjust work lights
-      devices = ["hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 3000 })
-        homeware.execute(device_id, "brightness", 20)
-      # Adjust RGB strips
-      devices_ids = ["rgb001", "rgb002", "rgb003"]
-      color = {
-        "spectrumRGB": 16729344,
-        "spectrumRgb": 16729344
-      }
-      for device_id in devices_ids:
-        homeware.execute(device_id, "color", color)
       # Adjust bathroom lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
@@ -174,20 +161,20 @@ def dim(homeware, topic, payload):
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 30) 
-    else:
-      # Adjust work lights
-      devices = ["hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 4000 })
-        homeware.execute(device_id, "brightness", 100)
       # Adjust RGB strips
       devices_ids = ["rgb001", "rgb002", "rgb003"]
       color = {
-        "spectrumRGB": 16741656,
-        "spectrumRgb": 16741656
+        "spectrumRGB": 16729344,
+        "spectrumRgb": 16729344
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
+      # Adjust work lights
+      devices = ["hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 3000 })
+        homeware.execute(device_id, "brightness", 20)
+    else:
       # Adjust bathroom lights
       devices_ids = ["hue_2","hue_3"]
       for device_id in devices_ids:
@@ -197,12 +184,25 @@ def dim(homeware, topic, payload):
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
         homeware.execute(device_id, "brightness", 100)
+      # Adjust RGB strips
+      devices_ids = ["rgb001", "rgb002", "rgb003"]
+      color = {
+        "spectrumRGB": 16741656,
+        "spectrumRgb": 16741656
+      }
+      for device_id in devices_ids:
+        homeware.execute(device_id, "color", color)
+      # Adjust work lights
+      devices = ["hue_9", "hue_10"]
+      for device_id in devices:
+        homeware.execute(device_id, "color", { "temperatureK": 4000 })
+        homeware.execute(device_id, "brightness", 100)
 
     # Run the Switches logic
-    value = homeware.get("hue_sensor_12","on")
-    homeware.execute("hue_sensor_12","on",value)
     value = homeware.get("switch_temp_1","on")
     homeware.execute("switch_temp_1","on",value)
+    value = homeware.get("hue_sensor_12","on")
+    homeware.execute("hue_sensor_12","on",value)
     value = homeware.get("hue_sensor_14","on")
     homeware.execute("hue_sensor_14","on",value)
 
