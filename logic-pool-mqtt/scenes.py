@@ -72,36 +72,11 @@ def relax(homeware, alert, topic, payload):
       # Disable scene
       restoreLightState(homeware, topic.split("/")[1])
 
-# Set dinner scene
-def dinner(homeware, alert, topic, payload):
-  if topic == "device/scene_dinner/enable":
-    if payload:
-      alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
-      verifyLightScenesState(homeware, topic.split("/")[1])  
-      # Change some devices color
-      devices = ["rgb001", "rgb002", "rgb003"]
-      color = {
-        "spectrumRGB": 16729344,
-        "spectrumRgb": 16729344
-      }
-      for device_id in devices:
-        homeware.execute(device_id, "color", color)
-      # Attenuate some lights
-      devices = ["hue_5"]
-      for device_id in devices:
-        homeware.execute(device_id, "brightness", 30)
-        homeware.execute(device_id, "on", True)
-      # Turn some lights off
-      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "on", False)
-    else:
-      restoreLightState(homeware, topic.split("/")[1])
-
 # Set lunch scene
 def lunch(homeware, alert, topic, payload):
   if topic == "device/scene_lunch/enable":
     if payload:
+      dim_scene = homeware.get("scene_dim", "enable")
       alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Change some devices color
@@ -115,7 +90,7 @@ def lunch(homeware, alert, topic, payload):
       # Attenuate some lights
       devices = ["hue_5"]
       for device_id in devices:
-        homeware.execute(device_id, "brightness", 60)
+        homeware.execute(device_id, "brightness", 20 if dim_scene else 60)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
       devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
