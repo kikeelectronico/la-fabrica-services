@@ -11,6 +11,7 @@ import scenes
 import lights
 import power
 import general
+import sensors
 import switches
 
 # Load env vars
@@ -51,7 +52,8 @@ TOPICS = [
   "device/hue_sensor_12/on",
   "device/hue_sensor_13/on",
   "device/hue_sensor_14/on",
-  "device/switch_temp_1/on"
+  "device/switch_temp_1/on",
+  "device/scene_table_sensor/enable"
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
 
@@ -88,6 +90,7 @@ def on_message(client, userdata, msg):
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
+        sensors.main(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.livingroom(homeware, msg.topic, payload)
         switches.kitchen(homeware, msg.topic, payload)
