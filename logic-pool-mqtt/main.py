@@ -58,8 +58,8 @@ SERVICE = "logic-pool-mqtt-" + ENV
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
-homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
-alert = Alert(mqtt_client, openai, SERVICE)
+homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
+alert = Alert(mqtt_client, openai, logger)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc):
