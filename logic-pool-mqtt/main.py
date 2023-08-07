@@ -79,7 +79,6 @@ def on_message(client, userdata, msg):
         lights.rgbPropagation(homeware, msg.topic, payload)
         scenes.film(homeware, alert, msg.topic, payload)
         scenes.relax(homeware, alert, msg.topic, payload)
-        scenes.dinner(homeware, alert, msg.topic, payload)
         scenes.lunch(homeware, alert, msg.topic, payload)
         scenes.work(homeware, alert, msg.topic, payload)
         scenes.dim(homeware, msg.topic, payload)
