@@ -18,10 +18,6 @@ const API = process.env.REACT_APP_DATA_PANEL_API_URL
 
 const scenes_to_show = [
   {
-    "name": "Cena",
-    "id": "scene_dinner"
-  },
-  {
     "name": "Comida",
     "id": "scene_lunch"
   },
