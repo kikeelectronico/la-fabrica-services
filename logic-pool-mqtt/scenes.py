@@ -128,12 +128,13 @@ def lunch(homeware, alert, topic, payload):
 def work(homeware, alert, topic, payload):
   if topic == "device/scene_work/enable":
     if payload:
+      dim_scene = homeware.get("scene_dim", "enable")
       verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Adjust work lights
       devices = ["hue_9", "hue_10"]
       for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 4000 })
-        homeware.execute(device_id, "brightness", 100)
+        homeware.execute(device_id, "color", { "temperatureK": 3000 if dim_scene else 4000 })
+        homeware.execute(device_id, "brightness", 20 if dim_scene else 100)
         homeware.execute(device_id, "on", True)
       # Adjust ambient lights
       devices = ["hue_1"]
@@ -169,11 +170,6 @@ def dim(homeware, topic, payload):
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
-      # Adjust work lights
-      devices = ["hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 3000 })
-        homeware.execute(device_id, "brightness", 20)
     else:
       # Adjust bathroom lights
       devices_ids = ["hue_2","hue_3"]
@@ -192,15 +188,10 @@ def dim(homeware, topic, payload):
       }
       for device_id in devices_ids:
         homeware.execute(device_id, "color", color)
-      # Adjust work lights
-      devices = ["hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "color", { "temperatureK": 4000 })
-        homeware.execute(device_id, "brightness", 100)
 
     # Run the Switches logic
-    value = homeware.get("switch_temp_1","on")
-    homeware.execute("switch_temp_1","on",value)
+    # value = homeware.get("switch_temp_1","on")
+    # homeware.execute("switch_temp_1","on",value)
     value = homeware.get("hue_sensor_12","on")
     homeware.execute("hue_sensor_12","on",value)
     value = homeware.get("hue_sensor_14","on")
