@@ -14,34 +14,6 @@ def bedroom(homeware, topic, payload):
       homeware.execute("hue_6","on",False)
       homeware.execute("rgb003","on",False)
 
-def livingroom(homeware, topic, payload):
-  if topic == "device/switch_temp_1/on":
-    if payload:
-      if homeware.get("scene_dim","enable"):
-        homeware.execute("hue_1","on",True)
-        homeware.execute("hue_4","on",False)
-        homeware.execute("hue_5","on",False)
-        homeware.execute("hue_9","on",True)
-        homeware.execute("hue_10","on",True)
-        homeware.execute("rgb001","on",True)
-        homeware.execute("rgb002","on",True)
-      else:
-        homeware.execute("hue_1","on",False)
-        homeware.execute("hue_4","on",True)
-        homeware.execute("hue_5","on",True)
-        homeware.execute("hue_9","on",False)
-        homeware.execute("hue_10","on",False)
-        homeware.execute("rgb001","on",True)
-        homeware.execute("rgb002","on",True)
-    else:
-      homeware.execute("hue_1","on",False)
-      homeware.execute("hue_4","on",False)
-      homeware.execute("hue_5","on",False)
-      homeware.execute("hue_9","on",False)
-      homeware.execute("hue_10","on",False)
-      homeware.execute("rgb001","on",False)
-      homeware.execute("rgb002","on",False)
-
 def kitchen(homeware, topic, payload):
   if topic == "device/hue_sensor_13/on":
     if payload:
