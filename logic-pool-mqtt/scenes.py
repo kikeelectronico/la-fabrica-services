@@ -20,7 +20,7 @@ def mainLight(homeware):
 def cinema(homeware, alert, topic, payload):
   if topic == "device/scene_cinema/enable":
     if payload:
-      alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
+      #alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Update the grb strips
       devices = ["rgb001", "rgb002"]
       color = {
@@ -42,7 +42,7 @@ def dinningroom(homeware, alert, topic, payload):
   if topic == "device/scene_diningroom/enable":
     if payload:
       dim_scene = homeware.get("scene_dim", "enable")
-      alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
+      #alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       # Change some devices color
       devices = ["rgb001", "rgb002", "rgb003"]
       color = {
