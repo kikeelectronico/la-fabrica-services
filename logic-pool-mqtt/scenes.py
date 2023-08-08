@@ -8,6 +8,7 @@ waiting_for_shower = False
 
 
 def mainLight(homeware):
+  # Turn on main light
   devices = ["hue_4", "hue_5"]
   for device_id in devices:
     homeware.execute(device_id, "on", True)
