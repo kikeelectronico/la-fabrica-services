@@ -18,25 +18,9 @@ const API = process.env.REACT_APP_DATA_PANEL_API_URL
 
 const scenes_to_show = [
   {
-    "name": "Comida",
-    "id": "scene_lunch"
-  },
-  {
     "name": "Luz tenue",
     "id": "scene_dim"
-  },
-  {
-    "name": "Película",
-    "id": "scene_pelicula"
-  },
-  {
-    "name": "Relajación",
-    "id": "scene_relajacion"
-  },
-  {
-    "name": "Trabajo",
-    "id": "scene_work"
-  },
+  }
 ]
 
 export default function Home(props) {
