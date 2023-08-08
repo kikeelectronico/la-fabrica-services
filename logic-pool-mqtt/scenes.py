@@ -6,21 +6,31 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
+enabled_scenes = []
 
-def mainLight(homeware):
-  # Turn on main light
-  devices = ["hue_4", "hue_5"]
-  for device_id in devices:
-    homeware.execute(device_id, "on", True)
-  # Turn off some lights
-  devices = ["light004", "hue_1", "hue_9", "hue_10"]
-  for device_id in devices:
-    homeware.execute(device_id, "on", False)
+def appendScene(scene):
+  global enabled_scenes
+  if not scene in enabled_scenes:
+    enabled_scenes.append(scene)
+
+def mainLight(homeware, scene):
+  global enabled_scenes
+  if scene in enabled_scenes:
+    enabled_scenes.remove(scene)
+    # Turn on main light
+    devices = ["hue_4", "hue_5"]
+    for device_id in devices:
+      homeware.execute(device_id, "on", True)
+    # Turn off some lights
+    devices = ["light004", "hue_1", "hue_9", "hue_10"]
+    for device_id in devices:
+      homeware.execute(device_id, "on", False)
 
 # Set the cinema scene
 def cinema(homeware, alert, topic, payload):
   if topic == "device/scene_cinema/enable":
     if payload:
+      appendScene("scene_cinema")
       #alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
       # Update the grb strips
       devices = ["rgb001", "rgb002"]
@@ -36,12 +46,13 @@ def cinema(homeware, alert, topic, payload):
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      mainLight(homeware)
+      mainLight(homeware, "scene_cinema")
 
 # Set dinningroom scene
 def dinningroom(homeware, alert, topic, payload):
   if topic == "device/scene_diningroom/enable":
     if payload:
+      appendScene("scene_diningroom")
       dim_scene = homeware.get("scene_dim", "enable")
       #alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
       # Change some devices color
@@ -62,12 +73,13 @@ def dinningroom(homeware, alert, topic, payload):
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      mainLight(homeware)
+      mainLight(homeware, "scene_diningroom")
 
 # Set work table scene
 def workTable(homeware, alert, topic, payload):
   if topic == "device/scene_work_table/enable":
     if payload:
+      appendScene("scene_work_table")
       dim_scene = homeware.get("scene_dim", "enable")
       # Adjust work lights
       devices = ["hue_9", "hue_10"]
@@ -86,16 +98,17 @@ def workTable(homeware, alert, topic, payload):
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      mainLight(homeware)
+      mainLight(homeware, "scene_work_table")
 
 # Set kitchen scene
 def kitchen(homeware, alert, topic, payload):
   if topic == "device/scene_kitchen/enable":
     if payload:
+      appendScene("scene_kitchen")
       homeware.execute("light004", "on", True)
     else:
       homeware.execute("light004", "on", False)
-      mainLight(homeware)
+      mainLight(homeware, "scene_kitchen")
 
 # Set dim scene
 def dim(homeware, topic, payload):
