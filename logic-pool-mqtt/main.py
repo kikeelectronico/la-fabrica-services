@@ -41,7 +41,6 @@ TOPICS = [
   "device/thermostat_livingroom",
   "device/thermostat_bathroom",
   "device/thermostat_dormitorio",
-  "device/scene_relajacion/enable",
   "device/control",
   "device/scene_dim/enable",
   "device/switch003/on",
