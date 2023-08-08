@@ -11,7 +11,6 @@ import scenes
 import lights
 import power
 import general
-import sensors
 import switches
 
 # Load env vars
@@ -33,11 +32,11 @@ TOPICS = [
   "heartbeats/request",
   "device/rgb001/color",
   "device/rgb001/on",
-  "device/scene_pelicula/enable",
+  "device/scene_kitchen/enable",
   "device/scene_ducha/enable",
-  "device/scene_dinner/enable",
-  "device/scene_lunch/enable",
-  "device/scene_work/enable",
+  "device/scene_cinema/enable",
+  "device/scene_diningroom/enable",
+  "device/scene_work_table/enable",
   "device/current001/brightness",
   "device/thermostat_livingroom",
   "device/thermostat_bathroom",
@@ -52,8 +51,7 @@ TOPICS = [
   "device/hue_sensor_12/on",
   "device/hue_sensor_13/on",
   "device/hue_sensor_14/on",
-  "device/switch_temp_1/on",
-  "device/scene_table_sensor/enable"
+  "device/switch_temp_1/on"
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
 
@@ -79,10 +77,10 @@ def on_message(client, userdata, msg):
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
         lights.rgbPropagation(homeware, msg.topic, payload)
-        scenes.film(homeware, alert, msg.topic, payload)
-        scenes.relax(homeware, alert, msg.topic, payload)
-        scenes.lunch(homeware, alert, msg.topic, payload)
-        scenes.work(homeware, alert, msg.topic, payload)
+        scenes.cinema(homeware, alert, msg.topic, payload)
+        scenes.dinningroom(homeware, alert, msg.topic, payload)
+        scenes.workTable(homeware, alert, msg.topic, payload)
+        scenes.kitchen(homeware, alert, msg.topic, payload)
         scenes.dim(homeware, msg.topic, payload)
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
@@ -90,7 +88,6 @@ def on_message(client, userdata, msg):
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
-        sensors.main(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.livingroom(homeware, msg.topic, payload)
         switches.kitchen(homeware, msg.topic, payload)

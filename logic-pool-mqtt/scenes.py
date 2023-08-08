@@ -6,38 +6,21 @@ power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 
-state_devices_id = ["rgb001", "rgb002", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10", "light003"]
-scene_pre_state = {}
-active_light_scene = ""
 
-def saveLightsState(homeware):
-  global scene_pre_state
-  for device_id in state_devices_id:
-        scene_pre_state[device_id] = homeware.get(device_id, "all")
+def mainLight(homeware):
+  devices = ["hue_4", "hue_5"]
+  for device_id in devices:
+    homeware.execute(device_id, "on", True)
+  # Turn off some lights
+  devices = ["light004", "hue_1", "hue_9", "hue_10"]
+  for device_id in devices:
+    homeware.execute(device_id, "on", False)
 
-def restoreLightState(homeware, scene_id):
-  global active_light_scene
-  if active_light_scene == scene_id:
-    for device_id in state_devices_id:
-      device_state = scene_pre_state[device_id]
-      for param in device_state:
-        homeware.execute(device_id, param, device_state[param])
-    active_light_scene = ""
-
-def verifyLightScenesState(homeware, new_scene_id):
-  global active_light_scene
-  if active_light_scene == "":
-    saveLightsState(homeware)
-  else:
-    homeware.execute(active_light_scene, "enable", False)
-  active_light_scene = new_scene_id
-
-# Set the film scene
-def film(homeware, alert, topic, payload):
-  if topic == "device/scene_pelicula/enable":
+# Set the cinema scene
+def cinema(homeware, alert, topic, payload):
+  if topic == "device/scene_cinema/enable":
     if payload:
       alert.voice("Crea una frase en la que expreses que te gustan las películas.", speaker="livingroom", gpt3=True)
-      verifyLightScenesState(homeware, topic.split("/")[1])
       # Update the grb strips
       devices = ["rgb001", "rgb002"]
       color = {
@@ -48,37 +31,18 @@ def film(homeware, alert, topic, payload):
         homeware.execute(device_id, "color", color)
         homeware.execute(device_id, "on", True)
       # Turn off some lights
-      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
+      devices = ["light004", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      restoreLightState(homeware, topic.split("/")[1])
+      mainLight(homeware)
 
-# Set a relax scene
-def relax(homeware, alert, topic, payload):
-  if topic == "device/scene_relajacion/enable":
-    if payload:
-      alert.voice("Crea una frase en la que expreses que es hora de relajarse.", speaker="livingroom,bedroom", gpt3=True)
-      verifyLightScenesState(homeware, topic.split("/")[1])  
-      # Turn on some lights
-      devices = ["light003", "rgb001", "rgb002", "rgb003"]
-      for device_id in devices:
-        homeware.execute(device_id, "on", True)
-      # Turn off some lights
-      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_1", "hue_4", "hue_5", "hue_9", "hue_10"]
-      for device_id in devices:
-        homeware.execute(device_id, "on", False)
-    else:
-      # Disable scene
-      restoreLightState(homeware, topic.split("/")[1])
-
-# Set lunch scene
-def lunch(homeware, alert, topic, payload):
-  if topic == "device/scene_lunch/enable":
+# Set dinningroom scene
+def dinningroom(homeware, alert, topic, payload):
+  if topic == "device/scene_diningroom/enable":
     if payload:
       dim_scene = homeware.get("scene_dim", "enable")
       alert.voice("Qué aproveche.", speaker="livingroom", gpt3=False)
-      verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Change some devices color
       devices = ["rgb001", "rgb002", "rgb003"]
       color = {
@@ -93,18 +57,17 @@ def lunch(homeware, alert, topic, payload):
         homeware.execute(device_id, "brightness", 20 if dim_scene else 60)
         homeware.execute(device_id, "on", True)
       # Turn some lights off
-      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "light003", "hue_1", "hue_4", "hue_9", "hue_10"]
+      devices = ["light004", "hue_1", "hue_4", "hue_9", "hue_10"]
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      restoreLightState(homeware, topic.split("/")[1])
+      mainLight(homeware)
 
-# Set work scene
-def work(homeware, alert, topic, payload):
-  if topic == "device/scene_work/enable":
+# Set work table scene
+def workTable(homeware, alert, topic, payload):
+  if topic == "device/scene_work_table/enable":
     if payload:
       dim_scene = homeware.get("scene_dim", "enable")
-      verifyLightScenesState(homeware, topic.split("/")[1]) 
       # Adjust work lights
       devices = ["hue_9", "hue_10"]
       for device_id in devices:
@@ -118,11 +81,20 @@ def work(homeware, alert, topic, payload):
         homeware.execute(device_id, "brightness", 30)
         homeware.execute(device_id, "on", True)
       # Turn off some lights
-      devices = ["hue_sensor_12", "hue_sensor_13", "hue_sensor_14", "hue_4", "hue_5"]
+      devices = ["light004", "hue_4", "hue_5"]
       for device_id in devices:
         homeware.execute(device_id, "on", False)
     else:
-      restoreLightState(homeware, topic.split("/")[1])
+      mainLight(homeware)
+
+# Set kitchen scene
+def kitchen(homeware, alert, topic, payload):
+  if topic == "device/scene_kitchen/enable":
+    if payload:
+      homeware.execute("light004", "on", True)
+    else:
+      homeware.execute("light004", "on", False)
+      mainLight(homeware)
 
 # Set dim scene
 def dim(homeware, topic, payload):
