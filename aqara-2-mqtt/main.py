@@ -34,28 +34,12 @@ SERVICE = "aqara-2-mqtt-" + ENV
 devices = [  
   {
     "aqara_id": "lumi1.54ef44510f0f",
-    "scenes": [
-      {
-        "aqara_resource_id": "3.1.85",
-        "homeware_scene_id": "scene_diningroom",
-      },
-      {
-        "aqara_resource_id": "3.2.85",
-        "homeware_scene_id": "scene_cinema",
-      },
-      {
-        "aqara_resource_id": "3.3.85",
-        "homeware_scene_id": "scene_work_table",
-      },
-      # {
-      #   "aqara_resource_id": "3.4.85",
-      #   "homeware_scene_id": "scene_bench_sensor",
-      # },
-      {
-        "aqara_resource_id": "3.5.85",
-        "homeware_scene_id": "scene_kitchen",
-      }
-    ]
+    "scenes": {
+      "3.1.85": "scene_diningroom",
+      "3.2.85": "scene_cinema",
+      "3.3.85": "scene_work_table",
+      "3.5.85": "scene_kitchen",
+    }
   }
 ]
 
@@ -69,9 +53,7 @@ homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 
 def getAqaraValue(device):
   url = "https://open-ger.aqara.com/v3.0/open/api"
-  resource_ids = []
-  for resource_id in device["scenes"]:
-    resource_ids.append(resource_id["aqara_resource_id"])
+  resource_ids = list(device["scenes"].keys())
   payload = json.dumps({
     "intent": "query.resource.value",
     "data": {
@@ -135,14 +117,11 @@ if __name__ == "__main__":
     for device in devices:
       resources = getAqaraValue(device)
       for resource in resources:
-        # print(resource["resourceId"], resource["value"])
-        for scene in device["scenes"]:
-          if resource["resourceId"] == scene["aqara_resource_id"]:
-            homeware_scene_id = scene["homeware_scene_id"]
-            if resource["value"] == "1":
-              if not homeware.get(homeware_scene_id, "enable"):
-                homeware.execute(homeware_scene_id, "enable", True)
-            else:
-              if homeware.get(homeware_scene_id, "enable"):
-                homeware.execute(homeware_scene_id, "enable", False)
-    time.sleep(1)
+        homeware_scene_id = device["scenes"][resource["resourceId"]]
+        if resource["value"] == "1":
+          if not homeware.get(homeware_scene_id, "enable"):
+            homeware.execute(homeware_scene_id, "enable", True)
+        else:
+          if homeware.get(homeware_scene_id, "enable"):
+            homeware.execute(homeware_scene_id, "enable", False)
+    time.sleep(0.1)
