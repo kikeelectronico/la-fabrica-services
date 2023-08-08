@@ -37,23 +37,23 @@ devices = [
     "scenes": [
       {
         "aqara_resource_id": "3.1.85",
-        "homeware_scene_id": "scene_dining_sensor",
+        "homeware_scene_id": "scene_diningroom",
       },
       {
         "aqara_resource_id": "3.2.85",
-        "homeware_scene_id": "scene_sofa_sensor",
+        "homeware_scene_id": "scene_cinema",
       },
       {
         "aqara_resource_id": "3.3.85",
-        "homeware_scene_id": "scene_table_sensor",
+        "homeware_scene_id": "scene_work_table",
       },
-      {
-        "aqara_resource_id": "3.4.85",
-        "homeware_scene_id": "scene_bench_sensor",
-      },
+      # {
+      #   "aqara_resource_id": "3.4.85",
+      #   "homeware_scene_id": "scene_bench_sensor",
+      # },
       {
         "aqara_resource_id": "3.5.85",
-        "homeware_scene_id": "scene_kitchen_sensor",
+        "homeware_scene_id": "scene_kitchen",
       }
     ]
   }
