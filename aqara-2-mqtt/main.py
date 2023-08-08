@@ -119,9 +119,7 @@ if __name__ == "__main__":
       for resource in resources:
         homeware_scene_id = device["scenes"][resource["resourceId"]]
         if resource["value"] == "1":
-          if not homeware.get(homeware_scene_id, "enable"):
-            homeware.execute(homeware_scene_id, "enable", True)
+          homeware.execute(homeware_scene_id, "enable", True)
         else:
-          if homeware.get(homeware_scene_id, "enable"):
-            homeware.execute(homeware_scene_id, "enable", False)
-    time.sleep(0.1)
+          homeware.execute(homeware_scene_id, "enable", False)
+    time.sleep(0.5)
