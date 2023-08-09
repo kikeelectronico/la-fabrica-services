@@ -100,6 +100,24 @@ def workTable(homeware, alert, topic, payload):
     else:
       mainLight(homeware, "scene_work_table")
 
+# Set work table scene
+def mainPresence(homeware, alert, topic, payload):
+  if topic == "device/scene_main_presence/enable":
+    if payload:
+      if len(enabled_scenes) == 0:
+        dim_scene = homeware.get("scene_dim", "enable")
+        # Adjust presence lights
+        devices = ["hue_4", "hue_5"]
+        for device_id in devices:
+          homeware.execute(device_id, "color", { "temperatureK": 3000 })
+          homeware.execute(device_id, "brightness", 30 if dim_scene else 100)
+          homeware.execute(device_id, "on", True)
+    else:
+      # Adjust presence lights
+      devices = ["hue_4", "hue_5"]
+      for device_id in devices:
+        homeware.execute(device_id, "on", False)
+
 # Set kitchen scene
 def kitchen(homeware, alert, topic, payload):
   if topic == "device/scene_kitchen/enable":
