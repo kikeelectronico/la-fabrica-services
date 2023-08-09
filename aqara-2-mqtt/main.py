@@ -39,6 +39,7 @@ devices = [
       "3.2.85": "scene_cinema",
       "3.3.85": "scene_work_table",
       "3.5.85": "scene_kitchen",
+      "3.51.85": "scene_main_presence",
     }
   }
 ]
