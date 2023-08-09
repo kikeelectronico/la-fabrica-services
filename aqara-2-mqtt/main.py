@@ -122,4 +122,4 @@ if __name__ == "__main__":
           homeware.execute(homeware_scene_id, "enable", True)
         else:
           homeware.execute(homeware_scene_id, "enable", False)
-    time.sleep(0.5)
+    time.sleep(1)
