@@ -45,14 +45,46 @@ devices = [
 ]
 
 # Declare vars
-access_token = AQARA_ACCESS_TOKEN
+access_token = None
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 
-def getAqaraValue(device):
+def renewAccessToken():
+  logger.log("Renewing access token", "INFO")
+  url = "https://open-ger.aqara.com/v3.0/open/api"
+  resource_ids = list(device["scenes"].keys())
+  payload = json.dumps({
+    "intent": "config.auth.refreshToken",
+    "data": {
+      "refreshToken": AQARA_REFRESH_TOKEN
+    }
+  })
+  request_time = str(math.trunc(time.time()*1000))
+  sign_str = "Appid=" + AQARA_APP_ID + "&" + "Keyid=" + AQARA_KEY_ID + "&" + "Nonce=" + request_time + "&" + "Time=" + request_time + AQARA_APP_KEY
+  sign_str = sign_str.lower()
+  sign = hashlib.md5(sign_str.encode("utf-8")).hexdigest()
+  headers = {
+    'Appid': AQARA_APP_ID,
+    'Keyid': AQARA_KEY_ID,
+    'Time': request_time,
+    'Nonce': request_time,
+    'Sign': sign,
+    'Content-Type': 'application/json'
+  }
+  response = requests.request("POST", url, headers=headers, data=payload).json()
+
+  if response["code"] == 0:
+    global access_token
+    access_token = response["result"]["accessToken"]
+    logger.log("Access token renewed", "INFO")
+  else:
+    logger.log("Unable to renew the access token", "ERROR")
+
+
+def getAqaraResourceValue(device):
   url = "https://open-ger.aqara.com/v3.0/open/api"
   resource_ids = list(device["scenes"].keys())
   payload = json.dumps({
@@ -67,7 +99,8 @@ def getAqaraValue(device):
     }
   })
   request_time = str(math.trunc(time.time()*1000))
-  sign_str = "Accesstoken=" + access_token + "&" + "Appid=" + AQARA_APP_ID + "&" + "Keyid=" + AQARA_KEY_ID + "&" + "Nonce=" + request_time + "&" + "Time=" + request_time + AQARA_APP_KEY
+  sign_str = "Accesstoken=" + access_token + "&" if access_token else ""
+  sign_str += "Appid=" + AQARA_APP_ID + "&" + "Keyid=" + AQARA_KEY_ID + "&" + "Nonce=" + request_time + "&" + "Time=" + request_time + AQARA_APP_KEY
   sign_str = sign_str.lower()
   sign = hashlib.md5(sign_str.encode("utf-8")).hexdigest()
   headers = {
@@ -79,9 +112,14 @@ def getAqaraValue(device):
     'Sign': sign,
     'Content-Type': 'application/json'
   }
-  response = requests.request("POST", url, headers=headers, data=payload)
-
-  return response.json()["result"]
+  response = requests.request("POST", url, headers=headers, data=payload).json()
+  
+  if response["code"] == 0:
+    return response["result"]
+  elif response["code"] == 108:
+    renewAccessToken()
+    return getAqaraResourceValue(device)
+    
 
 # Main entry point
 if __name__ == "__main__":
@@ -116,7 +154,7 @@ if __name__ == "__main__":
 
   while True:
     for device in devices:
-      resources = getAqaraValue(device)
+      resources = getAqaraResourceValue(device)
       for resource in resources:
         homeware_scene_id = device["scenes"][resource["resourceId"]]
         if resource["value"] == "1":
