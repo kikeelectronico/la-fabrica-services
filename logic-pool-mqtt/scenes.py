@@ -85,7 +85,7 @@ def workTable(homeware, alert, topic, payload):
       devices = ["hue_9", "hue_10"]
       for device_id in devices:
         homeware.execute(device_id, "color", { "temperatureK": 3000 if dim_scene else 4000 })
-        homeware.execute(device_id, "brightness", 20 if dim_scene else 100)
+        homeware.execute(device_id, "brightness", 20 if dim_scene else 70)
         homeware.execute(device_id, "on", True)
       # Adjust ambient lights
       devices = ["hue_1"]
