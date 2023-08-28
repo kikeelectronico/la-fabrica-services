@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim-bullseye
+FROM python:3.11.5-slim-bullseye
 COPY . /app
 WORKDIR /app
 RUN mkdir creds
