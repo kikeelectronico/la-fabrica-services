@@ -657,7 +657,10 @@ jobs:
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest
-    needs: [alert-system-request, ble-sensors-2-mqtt, data-panel-api]
+    needs: 
+      - alert-system-request
+      - ble-sensors-2-mqtt
+      - data-panel-api
     if: ${{ always() && !failure() && !cancelled() }}
     steps:
       - name: Request update
