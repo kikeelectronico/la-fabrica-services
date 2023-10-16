@@ -661,6 +661,21 @@ jobs:
       - alert-system-request
       - ble-sensors-2-mqtt
       - data-panel-api
+      - data-panel-autoload
+      - data-panel-front
+      - dns-updater
+      - heartbeat-monitor
+      - heartbeat-request
+      - hue-2-mqtt
+      - logger
+      - logic-pool-hue
+      - logic-pool-mqtt
+      - logic-pool-time
+      - message-alert
+      - mqtt-2-bigquery
+      - mqtt-2-hue
+      - telegram-bot
+      - voice-alert
     if: ${{ always() && !failure() && !cancelled() }}
     steps:
       - name: Request update
