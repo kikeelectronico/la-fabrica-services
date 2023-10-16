@@ -89,3 +89,13 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ env.REGISTRY }}/kikeelectronico/ble-sensors-2-mqtt:latest
+
+  deploy:
+    name: Deploy to the server
+    runs-on: ubuntu-latest
+    needs: [alert-system-request, ble-sensors-2-mqtt]
+    steps:
+      - name: Request update
+        run: |
+          curl --location --request POST '${{ secrets.DIP_URL }}' \
+          --header 'Authorization: Bearer ${{ secrets.DIP_TOKEN }}'
