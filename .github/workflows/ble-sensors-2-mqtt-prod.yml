@@ -1,4 +1,4 @@
-name: BLE sensors 2 MQTT
+name: BLE sensors 2 MQTT - Prod
 
 on:
   workflow_dispatch:

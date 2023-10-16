@@ -1,11 +1,11 @@
-name: Alert system requests
+name: MQTT 2 Hue - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "alert-system-request/**"
+      - "mqtt-2-hue/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: alert-system-request
-          file: alert-system-request/Dockerfile
+          context: mqtt-2-hue
+          file: mqtt-2-hue/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/alert-system-request:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/mqtt-2-hue:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

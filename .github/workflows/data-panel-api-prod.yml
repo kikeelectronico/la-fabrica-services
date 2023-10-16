@@ -1,11 +1,11 @@
-name: Data Panel Autoload
+name: Data Panel API - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "data-panel-autoload/**"
+      - "data-panel-api/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -16,12 +16,11 @@ env:
 
 jobs:
   build-publish:
-    name: Build and publish the autoload service
+    name: Build and publish the API
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -38,11 +37,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: data-panel-autoload
-          file: data-panel-autoload/Dockerfile
+          context: data-panel-api
+          file: data-panel-api/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/data-panel-autoload:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/data-panel-api:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

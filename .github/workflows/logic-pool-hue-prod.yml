@@ -1,11 +1,11 @@
-name: Logger
+name: Logic pool Hue - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "logger/**"
+      - "logic-pool-hue/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: logger
-          file: logger/Dockerfile
+          context: logic-pool-hue
+          file: logic-pool-hue/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/logger:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/logic-pool-hue:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

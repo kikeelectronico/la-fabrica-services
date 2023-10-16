@@ -1,11 +1,11 @@
-name: Logic pool Hue
+name: Heartbeat monitor - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "logic-pool-hue/**"
+      - "heartbeat-monitor/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: logic-pool-hue
-          file: logic-pool-hue/Dockerfile
+          context: heartbeat-monitor
+          file: heartbeat-monitor/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/logic-pool-hue:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/heartbeat-monitor:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

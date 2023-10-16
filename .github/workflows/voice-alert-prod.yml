@@ -1,11 +1,11 @@
-name: DNS updater
+name: Voice alert - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "dns-updater/**"
+      - "voice-alert/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: dns-updater
-          file: dns-updater/Dockerfile
+          context: voice-alert
+          file: voice-alert/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/dns-updater:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/voice-alert:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

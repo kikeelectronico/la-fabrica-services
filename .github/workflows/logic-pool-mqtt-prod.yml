@@ -1,11 +1,11 @@
-name: Data Panel Front
+name: Logic pool mqtt - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "data-panel-front/**"
+      - "logic-pool-mqtt/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-publish:
-    name: Build and publish the frontend
+    name: Build and publish the service
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: data-panel-front
-          file: data-panel-front/Dockerfile
+          context: logic-pool-mqtt
+          file: logic-pool-mqtt/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/data-panel-front:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/logic-pool-mqtt:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest

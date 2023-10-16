@@ -1,11 +1,11 @@
-name: MQTT 2 BigQuery
+name: Logger - Prod
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - "mqtt-2-bigquery/**"
+      - "logger/**"
 
 concurrency: 
   group: ${{ github.workflow }}
@@ -38,11 +38,11 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: mqtt-2-bigquery
-          file: mqtt-2-bigquery/Dockerfile
+          context: logger
+          file: logger/Dockerfile
           platforms: linux/amd64 #, linux/arm/v7, linux/arm64/v8
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/mqtt-2-bigquery:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/logger:latest
   deploy:
     name: Deploy to the server
     runs-on: ubuntu-latest
