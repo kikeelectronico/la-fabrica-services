@@ -34,15 +34,15 @@ jobs:
             - "data-panel-api/**"
 
   alert-system-request:
-    env:
-      SERVICE_NAME: "alert-system-request"
-    name: Build ${{ env.SERVICE_NAME }}
+    name: Build and publish alert-system-request
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
       contents: read
       packages: write
-    if: needs.paths-filter.outputs.alert-system-request == 'true'
+    env:
+      SERVICE_NAME: "alert-system-request"
+    if: needs.paths-filter.outputs.${{ env.SERVICE_NAME }} == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
