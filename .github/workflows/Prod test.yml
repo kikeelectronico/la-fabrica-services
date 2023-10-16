@@ -42,7 +42,7 @@ jobs:
       packages: write
     env:
       SERVICE_NAME: "alert-system-request"
-    if: needs.paths-filter.outputs.${{ env.SERVICE_NAME }} == 'true'
+    if: needs.paths-filter.outputs[${{ env.SERVICE_NAME }}] == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
