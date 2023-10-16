@@ -96,6 +96,7 @@ jobs:
     needs: [alert-system-request, ble-sensors-2-mqtt]
     if: |
       always() &&
+      contains(needs.*.result, 'success') &&
       !contains(needs.*.result, 'failure') &&
       !contains(needs.*.result, 'cancelled')
     steps:
