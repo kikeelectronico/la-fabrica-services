@@ -1,4 +1,4 @@
-name: Voice alert
+name: Voice alert - Prod
 
 on:
   workflow_dispatch:

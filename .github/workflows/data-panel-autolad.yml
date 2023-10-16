@@ -1,4 +1,4 @@
-name: Data Panel Autoload
+name: Data Panel Autoload - Prod
 
 on:
   workflow_dispatch:

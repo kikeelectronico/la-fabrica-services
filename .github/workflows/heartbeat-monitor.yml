@@ -1,4 +1,4 @@
-name: Heartbeat monitor
+name: Heartbeat monitor - Prod
 
 on:
   workflow_dispatch:

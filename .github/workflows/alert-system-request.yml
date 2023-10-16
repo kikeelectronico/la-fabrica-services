@@ -1,4 +1,4 @@
-name: Alert system requests
+name: Alert system requests - Prod
 
 on:
   workflow_dispatch:

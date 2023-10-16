@@ -1,4 +1,4 @@
-name: MQTT 2 BigQuery
+name: MQTT 2 BigQuery - Prod
 
 on:
   workflow_dispatch:

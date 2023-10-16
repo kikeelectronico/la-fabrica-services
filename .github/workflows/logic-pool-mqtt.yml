@@ -1,4 +1,4 @@
-name: Logic pool mqtt
+name: Logic pool mqtt - Prod
 
 on:
   workflow_dispatch:

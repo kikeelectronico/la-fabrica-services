@@ -1,4 +1,4 @@
-name: Data Panel API
+name: Data Panel API - Prod
 
 on:
   workflow_dispatch:

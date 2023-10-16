@@ -1,4 +1,4 @@
-name: DNS updater
+name: DNS updater - Prod
 
 on:
   workflow_dispatch:

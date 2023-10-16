@@ -1,4 +1,4 @@
-name: Data Panel Front
+name: Data Panel Front - Prod
 
 on:
   workflow_dispatch:

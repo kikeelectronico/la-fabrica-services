@@ -1,4 +1,4 @@
-name: Logic pool time
+name: Logic pool time - Prod
 
 on:
   workflow_dispatch:

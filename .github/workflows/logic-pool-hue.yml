@@ -1,4 +1,4 @@
-name: Logic pool Hue
+name: Logic pool Hue - Prod
 
 on:
   workflow_dispatch:

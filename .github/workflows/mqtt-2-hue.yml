@@ -1,4 +1,4 @@
-name: MQTT 2 Hue
+name: MQTT 2 Hue - Prod
 
 on:
   workflow_dispatch:
