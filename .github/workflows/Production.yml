@@ -79,7 +79,7 @@ jobs:
             - "voice-alert/**"
 
   alert-system-request:
-    name: Build and publish alert-system-request
+    name: Build alert-system-request
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -111,7 +111,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
   
   ble-sensors-2-mqtt:
-    name: Build and publish ble-sensors-2-mqtt
+    name: Build ble-sensors-2-mqtt
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -143,7 +143,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   data-panel-api:
-    name: Build and publish data-panel-api
+    name: Build data-panel-api
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -175,7 +175,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   data-panel-autoload:
-    name: Build and publish data-panel-autoload
+    name: Build data-panel-autoload
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -207,7 +207,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   data-panel-front:
-    name: Build and publish data-panel-front
+    name: Build data-panel-front
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -239,7 +239,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   dns-updater:
-    name: Build and publish dns-updater
+    name: Build dns-updater
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -271,7 +271,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   heartbeat-monitor:
-    name: Build and publish heartbeat-monitor
+    name: Build heartbeat-monitor
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -303,7 +303,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   heartbeat-request:
-    name: Build and publish heartbeat-request
+    name: Build heartbeat-request
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -335,7 +335,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   hue-2-mqtt:
-    name: Build and publish hue-2-mqtt
+    name: Build hue-2-mqtt
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -367,7 +367,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   logger:
-    name: Build and publish logger
+    name: Build logger
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -399,7 +399,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   logic-pool-hue:
-    name: Build and publish logic-pool-hue
+    name: Build logic-pool-hue
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -431,7 +431,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   logic-pool-mqtt:
-    name: Build and publish logic-pool-mqtt
+    name: Build logic-pool-mqtt
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -463,7 +463,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   logic-pool-time:
-    name: Build and publish logic-pool-time
+    name: Build logic-pool-time
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -495,7 +495,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   message-alert:
-    name: Build and publish message-alert
+    name: Build message-alert
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -527,7 +527,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   mqtt-2-bigquery:
-    name: Build and publish mqtt-2-bigquery
+    name: Build mqtt-2-bigquery
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -559,7 +559,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   mqtt-2-hue:
-    name: Build and publish mqtt-2-hue
+    name: Build mqtt-2-hue
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -591,7 +591,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   telegram-bot:
-    name: Build and publish telegram-bot
+    name: Build telegram-bot
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
@@ -623,7 +623,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
 
   voice-alert:
-    name: Build and publish voice-alert
+    name: Build voice-alert
     runs-on: ubuntu-latest
     needs: paths-filter
     permissions:
