@@ -96,8 +96,8 @@ jobs:
     needs: [alert-system-request, ble-sensors-2-mqtt]
     if: |
       always() &&
-      (needs.alert-system-request == 'success' || needs.alert-system-request == 'skipped') &&
-      (needs.ble-sensors-2-mqtt == 'success' || needs.ble-sensors-2-mqtt == 'skipped')
+      !contains(needs.*.result, 'failure') &&
+      !contains(needs.*.result, 'cancelled')
     steps:
       - name: Request update
         run: |
