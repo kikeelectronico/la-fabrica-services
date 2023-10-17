@@ -1,4 +1,4 @@
-name: Production
+name: Build service - Reusable
 
 on:
     workflow_call:
