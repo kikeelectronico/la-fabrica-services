@@ -13,11 +13,14 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-test:
-    name: Build test
+  build:
+    name: Build
+    strategy:
+      matrix:
+        service: ["alert-system-request"]
     uses: ./.github/workflows/build-service.yml
     with:
-      service: "alert-system-request"
+      service: ${{ matrix.service }}
     secrets:
       PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       actor: ${{ github.actor }}
