@@ -49,6 +49,8 @@ jobs:
     if: ${{ always() && !failure() && !cancelled() }}
     steps:
       - name: Request update
-        run: |
-          curl --location --request POST '${{ secrets.DIP_URL }}' \
-          --header 'Authorization: Bearer ${{ secrets.DIP_TOKEN }}'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.DIP_URL }}
+          method: "POST"
+          bearerToken: ${{ secrets.DIP_TOKEN }}
