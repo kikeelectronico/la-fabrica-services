@@ -8,6 +8,7 @@ from Homeware import Homeware
 from logger import Logger
 from Alert import Alert
 import scenes
+import alerts
 import lights
 import power
 import general
@@ -50,6 +51,9 @@ TOPICS = [
   "device/hue_sensor_2/on",
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
+  "device/thermostat_bathroom/capacityRemaining",
+  "device/thermostat_dormitorio/capacityRemaining",
+  "device/thermostat_livingroom/capacityRemaining",
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
 
@@ -75,6 +79,7 @@ def on_message(client, userdata, msg):
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
         lights.rgbPropagation(homeware, msg.topic, payload)
+        alerts.battery(homeware, alert, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
         scenes.workTable(homeware, alert, msg.topic, payload)
