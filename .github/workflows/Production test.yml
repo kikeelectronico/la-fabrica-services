@@ -1,0 +1,20 @@
+name: Production test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+  
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-test:
+    name: Build test
+    uses: ./.github/workflows/build-service
+    with:
+      service: "test-service"
