@@ -17,7 +17,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        service: ["alert-system-request"]
+        service: ["alert-system-request", "data-panel-api"]
     uses: ./.github/workflows/build-service.yml
     with:
       service: ${{ matrix.service }}
