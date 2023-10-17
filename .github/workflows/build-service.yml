@@ -11,7 +11,7 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  paths-filter:
+  path-filter:
     name: Paths filters
     runs-on: ubuntu-latest
     outputs:
@@ -23,18 +23,16 @@ jobs:
       with:
         filters: |
             changed:
-            - "alert-system-request/**"
+            - "${{ inputs.service }}/**"
 
-  alert-system-request:
-    name: Build alert-system-request
+  build:
+    name: Build ${{ inputs.service }}
     runs-on: ubuntu-latest
-    needs: paths-filter
+    needs: path-filter
     permissions:
       contents: read
       packages: write
-    env:
-      SERVICE_NAME: "alert-system-request"
-    if: needs.paths-filter.outputs.changed == 'true'
+    if: needs.path-filter.outputs.changed == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -51,8 +49,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: ${{ env.SERVICE_NAME }}
-          file: ${{ env.SERVICE_NAME }}/Dockerfile
+          context: ${{ inputs.service }}
+          file: ${{ inputs.service }}/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ env.REGISTRY }}/kikeelectronico/${{ env.SERVICE_NAME }}:latest
+          tags: ${{ env.REGISTRY }}/kikeelectronico/${{ inputs.service }}:latest
