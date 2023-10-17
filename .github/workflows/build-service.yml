@@ -12,7 +12,7 @@ env:
 
 jobs:
   path-filter:
-    name: Paths filters
+    name: ${{ inputs.service }} filter
     runs-on: ubuntu-latest
     outputs:
         changed: ${{ steps.filter.outputs.changed }}
