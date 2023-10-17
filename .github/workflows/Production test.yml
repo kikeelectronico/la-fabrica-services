@@ -17,4 +17,4 @@ jobs:
     name: Build test
     uses: ./.github/workflows/build-service.yml
     with:
-      service: "test-service"
+      service: "alert-system-request"
