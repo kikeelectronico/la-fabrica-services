@@ -1,4 +1,4 @@
-BATTER_LEVEL_THRESHOLD = 10
+BATTER_LEVEL_THRESHOLD = 75
 
 last_battery_level = {}
 
