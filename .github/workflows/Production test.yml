@@ -18,3 +18,6 @@ jobs:
     uses: ./.github/workflows/build-service.yml
     with:
       service: "alert-system-request"
+    secrets:
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      actor: ${{ github.actor }}

@@ -2,10 +2,15 @@ name: Production
 
 on:
     workflow_call:
-      inputs:
-        service:
-          required: true
-          type: string
+        inputs:
+            service:
+                required: true
+                type: string
+        secrets:
+            PERSONAL_ACCESS_TOKEN:
+                required: true
+            actor:
+                required: true
   
 env:
   REGISTRY: ghcr.io
@@ -44,7 +49,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          username: ${{ secrets.actor }}
           password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
