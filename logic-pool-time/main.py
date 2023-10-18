@@ -68,9 +68,9 @@ def main():
     today = datetime.datetime.now()
     minute = today.strftime("%M")
     if minute == "05":
-      homeware.execute("hue_sensor_14", "on", True)
+      homeware.execute("switch_hood", "on", True)
     elif minute == "15":
-      homeware.execute("hue_sensor_14", "on", False)
+      homeware.execute("switch_hood", "on", False)
     hour = today.strftime("%H:%M:%S")
     # Time blocks
     if hour == "06:00:00" and not hour == just_executed:
