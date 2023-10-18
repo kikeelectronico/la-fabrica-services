@@ -66,11 +66,15 @@ def main():
   while True:
     # Get current time
     today = datetime.datetime.now()
+    minute = today.strftime("%M")
+    if minute == "05":
+      homeware.execute("hue_sensor_14", "on", True)
+    elif minute == "15":
+      homeware.execute("hue_sensor_14", "on", False)
     hour = today.strftime("%H:%M:%S")
     # Time blocks
     if hour == "06:00:00" and not hour == just_executed:
       just_executed = hour
-      homeware.execute("hood001", "on", False)
       # Weekday control
       weekday = today.weekday()
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
@@ -111,7 +115,6 @@ def main():
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
       alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
-      homeware.execute("hood001", "on", True)
 
     # Reset the last just_executed block
     if not just_executed == hour:
