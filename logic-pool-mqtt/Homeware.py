@@ -43,3 +43,27 @@ class Homeware:
       except (requests.ConnectionError, requests.Timeout) as exception:
         self.logger.log("Fail to get Homeware status. Conection error.", severity="WARNING")
         self._fail_to_update = False
+
+  def getDevices(self):
+    if self.__token == "no_set" or self.__url == "no_set":
+      self._fail_to_update = True
+      self.logger.log("Homeware env vars aren't set", severity="ERROR")
+    else:
+      try:
+        url = self.__url + "/api/devices/get/"
+        headers = {
+            "Authorization": "baerer " + self.__token
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+          unorderedDevices = response.json()
+          devices = {}
+          for device in unorderedDevices:
+              devices[device['id']] = device
+          return (True, devices)
+        else:
+          self.logger.log("Fail to get Homeware devices. Status code: " + str(response.status_code), severity="WARNING")
+          return (False, {})    
+      except (requests.ConnectionError, requests.Timeout) as exception:
+        self.logger.log("Fail to get Homeware devices. Conection error.", severity="WARNING")
+        self._fail_to_update = False
