@@ -25,6 +25,9 @@ def atHome(homeware, topic, payload):
       homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
       homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
+      homeware.execute("hue_4", "on", False)
+      homeware.execute("hue_5", "on", False)
+      homeware.execute("rgb001", "on", False)
     else:
       homeware.execute("thermostat_dormitorio", "thermostatMode", "off")
       homeware.execute("thermostat_livingroom", "thermostatMode", "off")
