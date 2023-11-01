@@ -1,4 +1,4 @@
-name: Production
+name: Dev test
 
 on:
   workflow_dispatch:
