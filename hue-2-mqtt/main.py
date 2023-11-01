@@ -110,3 +110,4 @@ if __name__ == "__main__":
             cache["hue_sensor_" + device_id] = device["config"]
             
     time.sleep(SLEEP_TIME)
+    
