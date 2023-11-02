@@ -3,10 +3,13 @@ name: Build service - Reusable
 on:
     workflow_call:
         inputs:
+            registry:
+                required: true
+                type: string
             service:
                 required: true
                 type: string
-            registry:
+            tag:
                 required: true
                 type: string
         secrets:
@@ -58,4 +61,4 @@ jobs:
           file: ${{ inputs.service }}/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ inputs.registry }}/kikeelectronico/${{ inputs.service }}:latest
+          tags: ${{ inputs.registry }}/kikeelectronico/${{ inputs.service }}:${{ inputs.tag }}
