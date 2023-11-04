@@ -87,6 +87,39 @@ if __name__ == "__main__":
       else:
         updateOccupancyState()
 
+    # Get contact sensors state
+    contact_services = hue.getResource(resource="contact")
+    for contact_service in contact_services:
+      def updateOpenPercentState():
+          cache[contact_service["id"]] = contact_service["contact_report"]
+          homeware.execute(device_id_service_id[contact_service["id"]], "openPercent", 0 if contact_service["contact_report"]["state"] == "contact" else 100)
+
+      if contact_service["id"] in cache:
+        if not cache[contact_service["id"]]["state"] == contact_service["contact_report"]["state"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
+    # Get battery sensors state
+    battery_services = hue.getResource(resource="device_power")
+    for battery_service in battery_services:
+      def updateOpenPercentState():
+          cache[battery_service["id"]] = battery_service["power_state"]
+          battery_level = battery_service["power_state"]["battery_level"]
+          if battery_level == 100: descriptiveCapacityRemaining = "FULL"
+          elif battery_level >= 70: descriptiveCapacityRemaining = "HIGH"
+          elif battery_level >= 40: descriptiveCapacityRemaining = "MEDIUM"
+          elif battery_level >= 10: descriptiveCapacityRemaining ="LOW"
+          else: descriptiveCapacityRemaining = "CRITICALLY_LOW"
+          homeware.execute(device_id_service_id[battery_service["id"]],"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
+          homeware.execute(device_id_service_id[battery_service["id"]], "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
+
+      if battery_service["id"] in cache:
+        if not cache[battery_service["id"]]["battery_level"] == battery_service["power_state"]["battery_level"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
             
     time.sleep(SLEEP_TIME)
     
