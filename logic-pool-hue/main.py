@@ -25,12 +25,13 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 0.1
+SLEEP_TIME = 0.5
 SERVICE = "logic-pool-hue-" + ENV
 
 # Declare variables
 last_heartbeat_timestamp = 0
 last_pressed = {}
+device_id_service_id = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -64,26 +65,36 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
+  # Get devices ids relation
+  hue_devices = hue.getResource(resource="device")
+  for hue_device in hue_devices:
+    for service in hue_device["services"]:
+      device_id_service_id[service["rid"]] = hue_device["id"]
   # Main loop
   while True:
-    # Loop over sensors
-    devices = hue.getSensors()
-    for device_id in devices:
-      device = devices[device_id]
-      # Verify id it is a button event
-      if "buttonevent" in device["state"]:
-        if device_id in last_pressed:
-          if not last_pressed[device_id]["lastupdated"] == device["state"]["lastupdated"] or \
-              not last_pressed[device_id]["buttonevent"] == device["state"]["buttonevent"]:
-            dimmers.mirror(device_id,device["state"],homeware)
-            buttons.bedroom(device_id,device["state"],homeware)
-            buttons.kitchen(device_id,device["state"],homeware)
-            buttons.bathroom(device_id,device["state"],homeware)
-            last_pressed[device_id] = device["state"]
-        else:
-          last_pressed[device_id] = device["state"]
-      elif "presence" in device["state"]:
-        sensors.bedroom(device_id,device["state"],homeware)
+    # Get motion sensors state
+    motion_services = hue.getResource(resource="motion")
+    for motion_service in motion_services:
+      device_id = device_id_service_id[motion_service["id"]]
+      sensors.bedroom(device_id, motion_service["motion"], homeware)
+
+    # # Loop over sensors
+    # devices = hue.getSensors()
+    # for device_id in devices:
+    #   device = devices[device_id]
+    #   # Verify id it is a button event
+    #   if "buttonevent" in device["state"]:
+    #     if device_id in last_pressed:
+    #       if not last_pressed[device_id]["lastupdated"] == device["state"]["lastupdated"] or \
+    #           not last_pressed[device_id]["buttonevent"] == device["state"]["buttonevent"]:
+    #         dimmers.mirror(device_id,device["state"],homeware)
+    #         buttons.bedroom(device_id,device["state"],homeware)
+    #         buttons.kitchen(device_id,device["state"],homeware)
+    #         buttons.bathroom(device_id,device["state"],homeware)
+    #         last_pressed[device_id] = device["state"]
+    #     else:
+    #       last_pressed[device_id] = device["state"]
+      
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > 10:
