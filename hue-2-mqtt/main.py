@@ -23,7 +23,7 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 10
+SLEEP_TIME = 0.5
 SERVICE = "hue-2-mqtt-" + ENV
 
 # Declare variables
@@ -61,53 +61,22 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
+
   # Main loop
   while True:
-    # Check online lights
-    devices = hue.getLights()
-    for device_id in devices:
-      device = devices[device_id]
-      if "state" in device:
-        if "reachable" in device["state"]:
-          if "hue_" + device_id in cache:
-            if not cache["hue_" + device_id]["reachable"] == device["state"]["reachable"]:
-              homeware.execute("hue_" + device_id,
-                              "online",
-                              device["state"]["reachable"])
-              logger.log(device_id + ": " + "arriba" if device["state"]["reachable"] else "caido", severity="WARNING")
-          else:
-            cache["hue_" + device_id] = device["state"]
-            homeware.execute("hue_" + device_id,
-                              "online",
-                              device["state"]["reachable"])
-            
-    # Check sensors lights
-    devices = hue.getSensors()
-    for device_id in devices:
-      device = devices[device_id]
-      if "config" in device:
-        if "reachable" in device["config"] and "battery" in device["config"]:
+    # Get motion sensors state
+    motion_devices = hue.getResource(resource="motion")
+    for motion_device in motion_devices:
+      def updateOccupancyState():
+          cache[motion_device["id"]] = motion_device["motion"]
+          homeware.execute(motion_device["id"], "occupancy", "OCCUPIED" if motion_device["motion"]["motion"] else "UNOCCUPIED")
 
-          def sendData():
-              homeware.execute("hue_sensor_" + device_id, "online", device["config"]["reachable"])
-              homeware.execute("hue_sensor_" + device_id, "capacityRemaining", [{"rawValue": device["config"]["battery"], "unit":"PERCENTAGE"}])
-              if device["config"]["battery"] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
-              elif device["config"]["battery"] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
-              elif device["config"]["battery"] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
-              elif device["config"]["battery"] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
-              else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
-              
-          if "hue_sensor_" + device_id in cache:
-            if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
-              sendData()
-              if device["config"]["battery"] < 5:
-                logger.log(device_id + ": batería muy baja", severity="ERROR")
-              elif device["config"]["battery"] < 10:
-                logger.log(device_id + ": batería baja", severity="WARNING")
-              logger.log(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
-          else:
-            sendData()
-            cache["hue_sensor_" + device_id] = device["config"]
+      if motion_device["id"] in cache:
+        if not cache[motion_device["id"]]["motion"] == motion_device["motion"]["motion"]:
+          updateOccupancyState()
+      else:
+        updateOccupancyState()
+
             
     time.sleep(SLEEP_TIME)
     
