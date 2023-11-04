@@ -83,7 +83,6 @@ if __name__ == "__main__":
         else:
           last_pressed[device_id] = device["state"]
       elif "presence" in device["state"]:
-        homeware.execute("hue_sensor_" + str(device_id), "occupancy", "OCCUPIED" if device["state"]["presence"] else "UNOCCUPIED")
         sensors.bedroom(device_id,device["state"],homeware)
 
     # Send the heartbeat
