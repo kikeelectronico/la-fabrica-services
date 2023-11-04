@@ -23,7 +23,7 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 0.5
+SLEEP_TIME = 5
 SERVICE = "hue-2-mqtt-" + ENV
 
 # Declare variables
