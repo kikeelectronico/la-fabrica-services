@@ -7,6 +7,7 @@ from homeware import Homeware
 from logger import Logger
 import buttons
 import dimmers
+import sensors
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -83,6 +84,7 @@ if __name__ == "__main__":
           last_pressed[device_id] = device["state"]
       elif "presence" in device["state"]:
         homeware.execute("hue_sensor_" + str(device_id), "occupancy", "OCCUPIED" if device["state"]["presence"] else "UNOCCUPIED")
+        sensors.bedroom(device_id,device["state"],homeware)
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > 10:
