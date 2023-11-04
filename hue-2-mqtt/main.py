@@ -120,6 +120,26 @@ if __name__ == "__main__":
       else:
         updateOpenPercentState()
 
+    # Get connectivity state
+    connectivity_services = hue.getResource(resource="zigbee_connectivity")
+    for connectivity_service in connectivity_services:
+      def updateOpenPercentState():
+          cache[connectivity_service["id"]] = connectivity_service["status"]
+          if "id_v1" in connectivity_service:
+            device_id = "hue_" + connectivity_service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
+            device_id = "hue_sensor_" + connectivity_service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
+          else:
+            device_id = device_id_service_id[connectivity_service["id"]]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
+
+      if connectivity_service["id"] in cache:
+        if not cache[connectivity_service["id"]] == connectivity_service["status"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
             
     time.sleep(SLEEP_TIME)
     
