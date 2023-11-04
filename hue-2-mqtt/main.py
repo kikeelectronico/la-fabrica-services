@@ -28,6 +28,8 @@ SERVICE = "hue-2-mqtt-" + ENV
 
 # Declare variables
 cache = {}
+homeware_id_by_hue_id = {}
+homeware_id_by_hue_id_v1 = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -61,7 +63,15 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
-
+  # Get devices ids relation
+  hue_devices = hue.getResource(resource="device")
+  for hue_device in hue_devices:
+    for service in hue_device["services"]:
+      homeware_id_by_hue_id[service["rid"]] = hue_device["id"]
+      if "id_v1" in hue_device.keys():
+        homeware_id = hue_device["id_v1"].split("/")[2]
+        homeware_id_by_hue_id_v1[service["rid"]] = homeware_id
+      
   # Main loop
   while True:
     # Get motion sensors state
@@ -69,7 +79,7 @@ if __name__ == "__main__":
     for motion_device in motion_devices:
       def updateOccupancyState():
           cache[motion_device["id"]] = motion_device["motion"]
-          homeware.execute(motion_device["id"], "occupancy", "OCCUPIED" if motion_device["motion"]["motion"] else "UNOCCUPIED")
+          homeware.execute(homeware_id_by_hue_id[motion_device["id"]], "occupancy", "OCCUPIED" if motion_device["motion"]["motion"] else "UNOCCUPIED")
 
       if motion_device["id"] in cache:
         if not cache[motion_device["id"]]["motion"] == motion_device["motion"]["motion"]:
