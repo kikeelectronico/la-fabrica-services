@@ -2,6 +2,8 @@ import paho.mqtt.client as mqtt
 import os
 import time
 import json
+from sseclient import SSEClient
+import requests
 
 from hue import Hue
 from homeware import Homeware
@@ -26,13 +28,11 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 5
 SERVICE = "hue-2-mqtt-" + ENV
 
 # Declare variables
 cache = {}
 device_id_service_id = {}
-device_id_service_id_v1 = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -66,83 +66,60 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
+
   # Get devices ids relation
   hue_devices = hue.getResource(resource="device")
   for hue_device in hue_devices:
     for service in hue_device["services"]:
       device_id_service_id[service["rid"]] = hue_device["id"]
-      if "id_v1" in hue_device.keys():
-        homeware_id = hue_device["id_v1"].split("/")[2]
-        device_id_service_id_v1[service["rid"]] = homeware_id
       
-  # Main loop
-  while True:
-    # Get motion sensors state
-    motion_services = hue.getResource(resource="motion")
-    for motion_service in motion_services:
-      def updateOccupancyState():
-          cache[motion_service["id"]] = motion_service["motion"]
-          homeware.execute(device_id_service_id[motion_service["id"]], "occupancy", "OCCUPIED" if motion_service["motion"]["motion"] else "UNOCCUPIED")
-
-      if motion_service["id"] in cache:
-        if not cache[motion_service["id"]]["motion"] == motion_service["motion"]["motion"]:
-          updateOccupancyState()
-      else:
-        updateOccupancyState()
-
-    # Get contact sensors state
-    contact_services = hue.getResource(resource="contact")
-    for contact_service in contact_services:
-      def updateOpenPercentState():
-          cache[contact_service["id"]] = contact_service["contact_report"]
-          homeware.execute(device_id_service_id[contact_service["id"]], "openPercent", 0 if contact_service["contact_report"]["state"] == "contact" else 100)
-
-      if contact_service["id"] in cache:
-        if not cache[contact_service["id"]]["state"] == contact_service["contact_report"]["state"]:
-          updateOpenPercentState()
-      else:
-        updateOpenPercentState()
-
-    # Get battery sensors state
-    battery_services = hue.getResource(resource="device_power")
-    for battery_service in battery_services:
-      def updateOpenPercentState():
-          cache[battery_service["id"]] = battery_service["power_state"]
-          battery_level = battery_service["power_state"]["battery_level"]
+  # Connect to Hue bridge
+  url = "https://" + HUE_HOST + "/eventstream/clip/v2"
+  headers = {
+    'hue-application-key': HUE_TOKEN,
+    'Accept': 'text/event-stream'
+  }
+  stream_response = requests.get(url, headers=headers, stream=True, verify=False)
+  client = SSEClient(stream_response)
+  # Handle events
+  for message in client.events():
+    for event in json.loads(message.data):
+      for service in event["data"]:
+        if service["type"] == "contact":
+          homeware.execute(device_id_service_id[service["id"]], "openPercent", 0 if service["contact_report"]["state"] == "contact" else 100)
+        elif service["type"] == "motion":
+          homeware.execute(device_id_service_id[service["id"]], "occupancy", "OCCUPIED" if service["motion"]["motion"] else "UNOCCUPIED")
+        elif service["type"] == "zigbee_connectivity":
+          # Pending on transitioning to v2 ids for deleting id_v1
+          if "id_v1" in service:
+            device_id = "hue_" + service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if service["status"] == "connected" else False)
+            device_id = "hue_sensor_" + service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if service["status"] == "connected" else False)
+          # end of id_v1
+          device_id = device_id_service_id[service["id"]]
+          homeware.execute(device_id, "online", True if service["status"] == "connected" else False)
+        elif service["type"] == "device_power":
+          # Pending on transitioning to v2 ids for deleting id_v1
+          if "id_v1" in service:
+            device_id = "hue_sensor_" + service["id_v1"].split("/")[2]
+            battery_level = service["power_state"]["battery_level"]
+            if battery_level == 100: descriptiveCapacityRemaining = "FULL"
+            elif battery_level >= 70: descriptiveCapacityRemaining = "HIGH"
+            elif battery_level >= 40: descriptiveCapacityRemaining = "MEDIUM"
+            elif battery_level >= 10: descriptiveCapacityRemaining ="LOW"
+            else: descriptiveCapacityRemaining = "CRITICALLY_LOW"
+            homeware.execute(device_id,"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
+            homeware.execute(device_id, "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
+          # end of id_v1
+          device_id = device_id_service_id[service["id"]]
+          battery_level = service["power_state"]["battery_level"]
           if battery_level == 100: descriptiveCapacityRemaining = "FULL"
           elif battery_level >= 70: descriptiveCapacityRemaining = "HIGH"
           elif battery_level >= 40: descriptiveCapacityRemaining = "MEDIUM"
           elif battery_level >= 10: descriptiveCapacityRemaining ="LOW"
           else: descriptiveCapacityRemaining = "CRITICALLY_LOW"
-          homeware.execute(device_id_service_id[battery_service["id"]],"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
-          homeware.execute(device_id_service_id[battery_service["id"]], "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
+          homeware.execute(device_id,"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
+          homeware.execute(device_id, "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
 
-      if battery_service["id"] in cache:
-        if not cache[battery_service["id"]]["battery_level"] == battery_service["power_state"]["battery_level"]:
-          updateOpenPercentState()
-      else:
-        updateOpenPercentState()
-
-    # Get connectivity state
-    connectivity_services = hue.getResource(resource="zigbee_connectivity")
-    for connectivity_service in connectivity_services:
-      def updateOpenPercentState():
-          cache[connectivity_service["id"]] = connectivity_service["status"]
-          if "id_v1" in connectivity_service:
-            device_id = "hue_" + connectivity_service["id_v1"].split("/")[2]
-            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
-            device_id = "hue_sensor_" + connectivity_service["id_v1"].split("/")[2]
-            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
-          else:
-            device_id = device_id_service_id[connectivity_service["id"]]
-            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
-
-      if connectivity_service["id"] in cache:
-        if not cache[connectivity_service["id"]] == connectivity_service["status"]:
-          updateOpenPercentState()
-      else:
-        updateOpenPercentState()
-
-            
-    time.sleep(SLEEP_TIME)
     
