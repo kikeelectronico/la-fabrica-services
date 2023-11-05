@@ -8,7 +8,7 @@ def bedroom(service, homeware):
     if state == "short_release":
       button = not homeware.get("hue_sensor_12","on")
       homeware.execute("hue_sensor_12","on",button)
-    elif state == "long_press" or state == "long_release":
+    elif state == "long_press":
       value = not homeware.get("scene_dim","enable")
       homeware.execute("scene_dim","enable",value)
 
@@ -25,7 +25,7 @@ def bathroom(service, homeware):
     if state == "short_release":
       value = not homeware.get("hue_sensor_14","on")
       homeware.execute("hue_sensor_14","on",value)
-    elif state == "long_press" or state == "long_release":
+    elif state == "long_press":
       value = not homeware.get("scene_dim","enable")
       homeware.execute("scene_dim","enable",value)
       
