@@ -13,9 +13,10 @@ power_pre_alert = False
 power_alert = False
 
 # Decide if a radiator should be turn on or off
-def shouldHeat(homeware, thermostat_id, radiator_id, rule_14=False):
+def shouldHeat(homeware, thermostat_id, sensor_id, radiator_id, rule_14=False):
   state = homeware.get(thermostat_id, "all")
-  if state["thermostatMode"] == "heat" or rule_14:
+  sensor_open = homeware.get(sensor_id, "openPercent") == 100
+  if (state["thermostatMode"] == "heat" and not sensor_open) or rule_14:
     ambient = state["thermostatTemperatureAmbient"]
     set_point = state["thermostatTemperatureSetpoint"] if not rule_14 else 14
     if ambient < set_point:
@@ -55,6 +56,7 @@ def powerManagment(homeware, topic, payload):
     "device/thermostat_bathroom",
     "device/thermostat_dormitorio",
     "device/switch_at_home/on"
+    "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
   ]
 
   if topic in TOPICS:
@@ -77,15 +79,15 @@ def powerManagment(homeware, topic, payload):
     # Power distribution
     if not power_alert:
       if homeware.get("scene_ducha", "enable"):
-        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
-        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "radiator001")
+        bathroom = shouldHeat(homeware, "thermostat_bathroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator003")
+        livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator001")
         heater = (not bathroom) and (not livingroom)
         ac_unit = False
         bedroom = False
       else:
         rule_14 = not homeware.get("switch_at_home", "on")
-        livingroom = shouldHeat(homeware, "thermostat_livingroom", "radiator001", rule_14)
-        bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002", rule_14)
+        livingroom = shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator001", rule_14)
+        bedroom = shouldHeat(homeware, "thermostat_dormitorio", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator002", rule_14)
         bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
         #ac_unit = shouldCool(homeware, "thermostat_livingroom", "hue_8")
         heater = not livingroom
