@@ -7,6 +7,9 @@ from hue import Hue
 from homeware import Homeware
 from logger import Logger
 
+import urllib3
+urllib3.disable_warnings()
+
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
