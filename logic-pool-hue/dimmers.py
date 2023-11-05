@@ -51,9 +51,9 @@ def mirror(service, homeware):
       global dimmers_preloaded_data
       state = service["button"]["last_event"]
       if state == "initial_press":
-        dimmers_preloaded_data["hue_2/color"] = homeware.get("hue_2","color")
+        dimmers_preloaded_data["hue_2/color"] = homeware.get("hue_2","color")["temperatureK"]
       elif state == "short_release":
-        current_temperature = dimmers_preloaded_data["hue_2/color"]["temperatureK"]
+        current_temperature = dimmers_preloaded_data["hue_2/color"]
         TEMPERATURE_LOOP = [2700, 5000]
         try:
             new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
