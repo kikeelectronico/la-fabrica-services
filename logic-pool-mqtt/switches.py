@@ -3,12 +3,12 @@ def bedroom(homeware, topic, payload):
   if topic == "device/hue_sensor_12/on":
     if payload:
       if homeware.get("scene_dim","enable"):
-        value = not homeware.get("rgb003","on")
-        homeware.execute("rgb003","on",value)
+        # value = not homeware.get("rgb003","on")
+        homeware.execute("rgb003","on",True)
         homeware.execute("hue_6","on",False)
       else:
-        value = not homeware.get("hue_6","on")
-        homeware.execute("hue_6","on",value)
+        # value = not homeware.get("hue_6","on")
+        homeware.execute("hue_6","on",True)
         homeware.execute("rgb003","on",False)
     else:
       homeware.execute("hue_6","on",False)

@@ -7,6 +7,9 @@ from hue import Hue
 from homeware import Homeware
 from logger import Logger
 
+import urllib3
+urllib3.disable_warnings()
+
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
   from dotenv import load_dotenv
@@ -23,11 +26,13 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 10
+SLEEP_TIME = 5
 SERVICE = "hue-2-mqtt-" + ENV
 
 # Declare variables
 cache = {}
+device_id_service_id = {}
+device_id_service_id_v1 = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -61,53 +66,83 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
+  # Get devices ids relation
+  hue_devices = hue.getResource(resource="device")
+  for hue_device in hue_devices:
+    for service in hue_device["services"]:
+      device_id_service_id[service["rid"]] = hue_device["id"]
+      if "id_v1" in hue_device.keys():
+        homeware_id = hue_device["id_v1"].split("/")[2]
+        device_id_service_id_v1[service["rid"]] = homeware_id
+      
   # Main loop
   while True:
-    # Check online lights
-    devices = hue.getLights()
-    for device_id in devices:
-      device = devices[device_id]
-      if "state" in device:
-        if "reachable" in device["state"]:
-          if "hue_" + device_id in cache:
-            if not cache["hue_" + device_id]["reachable"] == device["state"]["reachable"]:
-              homeware.execute("hue_" + device_id,
-                              "online",
-                              device["state"]["reachable"])
-              logger.log(device_id + ": " + "arriba" if device["state"]["reachable"] else "caido", severity="WARNING")
-          else:
-            cache["hue_" + device_id] = device["state"]
-            homeware.execute("hue_" + device_id,
-                              "online",
-                              device["state"]["reachable"])
-            
-    # Check sensors lights
-    devices = hue.getSensors()
-    for device_id in devices:
-      device = devices[device_id]
-      if "config" in device:
-        if "reachable" in device["config"] and "battery" in device["config"]:
+    # Get motion sensors state
+    motion_services = hue.getResource(resource="motion")
+    for motion_service in motion_services:
+      def updateOccupancyState():
+          cache[motion_service["id"]] = motion_service["motion"]
+          homeware.execute(device_id_service_id[motion_service["id"]], "occupancy", "OCCUPIED" if motion_service["motion"]["motion"] else "UNOCCUPIED")
 
-          def sendData():
-              homeware.execute("hue_sensor_" + device_id, "online", device["config"]["reachable"])
-              homeware.execute("hue_sensor_" + device_id, "capacityRemaining", [{"rawValue": device["config"]["battery"], "unit":"PERCENTAGE"}])
-              if device["config"]["battery"] == 100: homeware.execute(device_id,"descriptiveCapacityRemaining","FULL")
-              elif device["config"]["battery"] >= 70: homeware.execute(device_id,"descriptiveCapacityRemaining","HIGH")
-              elif device["config"]["battery"] >= 40: homeware.execute(device_id,"descriptiveCapacityRemaining","MEDIUM")
-              elif device["config"]["battery"] >= 10: homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
-              else: homeware.execute(device_id,"descriptiveCapacityRemaining","CRITICALLY_LOW")
-              
-          if "hue_sensor_" + device_id in cache:
-            if not cache["hue_sensor_" + device_id]["reachable"] == device["config"]["reachable"]:
-              sendData()
-              if device["config"]["battery"] < 5:
-                logger.log(device_id + ": batería muy baja", severity="ERROR")
-              elif device["config"]["battery"] < 10:
-                logger.log(device_id + ": batería baja", severity="WARNING")
-              logger.log(device_id + ": " + "arriba" if device["config"]["reachable"] else "caido", severity="WARNING")
+      if motion_service["id"] in cache:
+        if not cache[motion_service["id"]]["motion"] == motion_service["motion"]["motion"]:
+          updateOccupancyState()
+      else:
+        updateOccupancyState()
+
+    # Get contact sensors state
+    contact_services = hue.getResource(resource="contact")
+    for contact_service in contact_services:
+      def updateOpenPercentState():
+          cache[contact_service["id"]] = contact_service["contact_report"]
+          homeware.execute(device_id_service_id[contact_service["id"]], "openPercent", 0 if contact_service["contact_report"]["state"] == "contact" else 100)
+
+      if contact_service["id"] in cache:
+        if not cache[contact_service["id"]]["state"] == contact_service["contact_report"]["state"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
+    # Get battery sensors state
+    battery_services = hue.getResource(resource="device_power")
+    for battery_service in battery_services:
+      def updateOpenPercentState():
+          cache[battery_service["id"]] = battery_service["power_state"]
+          battery_level = battery_service["power_state"]["battery_level"]
+          if battery_level == 100: descriptiveCapacityRemaining = "FULL"
+          elif battery_level >= 70: descriptiveCapacityRemaining = "HIGH"
+          elif battery_level >= 40: descriptiveCapacityRemaining = "MEDIUM"
+          elif battery_level >= 10: descriptiveCapacityRemaining ="LOW"
+          else: descriptiveCapacityRemaining = "CRITICALLY_LOW"
+          homeware.execute(device_id_service_id[battery_service["id"]],"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
+          homeware.execute(device_id_service_id[battery_service["id"]], "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
+
+      if battery_service["id"] in cache:
+        if not cache[battery_service["id"]]["battery_level"] == battery_service["power_state"]["battery_level"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
+    # Get connectivity state
+    connectivity_services = hue.getResource(resource="zigbee_connectivity")
+    for connectivity_service in connectivity_services:
+      def updateOpenPercentState():
+          cache[connectivity_service["id"]] = connectivity_service["status"]
+          if "id_v1" in connectivity_service:
+            device_id = "hue_" + connectivity_service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
+            device_id = "hue_sensor_" + connectivity_service["id_v1"].split("/")[2]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
           else:
-            sendData()
-            cache["hue_sensor_" + device_id] = device["config"]
+            device_id = device_id_service_id[connectivity_service["id"]]
+            homeware.execute(device_id, "online", True if connectivity_service["status"] == "connected" else False)
+
+      if connectivity_service["id"] in cache:
+        if not cache[connectivity_service["id"]] == connectivity_service["status"]:
+          updateOpenPercentState()
+      else:
+        updateOpenPercentState()
+
             
     time.sleep(SLEEP_TIME)
     
