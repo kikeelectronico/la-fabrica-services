@@ -80,8 +80,8 @@ if __name__ == "__main__":
   for event in client.events():
     event_json = json.loads(event.data)
     for service in event_json[0]["data"]:
-      # ToDo: Add dimmers
       buttons.bedroom(service, homeware)
       buttons.kitchen(service, homeware)
       buttons.bathroom(service, homeware)
+      dimmers.mirror(service, homeware)
       sensors.bedroom(service, homeware)
