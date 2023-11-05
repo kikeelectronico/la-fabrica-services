@@ -1,7 +1,3 @@
-import json
-
-long_pressing = False
-
 def bedroom(service, homeware):
   if service["id"] == "a4ac42ce-414e-483b-b13c-0f2c5e7dc879":
     state = service["button"]["last_event"]
