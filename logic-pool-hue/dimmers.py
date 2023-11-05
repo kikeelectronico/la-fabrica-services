@@ -1,19 +1,26 @@
+dimmers_preloaded_data = {}
+
 def mirror(service, homeware):
     # On/off button
     if service["id"] == "eef00948-5ed7-4ec4-94dd-60da620887a1":
+      global dimmers_preloaded_data
       state = service["button"]["last_event"]
-      if state == "short_release":
-        value = not homeware.get("hue_sensor_2","on")
-        homeware.execute("hue_sensor_2","on",value)
+      if state == "initial_press":
+        dimmers_preloaded_data["hue_sensor_2/on"] = not homeware.get("hue_sensor_2","on")
+      elif state == "short_release":
+        homeware.execute("hue_sensor_2","on",dimmers_preloaded_data["hue_sensor_2/on"])
       elif state == "long_press":
         value = not homeware.get("switch_hood","on")
         homeware.execute("switch_hood","on",value)
 
     # More brightness button
     elif service["id"] == "13362cd4-0324-4dfb-97ec-c567c2cefb70":
+      global dimmers_preloaded_data
       state = service["button"]["last_event"]
-      if state == "short_release":
-        value = homeware.get("hue_2","brightness")
+      if state == "initial_press":
+        dimmers_preloaded_data["hue_2/brightness"] = homeware.get("hue_2","brightness")
+      elif state == "short_release":
+        value = dimmers_preloaded_data["hue_2/brightness"]
         if value < 90:
           value += 10
         else:
@@ -26,9 +33,12 @@ def mirror(service, homeware):
 
     # Less brightness button
     elif service["id"] == "17bd6fda-f053-403e-ab85-4ab3efa77abe":
+      global dimmers_preloaded_data
       state = service["button"]["last_event"]
-      if state == "short_release":
-        value = homeware.get("hue_2","brightness")
+      if state == "initial_press":
+        dimmers_preloaded_data["hue_2/brightness"] = homeware.get("hue_2","brightness")
+      elif state == "short_release":
+        value = dimmers_preloaded_data["hue_2/brightness"]
         if value > 10:
           value -= 10
         else:
@@ -38,9 +48,12 @@ def mirror(service, homeware):
  
     # Hue button
     elif service["id"] == "ee82e035-fd34-45d8-bbf2-282980004c63":
+      global dimmers_preloaded_data
       state = service["button"]["last_event"]
-      if state == "short_release":
-        current_temperature = homeware.get("hue_2","color")["temperatureK"]
+      if state == "initial_press":
+        dimmers_preloaded_data["hue_2/color"] = homeware.get("hue_2","color")
+      elif state == "short_release":
+        current_temperature = dimmers_preloaded_data["hue_2/color"]["temperatureK"]
         TEMPERATURE_LOOP = [2700, 5000]
         try:
             new_index = TEMPERATURE_LOOP.index(current_temperature) + 1
