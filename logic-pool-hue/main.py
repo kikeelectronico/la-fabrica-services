@@ -1,13 +1,18 @@
 import paho.mqtt.client as mqtt
 import os
 import time
+import json
+from sseclient import SSEClient
+import requests
 
-from hue import Hue
 from homeware import Homeware
 from logger import Logger
 import buttons
 import dimmers
 import sensors
+
+import urllib3
+urllib3.disable_warnings()
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -25,19 +30,17 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SLEEP_TIME = 0.5
+SLEEP_TIME = 0.1
 SERVICE = "logic-pool-hue-" + ENV
 
 # Declare variables
 last_heartbeat_timestamp = 0
 last_pressed = {}
-device_id_service_id = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
-hue = Hue(HUE_HOST, HUE_TOKEN, logger)
 
 # Main entry point
 if __name__ == "__main__":
@@ -65,40 +68,20 @@ if __name__ == "__main__":
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
-  # Get devices ids relation
-  hue_devices = hue.getResource(resource="device")
-  for hue_device in hue_devices:
-    for service in hue_device["services"]:
-      device_id_service_id[service["rid"]] = hue_device["id"]
-  # Main loop
-  while True:
-    # Get motion sensors state
-    motion_services = hue.getResource(resource="motion")
-    for motion_service in motion_services:
-      device_id = device_id_service_id[motion_service["id"]]
-      sensors.bedroom(device_id, motion_service["motion"], homeware)
-
-    # # Loop over sensors
-    # devices = hue.getSensors()
-    # for device_id in devices:
-    #   device = devices[device_id]
-    #   # Verify id it is a button event
-    #   if "buttonevent" in device["state"]:
-    #     if device_id in last_pressed:
-    #       if not last_pressed[device_id]["lastupdated"] == device["state"]["lastupdated"] or \
-    #           not last_pressed[device_id]["buttonevent"] == device["state"]["buttonevent"]:
-    #         dimmers.mirror(device_id,device["state"],homeware)
-    #         buttons.bedroom(device_id,device["state"],homeware)
-    #         buttons.kitchen(device_id,device["state"],homeware)
-    #         buttons.bathroom(device_id,device["state"],homeware)
-    #         last_pressed[device_id] = device["state"]
-    #     else:
-    #       last_pressed[device_id] = device["state"]
-      
-
-    # Send the heartbeat
-    if time.time() - last_heartbeat_timestamp > 10:
-      mqtt_client.publish("heartbeats", "logic-pool-hue")
-      last_heartbeat_timestamp = time.time()
-
-    time.sleep(SLEEP_TIME)
+  # Connect to Hue bridge
+  url = "https://" + HUE_HOST + "/eventstream/clip/v2"
+  headers = {
+    'hue-application-key': HUE_TOKEN,
+    'Accept': 'text/event-stream'
+  }
+  stream_response = requests.get(url, headers=headers, stream=True, verify=False)
+  client = SSEClient(stream_response)
+  # Handle events
+  for event in client.events():
+    event_json = json.loads(event.data)
+    for service in event_json[0]["data"]:
+      # ToDo: Add dimmers
+      buttons.bedroom(service, homeware)
+      buttons.kitchen(service, homeware)
+      buttons.bathroom(service, homeware)
+      sensors.bedroom(service, homeware)

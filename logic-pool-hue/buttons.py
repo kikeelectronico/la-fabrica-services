@@ -2,43 +2,31 @@ import json
 
 long_pressing = False
 
-def bedroom(id, state, homeware):
-    global long_pressing
-    if id == "12":
-      if state["buttonevent"] == 1001:
-          if not long_pressing:
-            value = not homeware.get("scene_dim","enable")
-            homeware.execute("scene_dim","enable",value)
-            long_pressing = True
+def bedroom(service, homeware):
+  if service["id"] == "a4ac42ce-414e-483b-b13c-0f2c5e7dc879":
+    state = service["button"]["last_event"]
+    if state == "short_release":
+      button = not homeware.get("hue_sensor_12","on")
+      homeware.execute("hue_sensor_12","on",button)
+    elif state == "long_press" or state == "long_release":
+      value = not homeware.get("scene_dim","enable")
+      homeware.execute("scene_dim","enable",value)
 
-      elif state["buttonevent"] == 1003:
-          long_pressing = False
+def kitchen(service, homeware):
+  if service["id"] == "3ea75bb9-6bf6-4a2e-8f85-f9013e6279bc":
+    state = service["button"]["last_event"]
+    if state == "short_release":
+      value = not homeware.get("light004","on")
+      homeware.execute("light004","on",value)
 
-      elif state["buttonevent"] == 1002:
-          value = not homeware.get("hue_sensor_12","on")
-          homeware.execute("hue_sensor_12","on",value)
-
-def kitchen(id, state, homeware):
-    global long_pressing
-    if id == "13":
-      if state["buttonevent"] == 1002:
-          value = not homeware.get("light004","on")
-          homeware.execute("light004","on",value)
-
-def bathroom(id, state, homeware):
-    global long_pressing
-    if id == "14":
-      if state["buttonevent"] == 1001:
-          if not long_pressing:
-            value = not homeware.get("scene_dim","enable")
-            homeware.execute("scene_dim","enable",value)
-            long_pressing = True
-
-      elif state["buttonevent"] == 1003:
-          long_pressing = False
-
-      elif state["buttonevent"] == 1002:
-          value = not homeware.get("hue_sensor_14","on")
-          homeware.execute("hue_sensor_14","on",value)
+def bathroom(service, homeware):
+  if service["id"] == "04db1f5f-3467-4a26-9e17-7d9e6586a536":
+    state = service["button"]["last_event"]
+    if state == "short_release":
+      value = not homeware.get("hue_sensor_14","on")
+      homeware.execute("hue_sensor_14","on",value)
+    elif state == "long_press" or state == "long_release":
+      value = not homeware.get("scene_dim","enable")
+      homeware.execute("scene_dim","enable",value)
       
              
