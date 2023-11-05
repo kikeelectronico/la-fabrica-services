@@ -77,11 +77,11 @@ if __name__ == "__main__":
   stream_response = requests.get(url, headers=headers, stream=True, verify=False)
   client = SSEClient(stream_response)
   # Handle events
-  for event in client.events():
-    event_json = json.loads(event.data)
-    for service in event_json[0]["data"]:
-      buttons.bedroom(service, homeware)
-      buttons.kitchen(service, homeware)
-      buttons.bathroom(service, homeware)
-      dimmers.mirror(service, homeware)
-      sensors.bedroom(service, homeware)
+  for message in client.events():
+    for event in json.loads(message.data):
+      for service in event["data"]:
+        buttons.bedroom(service, homeware)
+        buttons.kitchen(service, homeware)
+        buttons.bathroom(service, homeware)
+        dimmers.mirror(service, homeware)
+        sensors.bedroom(service, homeware)
