@@ -34,7 +34,7 @@ def hall(service, homeware):
   if service["id"] == "918cdad4-9c5e-40f7-9ef2-e6a64072a2ae":
     state = service["motion"]["motion"]
     if state:
-      homeware.execute("hue_7","on",False)
+      homeware.execute("hue_7","on",True)
     else:
       homeware.execute("hue_7","on",False)
 
