@@ -85,3 +85,5 @@ if __name__ == "__main__":
         buttons.bathroom(service, homeware)
         dimmers.mirror(service, homeware)
         sensors.bedroom(service, homeware)
+        sensors.bathroom(service, homeware)
+        sensors.hall(service, homeware)
