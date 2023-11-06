@@ -3,6 +3,7 @@ import datetime
 import os
 import time
 import openai
+import requests
 
 from homeware import Homeware
 from Alert import Alert
@@ -18,7 +19,8 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "no_set")
+WHEATHER_API_KEY = os.environ.get("WHEATHER_API_KEY", "no_set")
+WHEATHER_QUERY = os.environ.get("WHEATHER_QUERY", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
 
@@ -29,12 +31,29 @@ SERVICE = "logic-pool-time-" + ENV
 # Declare variables
 last_heartbeat_timestamp = 0
 just_executed = ""
+astro_data = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
 alert = Alert(mqtt_client, openai, SERVICE)
+
+def updateAstroData():
+  try:
+    url = "https://api.weatherapi.com/v1/astronomy.json?key=" + WHEATHER_API_KEY   + "&q=" + WHEATHER_QUERY
+    response = requests.request("GET", url, verify=False, timeout=5)
+    if response.status_code == 200:
+      global astro_data
+      sunset = response.json()["astronomy"]["astro"].split(" ")["0"]
+      astro_data = {
+        "sunset": sunset + ":00"
+      }
+    else:
+      logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
+  except (requests.ConnectionError, requests.Timeout) as exception:
+    logger.log("Fail to update weather data. Conection error.", severity="WARNING")
+
 
 def main():
   global last_heartbeat_timestamp
@@ -53,6 +72,10 @@ def main():
   if HOMEWARE_API_URL == "no_set":
     report("HOMEWARE_API_URL env vars no set")
   if HOMEWARE_API_KEY == "no_set":
+    report("HOMEWARE_API_KEY env vars no set")
+  if WHEATHER_API_KEY == "no_set":
+    report("HOMEWARE_API_KEY env vars no set")
+  if WHEATHER_QUERY == "no_set":
     report("HOMEWARE_API_KEY env vars no set")
 
   # Connect to the mqtt broker
@@ -73,7 +96,10 @@ def main():
       homeware.execute("switch_hood", "on", False)
     hour = today.strftime("%H:%M:%S")
     # Time blocks
-    if hour == "06:00:00" and not hour == just_executed:
+    if hour == "04:00:00" and not hour == just_executed:
+      just_executed = hour
+      updateAstroData()
+    elif hour == "06:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
@@ -115,6 +141,12 @@ def main():
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
       alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
+
+    #Astro time blocks
+    if hour == astro_data["sunset"] and not hour == just_executed:
+      just_executed = hour
+      alert.message("Sunset detection test")
+      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
 
     # Reset the last just_executed block
     if not just_executed == hour:
