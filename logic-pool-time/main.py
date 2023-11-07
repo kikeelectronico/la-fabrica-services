@@ -31,7 +31,9 @@ SERVICE = "logic-pool-time-" + ENV
 # Declare variables
 last_heartbeat_timestamp = 0
 just_executed = ""
-astro_data = {}
+astro_data = {
+  "sunset": ""
+}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(client_id=SERVICE)
@@ -49,6 +51,7 @@ def updateAstroData():
       astro_data = {
         "sunset": sunset + ":00"
       }
+      print(astro_data)
     else:
       logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
   except (requests.ConnectionError, requests.Timeout) as exception:
