@@ -102,7 +102,7 @@ def main():
     if hour == "04:00:00" and not hour == just_executed:
       just_executed = hour
       updateAstroData()
-    elif hour == "06:00:00" and not hour == just_executed:
+    elif hour == "07:30:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
