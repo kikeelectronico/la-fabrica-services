@@ -4,7 +4,7 @@ def bedroom(service, homeware):
   if service["id"] == "f3a99b17-a6cb-4b51-9da6-c9a90b1eda65":
     state = service["motion"]["motion"]
     if state:
-      if not homeware.get("scene_sensor_off","enable"):
+      if homeware.get("scene_sensors_enable","enable"):
         if homeware.get("scene_dim","enable"):
           homeware.execute("rgb003","on",True)
           homeware.execute("hue_6","on",False)
