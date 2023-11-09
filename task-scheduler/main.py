@@ -23,7 +23,6 @@ WHEATHER_API_KEY = os.environ.get("WHEATHER_API_KEY", "no_set")
 WHEATHER_QUERY = os.environ.get("WHEATHER_QUERY", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
-
 # Define constants
 MQTT_PORT = 1883
 TOPICS = [ "tasks", "heartbeats/request" ]
@@ -51,7 +50,7 @@ def on_message(client, userdata, msg):
     # Send heartbeat
     mqtt_client.publish("heartbeats", SERVICE)
     now = datetime.datetime.now()
-    time_string = now.strftime("%H:%M:%S")
+    time_string = now.strftime("%H:%M")
     for index, task in enumerate(tasks):
       if task["time"] == time_string:
         homeware.execute(task["device_id"], task["param"], task["value"])
@@ -61,7 +60,7 @@ def on_message(client, userdata, msg):
     if new_task["action"] == "set":
       if "delta" in new_task:
         now = datetime.datetime.now()
-        time_string = (now + datetime.timedelta(seconds=new_task["delta"])).strftime("%H:%M:%S")
+        time_string = (now + datetime.timedelta(minutes=new_task["delta"])).strftime("%H:%M")
         new_task["time"] = time_string      
       tasks.append(new_task)
       mqtt_client.publish("tasks/ack", json.dumps(new_task))
