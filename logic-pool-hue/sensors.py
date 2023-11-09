@@ -19,10 +19,12 @@ def bedroom(service, homeware, mqtt_client):
           mqtt_client.publish("tasks", json.dumps({"id": "bedroom_hue_6", "action": "set", "delta": 1, "device_id": "hue_6", "param": "on", "value": False}))
           mqtt_client.publish("tasks", json.dumps({"id": "bedroom_rgb003", "action": "set", "delta": 1, "device_id": "rgb003", "param": "on", "value": False}))
 
-def bathroom(service, homeware):
+def bathroom(service, homeware, mqtt_client):
   if service["id"] == "73ef0d76-de9f-4cd1-b460-ec626fbc70fc":
     state = service["motion"]["motion"]
     if state:
+      mqtt_client.publish("tasks", json.dumps({"id": "hue_sensor_2", "action": "delete"}))
+      mqtt_client.publish("tasks", json.dumps({"id": "light001", "action": "delete"}))
       if homeware.get("scene_dim","enable"):
         homeware.execute("hue_sensor_2","on",True)
         homeware.execute("light001","on",False)
@@ -31,8 +33,8 @@ def bathroom(service, homeware):
         homeware.execute("hue_sensor_2","on",False)
     else:
         if not homeware.get("hue_sensor_14", "on"):
-          homeware.execute("hue_sensor_2","on",False)
-          homeware.execute("light001","on",False)
+          mqtt_client.publish("tasks", json.dumps({"id": "bedroom_hue_6", "action": "set", "delta": 1, "device_id": "hue_sensor_2", "param": "on", "value": False}))
+          mqtt_client.publish("tasks", json.dumps({"id": "bedroom_rgb003", "action": "set", "delta": 1, "device_id": "light001", "param": "on", "value": False}))
 
 def hall(service, homeware):
   if service["id"] == "918cdad4-9c5e-40f7-9ef2-e6a64072a2ae":
