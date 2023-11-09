@@ -47,9 +47,11 @@ def updateAstroData():
     response = requests.request("GET", url, verify=False, timeout=5)
     if response.status_code == 200:
       global astro_data
-      sunset = response.json()["astronomy"]["astro"].split(" ")["0"]
+      # print(response.json()["astronomy"]["astro"]["sunset"].split(" ")[0])
+      sunset = response.json()["astronomy"]["astro"]["sunset"].split(" ")[0]
+      sunset = str(int(sunset.split(":")[0]) + 12) + ":" + sunset.split(":")[1] + ":00"
       astro_data = {
-        "sunset": sunset + ":00"
+        "sunset": sunset
       }
       print(astro_data)
     else:
@@ -88,6 +90,8 @@ def main():
   hour = today.strftime("%H:%M:%S")
   logger.log("Starting " + SERVICE , severity="INFO")
   logger.log("Hora local " + str(hour), severity="INFO")
+  # Get astro data
+  updateAstroData()
   # Main loop
   while True:
     # Get current time
