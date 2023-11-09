@@ -132,6 +132,18 @@ services:
       - voice-alert
       - message-alert
 
+  # Task scheduler
+  task-scheduler:
+    image: ghcr.io/kikeelectronico/task-scheduler:latest
+    container_name: task-scheduler
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+    depends_on:
+      - voice-alert
+      - message-alert
+
   # Bot
   telegram-bot:
     image: ghcr.io/kikeelectronico/telegram-bot:latest
