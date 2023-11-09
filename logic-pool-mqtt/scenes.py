@@ -173,6 +173,13 @@ def dim(homeware, topic, payload):
     homeware.execute("hue_sensor_12","on",value)
     value = homeware.get("hue_sensor_14","on")
     homeware.execute("hue_sensor_14","on",value)
+    # Run the Sensors logic
+    value = homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c","occupancy")
+    homeware.execute("06612edc-4b7c-4ef3-9f3c-157b9d482f8c","occupancy",value)
+    value = homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e","occupancy")
+    homeware.execute("c2b38173-883e-4766-bcb5-0cce2dc0e00e","occupancy",value)
+    value = homeware.get("ee2fcd12-9b2e-478f-826f-a4a5447d3a27","occupancy")
+    homeware.execute("ee2fcd12-9b2e-478f-826f-a4a5447d3a27","occupancy",value)
 
 # Set the shower scene
 def shower(homeware, alert, topic, payload):
