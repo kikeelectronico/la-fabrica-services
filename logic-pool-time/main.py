@@ -152,7 +152,6 @@ def main():
     #Astro time blocks
     if hour == astro_data["sunset"] and not hour == just_executed:
       just_executed = hour
-      alert.message("Sunset detection test")
       homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
 
     # Reset the last just_executed block

@@ -33,6 +33,7 @@ jobs:
           - mqtt-2-hue
           - telegram-bot
           - voice-alert
+          - task-scheduler
     uses: ./.github/workflows/build-service.yml
     with:
       registry: ghcr.io
