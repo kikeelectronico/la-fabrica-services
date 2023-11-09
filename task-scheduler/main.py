@@ -57,15 +57,19 @@ def on_message(client, userdata, msg):
         homeware.execute(task["device_id"], task["param"], task["value"])
         del tasks[index]
   else:
-    task = json.loads(msg.payload)
-    if "delta" in task:
-      now = datetime.datetime.now()
-      time_string = (now + datetime.timedelta(minutes=task["delta"])).strftime("%H:%M")
-      task["time"] = time_string
-    
-    tasks.append(task)
-    mqtt_client.publish("tasks/ack", json.dumps(task))
-	
+    new_task = json.loads(msg.payload)
+    if new_task["action"] == "set":
+      if "delta" in new_task:
+        now = datetime.datetime.now()
+        time_string = (now + datetime.timedelta(minutes=new_task["delta"])).strftime("%H:%M")
+        new_task["time"] = time_string      
+      tasks.append(new_task)
+      mqtt_client.publish("tasks/ack", json.dumps(new_task))
+    elif new_task["action"] == "delete":
+      for index, task in enumerate(tasks):
+         if task["id"] == new_task["id"]:
+            del tasks[index]
+            mqtt_client.publish("tasks/ack", json.dumps(new_task))
 
 def main():
   # Check env vars
