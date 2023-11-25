@@ -13,9 +13,9 @@ power_pre_alert = False
 power_alert = False
 
 # Decide if a radiator should be turn on or off
-def shouldHeat(homeware, thermostat_id, sensor_id, radiator_id, rule_14=False):
+def shouldHeat(homeware, thermostat_id, sensor_id, radiator_id = None, rule_14=False):
   state = homeware.get(thermostat_id, "all")
-  sensor_open = homeware.get(sensor_id, "openPercent") == 100
+  sensor_open = homeware.get(sensor_id, "openPercent") == 100 if not sensor_id is None else False
   if (state["thermostatMode"] == "heat" and not sensor_open) or rule_14:
     ambient = state["thermostatTemperatureAmbient"]
     set_point = state["thermostatTemperatureSetpoint"] if not rule_14 else 14
@@ -79,7 +79,7 @@ def powerManagment(homeware, topic, payload):
     # Power distribution
     if not power_alert:
       if homeware.get("scene_ducha", "enable"):
-        bathroom = shouldHeat(homeware, "thermostat_bathroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator003")
+        bathroom = shouldHeat(homeware, "thermostat_bathroom", None, "radiator003")
         livingroom = (not bathroom) and shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator001")
         heater = (not bathroom) and (not livingroom)
         ac_unit = False
