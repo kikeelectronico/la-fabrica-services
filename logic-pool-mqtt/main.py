@@ -81,7 +81,7 @@ def on_message(client, userdata, msg):
       if payload is not None:
         lights.rgbPropagation(homeware, msg.topic, payload)
         alerts.battery(homeware, alert, msg.topic, payload)
-        alerts.livingroomAbnormalTemperature(homeware, alert, msg.topic, payload)
+        alerts.AbnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
         scenes.workTable(homeware, alert, msg.topic, payload)
