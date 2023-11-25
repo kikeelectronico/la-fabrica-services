@@ -47,11 +47,14 @@ def updateAstroData():
     response = requests.request("GET", url, verify=False, timeout=5)
     if response.status_code == 200:
       global astro_data
-      # print(response.json()["astronomy"]["astro"]["sunset"].split(" ")[0])
-      sunset = response.json()["astronomy"]["astro"]["sunset"].split(" ")[0]
+      data = response.json()
+      sunset = data["astronomy"]["astro"]["sunset"].split(" ")[0]
       sunset = str(int(sunset.split(":")[0]) + 12) + ":" + sunset.split(":")[1] + ":00"
+      sunrise = data["astronomy"]["astro"]["sunrise"].split(" ")[0]
+      sunrise = str(int(sunrise.split(":")[0]) + 12) + ":" + sunrise.split(":")[1] + ":00"
       astro_data = {
-        "sunset": sunset
+        "sunset": sunset,
+        "sunrise": sunrise
       }
       print(astro_data)
     else:
@@ -150,9 +153,13 @@ def main():
       alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
 
     #Astro time blocks
-    if hour == astro_data["sunset"] and not hour == just_executed:
+    if hour == astro_data["sunrise"] and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("scene_astro_day","enable",True)
+    elif hour == astro_data["sunset"] and not hour == just_executed:
       just_executed = hour
       homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
+      homeware.execute("scene_astro_day","enable",False)
 
     # Reset the last just_executed block
     if not just_executed == hour:
