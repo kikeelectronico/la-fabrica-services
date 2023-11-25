@@ -1,8 +1,9 @@
 BATTER_LEVEL_THRESHOLD = 10
+TEMPERATURE_THRESHOLD = 20
 
 last_battery_level = {}
 
-# Set the shower scene
+# Alert about low battery levels
 def battery(homeware, alert, topic, payload):
   global last_battery_level
   if "capacityRemaining" in topic:
@@ -21,5 +22,13 @@ def battery(homeware, alert, topic, payload):
         alert.message("La batería de {} está agotándose. Tiene un {} porciento de carga.".format(device_name, battery_level))
       else:
         alert.message("La batería de un dispositivo está agotándose. Tiene un {} porciento de carga.".format(battery_level))
+
+# Alert about living temperature
+def AbnormalLivingroomTemperature(homeware, alert, topic, payload):
+  if topic == "device/thermostat_livingroom":
+    if payload["thermostatTemperatureAmbient"] < TEMPERATURE_THRESHOLD:
+      if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
+        alert.voice("La temperatura está disminuyento demasiado y la ventana está abierta.", speaker="livingroom", gpt3=False)
+
       
 
