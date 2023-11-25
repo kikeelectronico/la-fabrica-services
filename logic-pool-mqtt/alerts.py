@@ -24,7 +24,7 @@ def battery(homeware, alert, topic, payload):
         alert.message("La batería de un dispositivo está agotándose. Tiene un {} porciento de carga.".format(battery_level))
 
 # Alert about living temperature
-def livingroomAbnormalTemperature(homeware, alert, topic, payload):
+def AbnormalLivingroomTemperature(homeware, alert, topic, payload):
   if topic == "device/thermostat_livingroom":
     if payload["thermostatTemperatureAmbient"] < TEMPERATURE_THRESHOLD:
       if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
