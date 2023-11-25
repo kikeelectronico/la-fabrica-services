@@ -2,7 +2,7 @@ BATTER_LEVEL_THRESHOLD = 10
 
 last_battery_level = {}
 
-# Set the shower scene
+# Alert about low battery levels
 def battery(homeware, alert, topic, payload):
   global last_battery_level
   if "capacityRemaining" in topic:
