@@ -9,7 +9,6 @@ from logger import Logger
 from Alert import Alert
 import scenes
 import alerts
-import lights
 import power
 import general
 import switches
@@ -31,8 +30,6 @@ ENV = os.environ.get("ENV", "dev")
 MQTT_PORT = 1883
 TOPICS = [
   "heartbeats/request",
-  "device/rgb001/color",
-  "device/rgb001/on",
   "device/scene_kitchen/enable",
   "device/scene_ducha/enable",
   "device/scene_cinema/enable",
@@ -79,7 +76,6 @@ def on_message(client, userdata, msg):
       # Exec the logic
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
-        lights.rgbPropagation(homeware, msg.topic, payload)
         alerts.battery(homeware, alert, msg.topic, payload)
         alerts.AbnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
