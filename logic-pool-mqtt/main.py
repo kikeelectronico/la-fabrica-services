@@ -78,9 +78,12 @@ def on_message(client, userdata, msg):
       # Exec the logic
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
-        lights.resetEdisonBulb(homeware, msg.topic, payload)
         alerts.battery(homeware, alert, msg.topic, payload)
         alerts.AbnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
+        general.hood(homeware, msg.topic, payload)
+        general.green(homeware, msg.topic, payload)
+        general.atHome(homeware, msg.topic, payload)
+        lights.resetEdisonBulb(homeware, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
         scenes.workTable(homeware, alert, msg.topic, payload)
@@ -90,9 +93,6 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
-        general.hood(homeware, msg.topic, payload)
-        general.green(homeware, msg.topic, payload)
-        general.atHome(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)

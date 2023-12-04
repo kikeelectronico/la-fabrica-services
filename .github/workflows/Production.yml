@@ -40,7 +40,7 @@ jobs:
       service: ${{ matrix.service }}
       tag: latest
     secrets:
-      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      PERSONAL_ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
       actor: ${{ github.actor }}
 
   deploy:
