@@ -83,6 +83,7 @@ def on_message(client, userdata, msg):
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
+        
         lights.resetEdisonBulb(homeware, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
