@@ -9,6 +9,7 @@ from logger import Logger
 from Alert import Alert
 import scenes
 import alerts
+import lights
 import power
 import general
 import switches
@@ -48,6 +49,7 @@ TOPICS = [
   "device/hue_sensor_2/on",
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
+  "device/hue_11/color",
   "device/thermostat_bathroom/capacityRemaining",
   "device/thermostat_dormitorio/capacityRemaining",
   "device/thermostat_livingroom/capacityRemaining",
@@ -76,6 +78,7 @@ def on_message(client, userdata, msg):
       # Exec the logic
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
+        lights.resetEdisonBulb(homeware, msg.topic, payload)
         alerts.battery(homeware, alert, msg.topic, payload)
         alerts.AbnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
