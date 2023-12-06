@@ -109,15 +109,15 @@ def main():
     if hour == "04:00:00" and not hour == just_executed:
       just_executed = hour
       updateAstroData()
-    elif hour == "07:30:00" and not hour == just_executed:
+    elif hour == "08:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
         if homeware.get("scene_winter", "enable"):
-          homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
+          homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-          homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
+          homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
           homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
@@ -134,9 +134,9 @@ def main():
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       elif (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
         if homeware.get("scene_winter", "enable"):
-          homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 22)
+          homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-          homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
+          homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
           homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
@@ -158,7 +158,7 @@ def main():
       homeware.execute("scene_astro_day","enable",True)
     elif hour == astro_data["sunset"] and not hour == just_executed:
       just_executed = hour
-      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 23)
+      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       homeware.execute("scene_astro_day","enable",False)
 
     # Reset the last just_executed block

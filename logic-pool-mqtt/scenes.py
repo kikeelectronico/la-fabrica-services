@@ -188,7 +188,7 @@ def shower(homeware, alert, topic, payload):
     if payload:
       # Start preparing the bathroom
       # alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
-      homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 27)
+      homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 25)
       homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
       waiting_for_shower = True
     else:
