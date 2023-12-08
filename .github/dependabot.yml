@@ -103,6 +103,12 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
+    directory: "/task-scheduler"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "pip"
+    target-branch: "dev"
     directory: "/telegram-bot"
     schedule:
       interval: "weekly"
@@ -207,6 +213,12 @@ updates:
   - package-ecosystem: "docker"
     target-branch: "dev"
     directory: "/mqtt-2-hue"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    target-branch: "dev"
+    directory: "/task-scheduler"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10

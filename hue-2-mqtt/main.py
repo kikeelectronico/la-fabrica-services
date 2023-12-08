@@ -121,5 +121,8 @@ if __name__ == "__main__":
           else: descriptiveCapacityRemaining = "CRITICALLY_LOW"
           homeware.execute(device_id,"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
           homeware.execute(device_id, "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
+        elif service["type"] == "light_level":
+          brightness = round(service["light"]["light_level"] * 100 / 44000)
+          homeware.execute(device_id_service_id[service["id"]], "brightness", brightness)
 
     

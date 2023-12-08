@@ -2,6 +2,7 @@ BATTER_LEVEL_THRESHOLD = 10
 TEMPERATURE_THRESHOLD = 20
 
 last_battery_level = {}
+abnormal_livingroom_temperature_alert = False
 
 # Alert about low battery levels
 def battery(homeware, alert, topic, payload):
@@ -28,7 +29,12 @@ def AbnormalLivingroomTemperature(homeware, alert, topic, payload):
   if topic == "device/thermostat_livingroom":
     if payload["thermostatTemperatureAmbient"] < TEMPERATURE_THRESHOLD:
       if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
+        abnormal_livingroom_temperature_alert = True
         alert.voice("La temperatura está disminuyento demasiado y la ventana está abierta.", speaker="livingroom", gpt3=False)
+      elif abnormal_livingroom_temperature_alert:
+        abnormal_livingroom_temperature_alert = False
+        alert.voice("Se ha cerrado la ventana.", speaker="livingroom", gpt3=False)
+
 
       
 
