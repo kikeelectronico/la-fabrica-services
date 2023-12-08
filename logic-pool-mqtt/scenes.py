@@ -142,9 +142,8 @@ def dim(homeware, topic, payload):
         homeware.execute(device_id, "color", {"temperatureK": 3000})
         homeware.execute(device_id, "brightness", 20)
       if homeware.get("light001", "on"):
+        homeware.execute("hue_sensor_2", "on", True)
         homeware.execute("light001", "on", False)
-        for device_id in devices_ids:
-          homeware.execute(device_id, "on", True)
       # Adjust hall light
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
@@ -167,10 +166,9 @@ def dim(homeware, topic, payload):
       for device_id in devices_ids:
         homeware.execute(device_id, "color", {"temperatureK": 5000})
         homeware.execute(device_id, "brightness", 80)
-      if homeware.get("hue_2", "on"):
+      if homeware.get("hue_sensor_2", "on"):
         homeware.execute("light001", "on", True)
-        for device_id in devices_ids:
-          homeware.execute(device_id, "on", False)
+        homeware.execute("hue_sensor_2", "on", False)
       # Adjust hall light      
       devices_ids = ["hue_7"]
       for device_id in devices_ids:
