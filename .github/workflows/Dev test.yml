@@ -6,8 +6,8 @@ on:
   push:
     branches: [ dev ]
 
-concurrency: 
-  group: ${{ github.workflow }}
+# concurrency: 
+#   group: ${{ github.workflow }}
 
 jobs:
   build:
