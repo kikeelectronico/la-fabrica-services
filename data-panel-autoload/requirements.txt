@@ -1,3 +1,3 @@
-pychromecast==13.0.8
+pychromecast==13.1.0
 catt==0.12.11
 python-dotenv==1.0.0
