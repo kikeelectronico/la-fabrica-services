@@ -83,7 +83,7 @@ if __name__ == "__main__":
       for service in event["data"]:
         if not homeware.get("switch_at_home", "on"):
           if service["type"] == "contact":
-            if service["contact_report"]["state"] == "contact":
+            if service["contact_report"]["state"] == "no_contact":
               mqtt_client.publish("message-alerts", "Alerta de contacto")
           elif service["type"] == "motion":
             if service["motion"]["motion"]:
