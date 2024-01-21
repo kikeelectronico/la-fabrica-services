@@ -35,6 +35,7 @@ def atHome(homeware, topic, payload):
       homeware.execute("hue_5", "on", True)
       homeware.execute("hue_8", "on", True)
       homeware.execute("hue_11", "on", True)
+      homeware.execute("switch_prepare_home", "on", False)
     else:
       homeware.execute("thermostat_dormitorio", "thermostatMode", "off")
       homeware.execute("thermostat_livingroom", "thermostatMode", "off")
@@ -51,3 +52,12 @@ def atHome(homeware, topic, payload):
       homeware.execute("hue_4", "on", False)
       homeware.execute("hue_5", "on", False)
       
+# Prepare the home for arrival
+def prepareHome(homeware, topic, payload):
+  if topic == "device/switch_prepare_home/on":
+    if payload:
+      if homeware.get("scene_winter", "enable"):
+        homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
+        homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
+        homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
