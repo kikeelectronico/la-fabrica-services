@@ -81,7 +81,7 @@ if __name__ == "__main__":
   for message in client.events():
     for event in json.loads(message.data):
       for service in event["data"]:
-        if homeware.get("switch_at_home", "on"):
+        if not homeware.get("switch_at_home", "on"):
           if service["type"] == "contact":
             if service["contact_report"]["state"] == "contact":
               mqtt_client.publish("message-alerts", "Alerta de contacto")
