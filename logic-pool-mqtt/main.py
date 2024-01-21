@@ -45,6 +45,7 @@ TOPICS = [
   "device/scene_dim/enable",
   "device/switch003/on",
   "device/switch_at_home/on",
+  "device/switch_prepare_home/on",
   "device/switch_hood/on",
   "device/hue_sensor_2/on",
   "device/hue_sensor_12/on",
@@ -83,6 +84,7 @@ def on_message(client, userdata, msg):
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
+        general.prepareHome(homeware, msg.topic, payload)
         lights.resetEdisonBulb(homeware, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
