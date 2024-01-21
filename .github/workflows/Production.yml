@@ -24,6 +24,7 @@ jobs:
           - heartbeat-monitor
           - heartbeat-request
           - hue-2-mqtt
+          - hue-sensors-alerts
           - logger
           - logic-pool-hue
           - logic-pool-mqtt
