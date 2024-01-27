@@ -123,7 +123,8 @@ def main():
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     elif hour == "08:55:00" and not hour == just_executed:
       just_executed = hour
-      alert.voice("Quizá te interese desactivar el modo de luz tenue", speaker="all", gpt3=False)
+      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
+        alert.voice("Quizá te interese desactivar el modo de luz tenue", speaker="all", gpt3=False)
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
