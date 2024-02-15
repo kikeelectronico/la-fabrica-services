@@ -103,6 +103,5 @@ def powerManagment(homeware, topic, payload):
     homeware.execute("hue_8","on",livingroom)
     homeware.execute("radiator002","on",bedroom)
     homeware.execute("radiator003","on",bathroom)
-    #homeware.execute("hue_8","on",ac_unit)
 
 
