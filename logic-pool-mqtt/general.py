@@ -33,7 +33,7 @@ def atHome(homeware, topic, payload):
       homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
       homeware.execute("hue_4", "on", True)
       homeware.execute("hue_5", "on", True)
-      homeware.execute("hue_8", "on", True)
+      # homeware.execute("hue_8", "on", True)
       homeware.execute("hue_11", "on", True)
       homeware.execute("switch_prepare_home", "on", False)
     else:
@@ -45,7 +45,7 @@ def atHome(homeware, topic, payload):
       homeware.execute("light004", "on", False)
       homeware.execute("hue_1", "on", False)
       homeware.execute("light003", "on", False)
-      homeware.execute("hue_8", "on", False)
+      # homeware.execute("hue_8", "on", False)
       homeware.execute("hue_9", "on", False)
       homeware.execute("hue_10", "on", False)
       homeware.execute("hue_11", "on", False)
