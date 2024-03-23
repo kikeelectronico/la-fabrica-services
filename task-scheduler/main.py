@@ -23,7 +23,6 @@ WHEATHER_API_KEY = os.environ.get("WHEATHER_API_KEY", "no_set")
 WHEATHER_QUERY = os.environ.get("WHEATHER_QUERY", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
-
 # Define constants
 MQTT_PORT = 1883
 TOPICS = [ "tasks", "heartbeats/request" ]
