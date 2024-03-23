@@ -100,8 +100,8 @@ def powerManagment(homeware, topic, payload):
     # Send new values to Homeware
     homeware.execute("water_heater_001","on",heater)
     homeware.execute("radiator001","on",livingroom)
+    homeware.execute("hue_8","on",livingroom)
     homeware.execute("radiator002","on",bedroom)
     homeware.execute("radiator003","on",bathroom)
-    #homeware.execute("hue_8","on",ac_unit)
 
 
