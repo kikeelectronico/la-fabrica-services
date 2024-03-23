@@ -138,7 +138,7 @@ async def alertsEndPoint():
       "severity": "normal",
       "image": "drops.png"
     })
-  elif humidity > 60:
+  elif humidity > 55:
     alerts.append({
       "text": "Humedad alta",
       "severity": "normal",
