@@ -109,11 +109,10 @@ async def internetEndPoint():
 
 @app.get("/alerts")
 async def alertsEndPoint():
-  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
-
   alerts = []
 
   # Forecast
+  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
   forecast = weather['forecast']['forecastday']
 
   for (i, day) in enumerate(forecast):
@@ -129,6 +128,22 @@ async def alertsEndPoint():
         "severity": "normal",
         "image": "cloud.png"
       })
+
+  # Home alerts      
+  (status_flag, status) = homeware.getStatus()
+  humidity = status["thermostat_livingroom"]["thermostatHumidityAmbient"]
+  if humidity < 30:
+    alerts.append({
+      "text": "Humedad baja",
+      "severity": "normal",
+      "image": "drops.png"
+    })
+  elif humidity > 55:
+    alerts.append({
+      "text": "Humedad alta",
+      "severity": "normal",
+      "image": "drops.png"
+    })
 
   return alerts
 

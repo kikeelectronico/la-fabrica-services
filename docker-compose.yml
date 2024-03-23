@@ -65,6 +65,15 @@ services:
     env_file:
      - .env
 
+  # Hue sensors alerts
+  hue-sensors-alerts:
+    image: ghcr.io/kikeelectronico/hue-sensors-alerts:latest
+    container_name: hue-sensors-alerts
+    restart: always
+    network_mode: "host"
+    env_file:
+     - .env
+
   # Logic pool hue
   logic-pool-hue:
     image: ghcr.io/kikeelectronico/logic-pool-hue:latest
