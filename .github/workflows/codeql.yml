@@ -20,9 +20,9 @@ on:
   schedule:
     - cron: '36 6 * * 0'
 
-concurrency: 
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
+# concurrency: 
+#   group: ${{ github.workflow }}
+#   cancel-in-progress: true
 
 jobs:
   analyze:
