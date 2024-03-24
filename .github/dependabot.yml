@@ -61,6 +61,12 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
+    directory: "/hue-sensors-alerts"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "pip"
+    target-branch: "dev"
     directory: "/logger"
     schedule:
       interval: "weekly"
@@ -171,6 +177,12 @@ updates:
   - package-ecosystem: "docker"
     target-branch: "dev"
     directory: "/hue-2-mqtt"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "docker"
+    target-branch: "dev"
+    directory: "/hue-sensors-alerts"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
