@@ -21,7 +21,7 @@ TOPICS = [ "log" ]
 SERVICE = "nebula-logger-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = logging.Client().logger(SERVICE)
 
 # Suscribe to topics on connect

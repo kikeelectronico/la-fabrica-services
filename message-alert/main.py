@@ -22,7 +22,7 @@ TOPICS = ["heartbeats/request","message-alerts"]
 SERVICE = "message-alert-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 bot = telebot.TeleBot(token=BOT_TOKEN)
 

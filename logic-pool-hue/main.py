@@ -38,7 +38,7 @@ last_heartbeat_timestamp = 0
 last_pressed = {}
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 
