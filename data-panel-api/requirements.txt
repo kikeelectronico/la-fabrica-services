@@ -4,6 +4,6 @@ uvicorn==0.28.0
 python-dotenv==1.0.0
 keras==2.14.0
 tensorflow==2.14.0
+paho-mqtt==2.0.0
 Pillow==10.2.0
 google-cloud-logging==3.10.0
-paho-mqtt==1.6.1
