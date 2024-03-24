@@ -18,7 +18,6 @@ jobs:
           - alert-system-request
           - ble-sensors-2-mqtt
           - data-panel-api
-          - data-panel-autoload
           - data-panel-front
           - dns-updater
           - heartbeat-monitor
