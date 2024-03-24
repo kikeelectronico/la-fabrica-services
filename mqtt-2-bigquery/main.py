@@ -42,7 +42,7 @@ latest_bathroom_humidity = 0
 latest_bedroom_humidity = 0
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 bigquery_client = bigquery.Client()
 

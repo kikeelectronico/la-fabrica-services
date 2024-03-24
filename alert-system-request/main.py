@@ -25,7 +25,7 @@ SLEEP_TIME = 10
 SERVICE = "alert-system-requests-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE) 
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE) 
 logger = Logger(mqtt_client, SERVICE)
 
 # Main entry point

@@ -20,7 +20,7 @@ TOPICS = ["heartbeats/request","voice-alert/text", "voice-alert/speakers"]
 SERVICE = "voice-alert-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 voice = Voice(SERVICE)
 

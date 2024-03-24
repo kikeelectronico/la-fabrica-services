@@ -37,7 +37,7 @@ TOPICS = [
 SERVICE = "mqtt-2-hue-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 
 # Suscribe to topics on connect
