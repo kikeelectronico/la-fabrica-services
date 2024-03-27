@@ -7,7 +7,7 @@ def bedroom(service, homeware, mqtt_client):
     if state:
       mqtt_client.publish("tasks", json.dumps({"id": "bedroom_rgb003", "action": "delete"}))
       mqtt_client.publish("tasks", json.dumps({"id": "bedroom_hue_6", "action": "delete"}))
-      if homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "brightness") < 45:
+      if homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "brightness") < 40:
         if homeware.get("scene_sensors_enable","enable"):
           if homeware.get("scene_dim","enable"):
             homeware.execute("rgb003","on",True)
