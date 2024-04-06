@@ -25,12 +25,12 @@ def bathroom(service, homeware, mqtt_client):
       mqtt_client.publish("tasks", json.dumps({"id": "bathroom_light001", "action": "delete"}))
       mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "delete"}))
       if homeware.get("scene_ducha", "enable"):
+        homeware.execute("hue_sensor_14","on",True)
+      else:
         if homeware.get("scene_dim","enable"):
             homeware.execute("hue_sensor_2","on",True)
         else:
           homeware.execute("light001","on",True)
-      else:
-        homeware.execute("hue_sensor_14","on",True)
     else:
         if not homeware.get("hue_sensor_14", "on"):
           mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "set", "delta": 1, "device_id": "hue_sensor_2", "param": "on", "value": False}))
