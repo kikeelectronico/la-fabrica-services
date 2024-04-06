@@ -199,7 +199,7 @@ def shower(homeware, alert, topic, payload):
       waiting_for_shower = False
       if homeware.get("hue_sensor_14","on"):
         homeware.execute("hue_sensor_14","on",False)
-        if homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c","occupancy","OCCUPIED"):
+        if homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c","occupancy") == "OCCUPIED":
           if homeware.get("scene_dim","enable"):
             homeware.execute("hue_sensor_2","on",True)
           else:
