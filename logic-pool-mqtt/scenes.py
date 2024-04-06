@@ -200,7 +200,7 @@ def shower(homeware, alert, topic, payload):
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      # alert.voice("Crea una frase que informe al usuario de que el baño está preparado.", speaker="livingroom,bedroom", gpt3=True)
+      alert.voice("El baño está listo", speaker="livingroom,bedroom", gpt3=False)
       waiting_for_shower = False
 
 # Set the power alert scene
