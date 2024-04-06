@@ -6,5 +6,5 @@ def resetEdisonBulb(homeware, topic, payload):
         homeware.execute("hue_11","color", { "temperatureK": 2200 })
 
   if topic == "device/hue_11/brightness":
-    if payload > 35:
+    if int(payload) > 35:
         homeware.execute("hue_11","brightness", 35)
