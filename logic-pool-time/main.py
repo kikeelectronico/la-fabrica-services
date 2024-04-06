@@ -153,7 +153,8 @@ def main():
       just_executed = hour
       if homeware.get("scene_winter", "enable"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
-      alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
+      # alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
+      homeware.execute("scene_dim","enable",True)
 
     #Astro time blocks
     if hour == astro_data["sunrise"] and not hour == just_executed:
