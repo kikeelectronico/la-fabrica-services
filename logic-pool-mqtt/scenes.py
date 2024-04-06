@@ -199,6 +199,11 @@ def shower(homeware, alert, topic, payload):
       waiting_for_shower = False
       if homeware.get("hue_sensor_14","on"):
         homeware.execute("hue_sensor_14","on",False)
+        if homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c","occupancy","OCCUPIED"):
+          if homeware.get("scene_dim","enable"):
+            homeware.execute("hue_sensor_2","on",True)
+          else:
+            homeware.execute("light001","on",True)
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
