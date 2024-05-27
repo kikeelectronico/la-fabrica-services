@@ -10,6 +10,13 @@ export default function Thermostat(props) {
     if (mode == "off") return "Apagado"
   }
 
+  const getColor = () => {
+    var mode = props.homeware.status.thermostat_livingroom.thermostatMode
+    if (mode == "heat" && props.homeware.status.hue_8.on) return "255,0,0"
+    else if (mode == "cool" && props.homeware.status.hue_8.on) return "0,0,255"
+    else return "0,0,0"
+  }
+
   return (
     <>
       {
@@ -17,7 +24,7 @@ export default function Thermostat(props) {
           <>
             <div
               className="thermostatCard"
-              style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.homeware.status.radiator001.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
+              style={{boxShadow: "0 0.1rem 1rem rgba(" + getColor() + ", 0.8)"}}
             >
               <div className="thermostatTemperature">
                 {props.homeware.status.thermostat_livingroom.thermostatTemperatureAmbient} ºC
