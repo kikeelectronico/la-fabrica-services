@@ -84,11 +84,14 @@ def powerManagment(homeware, topic, payload):
         heater = (not bathroom) and (not livingroom)
         bedroom = False
       else:
-        rule_14 = not homeware.get("switch_at_home", "on")
-        livingroom = shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "hue_8", rule_14)
-        bedroom = shouldHeat(homeware, "thermostat_dormitorio", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator002", rule_14)
-        bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
-        heater = not livingroom
+        if homeware.get("scene_winter", "enable"):
+          rule_14 = not homeware.get("switch_at_home", "on")
+          livingroom = shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "hue_8", rule_14)
+          bedroom = shouldHeat(homeware, "thermostat_dormitorio", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator002", rule_14)
+          bathroom = False #(not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
+          heater = not livingroom
+        else:
+          heater = True
     else:
       livingroom = False
       bedroom = False
@@ -98,7 +101,8 @@ def powerManagment(homeware, topic, payload):
     # Send new values to Homeware
     homeware.execute("water_heater_001","on",heater)
     # homeware.execute("radiator001","on",livingroom)
-    homeware.execute("hue_8","on",livingroom)
+    if homeware.get("scene_winter", "enable"):
+      homeware.execute("hue_8","on",livingroom)
     homeware.execute("radiator002","on",bedroom)
     homeware.execute("radiator003","on",bathroom)
 
