@@ -13,7 +13,7 @@ export default function Thermostat(props) {
   const getColor = () => {
     var mode = props.homeware.status.thermostat_livingroom.thermostatMode
     if (mode == "heat" && props.homeware.status.hue_8.on) return "255,0,0"
-    else if (mode == "cool" && props.homeware.status.hue_8.on) return "0,0,255"
+    else if (mode == "cool") return "0,0,255"
     else return "0,0,0"
   }
 
