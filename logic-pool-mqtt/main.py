@@ -51,6 +51,7 @@ TOPICS = [
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
   "device/hue_11/color",
+  "device/hue_11/brightness",
   "device/thermostat_bathroom/capacityRemaining",
   "device/thermostat_dormitorio/capacityRemaining",
   "device/thermostat_livingroom/capacityRemaining",
