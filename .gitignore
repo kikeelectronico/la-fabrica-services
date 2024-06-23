@@ -1,6 +1,7 @@
 env
 .env
 *.pyc
+docker-compose-completo.yml
 
 #alert system voice
 audio/
