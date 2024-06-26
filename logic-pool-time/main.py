@@ -106,7 +106,10 @@ def main():
       homeware.execute("switch_hood", "on", False)
     hour = today.strftime("%H:%M:%S")
     # Time blocks
-    if hour == "04:00:00" and not hour == just_executed:
+    if hour == "03:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("hue_8", "on", False)
+    elif hour == "04:00:00" and not hour == just_executed:
       just_executed = hour
       updateAstroData()
     elif hour == "08:00:00" and not hour == just_executed:
