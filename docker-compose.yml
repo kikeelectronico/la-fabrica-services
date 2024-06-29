@@ -75,9 +75,9 @@ services:
      - .env
 
   # Logic pool hue
-  logic-pool-hue:
-    image: ghcr.io/kikeelectronico/logic-pool-hue:latest
-    container_name: logic-pool-hue
+  hue-logic-pool:
+    image: ghcr.io/kikeelectronico/hue-logic-pool:latest
+    container_name: hue-logic-pool
     restart: always
     network_mode: "host"
     env_file:

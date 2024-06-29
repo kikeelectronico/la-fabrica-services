@@ -25,7 +25,7 @@ jobs:
           - hue-2-mqtt
           - hue-sensors-alerts
           - logger
-          - logic-pool-hue
+          - hue-logic-pool
           - logic-pool-mqtt
           - logic-pool-time
           - message-alert

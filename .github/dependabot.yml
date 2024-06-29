@@ -73,7 +73,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/logic-pool-hue"
+    directory: "/hue-logic-pool"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -194,7 +194,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/logic-pool-hue"
+    directory: "/hue-logic-pool"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
