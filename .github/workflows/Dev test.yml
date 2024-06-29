@@ -30,7 +30,7 @@ jobs:
           - logic-pool-time
           - message-alert
           - mqtt-2-bigquery
-          - mqtt-2-hue
+          - hue-outbound
           - telegram-bot
           - voice-alert
           - task-scheduler

@@ -46,9 +46,9 @@ services:
       - message-alert
 
   # MQTT 2 Hue
-  mqtt-2-hue:
-    image: ghcr.io/kikeelectronico/mqtt-2-hue:latest
-    container_name: mqtt-2-hue
+  hue-outbound:
+    image: ghcr.io/kikeelectronico/hue-outbound:latest
+    container_name: hue-outbound
     restart: always
     network_mode: "host"
     env_file:

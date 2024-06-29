@@ -34,7 +34,7 @@ TOPICS = [
 	"device/hue_10",
 	"device/hue_11"
 ]
-SERVICE = "mqtt-2-hue-" + ENV
+SERVICE = "hue-outbound-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
@@ -49,7 +49,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "heartbeats/request":
-			mqtt_client.publish("heartbeats", "mqtt-2-hue")
+			mqtt_client.publish("heartbeats", "hue-outbound")
 		else:
 			topic = msg.topic
 			payload = json.loads(msg.payload)
