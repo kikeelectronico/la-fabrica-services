@@ -10,4 +10,6 @@ docker build --tag data-panel-front .
 
 ## Run
 
+```
 docker run -p 8001:80 -t data-panel-front
+```
