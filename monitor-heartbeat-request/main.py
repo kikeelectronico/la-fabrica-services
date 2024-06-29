@@ -17,7 +17,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 SLEEP_TIME = 10
-SERVICE = "heartbeat-request-" + ENV
+SERVICE = "monitor-heartbeat-request-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)

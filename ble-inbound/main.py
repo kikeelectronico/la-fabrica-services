@@ -17,7 +17,7 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SERVICE = "ble-sensors-2-mqtt-" + ENV
+SERVICE = "ble-inbound-" + ENV
 ONLINE_TIMEOUT = 300
 # MAC address
 DEVICES = {

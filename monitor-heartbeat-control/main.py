@@ -20,7 +20,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 TOPICS = ["heartbeats", "heartbeats/request", "device/heartbeat"]
-SERVICE = "heartbeat-monitor-" + ENV
+SERVICE = "monitor-heartbeat-control-" + ENV
 
 # Declare variables
 microservices_heartbeats = {}

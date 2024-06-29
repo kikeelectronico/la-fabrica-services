@@ -22,7 +22,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 SLEEP_TIME = 10
-SERVICE = "alert-system-requests-" + ENV
+SERVICE = "monitor-http-request-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE) 
@@ -68,7 +68,7 @@ if __name__ == "__main__":
       mqtt_client.publish("voice-alert/text", "Hue bridge no responde")
       mqtt_client.publish("message-alerts", "Hue bridge no responde")
     # Send heartbeart
-    mqtt_client.publish("heartbeats", "alert-system-requests")
+    mqtt_client.publish("heartbeats", "monitor-http-request")
     # Wait until next iteration
     time.sleep(SLEEP_TIME)
 

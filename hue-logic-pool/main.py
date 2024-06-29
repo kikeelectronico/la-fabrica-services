@@ -31,7 +31,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 SLEEP_TIME = 0.1
-SERVICE = "logic-pool-hue-" + ENV
+SERVICE = "hue-logic-pool-" + ENV
 
 # Declare variables
 last_heartbeat_timestamp = 0

@@ -17,7 +17,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 TOPICS = ["heartbeats/request","voice-alert/text", "voice-alert/speakers"]
-SERVICE = "voice-alert-" + ENV
+SERVICE = "notification-voice-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)

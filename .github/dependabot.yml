@@ -7,13 +7,13 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/alert-system-request"
+    directory: "/monitor-http-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/ble-sensors-2-mqtt"
+    directory: "/ble-inbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -43,19 +43,19 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/heartbeat-monitor"
+    directory: "/monitor-heartbeat-control"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/heartbeat-request"
+    directory: "/monitor-heartbeat-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/hue-2-mqtt"
+    directory: "/hue-inbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -73,7 +73,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/logic-pool-hue"
+    directory: "/hue-logic-pool"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -91,19 +91,19 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/message-alert"
+    directory: "/notification-message"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/mqtt-2-bigquery"
+    directory: "/bigquery-outbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/mqtt-2-hue"
+    directory: "/hue-outbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -121,20 +121,20 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/voice-alert"
+    directory: "/notification-voice"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   # Docker
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/alert-system-request"
+    directory: "/monitor-http-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/ble-sensors-2-mqtt"
+    directory: "/ble-inbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -164,19 +164,19 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/heartbeat-monitor"
+    directory: "/monitor-heartbeat-control"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/heartbeat-request"
+    directory: "/monitor-heartbeat-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/hue-2-mqtt"
+    directory: "/hue-inbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -194,7 +194,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/logic-pool-hue"
+    directory: "/hue-logic-pool"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -212,19 +212,19 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/message-alert"
+    directory: "/notification-message"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/mqtt-2-bigquery"
+    directory: "/bigquery-outbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/mqtt-2-hue"
+    directory: "/hue-outbound"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -242,7 +242,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/voice-alert"
+    directory: "/notification-voice"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
