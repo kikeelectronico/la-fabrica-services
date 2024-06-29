@@ -40,4 +40,5 @@ jobs:
       tag: dev
     secrets:
       REGISTRY: ${{secrets.REGISTRY}}
+      REGISTRY_REPO: ${{secrets.REGISTRY_REPO}}
       GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}

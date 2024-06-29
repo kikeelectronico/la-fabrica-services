@@ -10,6 +10,8 @@ on:
                 required: true
                 type: string
         secrets:
+            REGISTRY_REPO:
+              required: true
             REGISTRY:
                 required: true
             GOOGLE_APPLICATION_CREDENTIALS:
@@ -59,4 +61,4 @@ jobs:
           file: ${{ inputs.service }}/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.REGISTRY }}/${{ inputs.service }}:${{ inputs.tag }}
+          tags: ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}
