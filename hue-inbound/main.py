@@ -28,7 +28,7 @@ ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
-SERVICE = "hue-2-mqtt-" + ENV
+SERVICE = "hue-inbound-" + ENV
 
 # Declare variables
 cache = {}

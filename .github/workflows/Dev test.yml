@@ -22,7 +22,7 @@ jobs:
           - dns-updater
           - heartbeat-monitor
           - heartbeat-request
-          - hue-2-mqtt
+          - hue-inbound
           - hue-sensors-alerts
           - logger
           - hue-logic-pool
