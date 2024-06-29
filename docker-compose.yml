@@ -13,9 +13,9 @@ services:
       - message-alert
 
   # Heartbeat request
-  heartbeat-request:
-    image: ghcr.io/kikeelectronico/heartbeat-request:latest
-    container_name: heartbeat-request
+  monitor-heartbeat-request:
+    image: ghcr.io/kikeelectronico/monitor-heartbeat-request:latest
+    container_name: monitor-heartbeat-request
     restart: always
     network_mode: "host"
     env_file:

@@ -49,7 +49,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "pip"
     target-branch: "dev"
-    directory: "/heartbeat-request"
+    directory: "/monitor-heartbeat-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
@@ -170,7 +170,7 @@ updates:
     open-pull-requests-limit: 10
   - package-ecosystem: "docker"
     target-branch: "dev"
-    directory: "/heartbeat-request"
+    directory: "/monitor-heartbeat-request"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
