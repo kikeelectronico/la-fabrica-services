@@ -56,7 +56,7 @@ jobs:
           gcloud auth configure-docker ${{ secrets.REGISTRY }}
       - name: Tag rollback image
         run: |
-          gcloud container images ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}-rollback
+          gcloud container images add-tag ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}-rollback
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
