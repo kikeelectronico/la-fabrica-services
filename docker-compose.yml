@@ -24,9 +24,9 @@ services:
       - message-alert
 
   # Heartbeat monitor
-  heartbeat-monitor:
-    image: ghcr.io/kikeelectronico/heartbeat-monitor:latest
-    container_name: heartbeat-monitor
+  monitor-heartbeat-control:
+    image: ghcr.io/kikeelectronico/monitor-heartbeat-control:latest
+    container_name: monitor-heartbeat-control
     restart: always
     network_mode: "host"
     env_file:

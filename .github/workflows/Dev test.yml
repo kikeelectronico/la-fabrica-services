@@ -20,7 +20,7 @@ jobs:
           - data-panel-api
           - data-panel-front
           - dns-updater
-          - heartbeat-monitor
+          - monitor-heartbeat-control
           - heartbeat-request
           - hue-inbound
           - hue-sensors-alerts
