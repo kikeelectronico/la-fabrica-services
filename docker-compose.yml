@@ -128,9 +128,9 @@ services:
      - creds:/app/creds
 
   # Alert system, request
-  alert-system-request:
-    image: ghcr.io/kikeelectronico/alert-system-request:latest
-    container_name: alert-system-request
+  monitor-http-request:
+    image: ghcr.io/kikeelectronico/monitor-http-request:latest
+    container_name: monitor-http-request
     restart: always
     network_mode: "host"
     env_file:

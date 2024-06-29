@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         service:
-          - alert-system-request
+          - monitor-http-request
           - ble-sensors-2-mqtt
           - data-panel-api
           - data-panel-front
