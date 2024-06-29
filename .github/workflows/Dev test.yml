@@ -15,25 +15,25 @@ jobs:
     strategy:
       matrix:
         service:
-          - monitor-http-request
+          - bigquery-outbound
           - ble-inbound
           - data-panel-api
           - data-panel-front
           - dns-updater
-          - monitor-heartbeat-control
-          - monitor-heartbeat-request
           - hue-inbound
+          - hue-logic-pool
+          - hue-outbound
           - hue-sensors-alerts
           - logger
-          - hue-logic-pool
           - logic-pool-mqtt
           - logic-pool-time
+          - monitor-heartbeat-control
+          - monitor-heartbeat-request
+          - monitor-http-request
           - notification-message
-          - bigquery-outbound
-          - hue-outbound
-          - telegram-bot
           - notification-voice
           - task-scheduler
+          - telegram-bot
     uses: ./.github/workflows/build-service.yml
     with:
       service: ${{ matrix.service }}
