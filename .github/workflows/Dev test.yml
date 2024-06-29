@@ -28,7 +28,7 @@ jobs:
           - hue-logic-pool
           - logic-pool-mqtt
           - logic-pool-time
-          - message-alert
+          - notification-message
           - mqtt-2-bigquery
           - hue-outbound
           - telegram-bot
