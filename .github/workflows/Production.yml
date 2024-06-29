@@ -15,33 +15,33 @@ jobs:
     strategy:
       matrix:
         service:
-          - alert-system-request
-          - ble-sensors-2-mqtt
+          - bigquery-outbound
+          - ble-inbound
           - data-panel-api
           - data-panel-front
           - dns-updater
-          - heartbeat-monitor
-          - heartbeat-request
-          - hue-2-mqtt
+          - hue-inbound
+          - hue-logic-pool
+          - hue-outbound
           - hue-sensors-alerts
           - logger
-          - hue-logic-pool
           - logic-pool-mqtt
           - logic-pool-time
-          - message-alert
-          - mqtt-2-bigquery
-          - mqtt-2-hue
-          - telegram-bot
-          - voice-alert
+          - monitor-heartbeat-control
+          - monitor-heartbeat-request
+          - monitor-http-request
+          - notification-message
+          - notification-voice
           - task-scheduler
+          - telegram-bot
     uses: ./.github/workflows/build-service.yml
     with:
-      registry: ghcr.io
       service: ${{ matrix.service }}
       tag: latest
     secrets:
-      PERSONAL_ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      actor: ${{ github.actor }}
+      REGISTRY: ${{secrets.REGISTRY}}
+      REGISTRY_REPO: ${{secrets.REGISTRY_REPO}}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
 
   deploy:
     name: Deploy to production environment
