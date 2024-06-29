@@ -3,9 +3,6 @@ name: Build service - Reusable
 on:
     workflow_call:
         inputs:
-            registry:
-                required: true
-                type: string
             service:
                 required: true
                 type: string
@@ -13,9 +10,9 @@ on:
                 required: true
                 type: string
         secrets:
-            PERSONAL_ACCESS_TOKEN:
+            REGISTRY:
                 required: true
-            actor:
+            GOOGLE_APPLICATION_CREDENTIALS:
                 required: true
   
 jobs:
