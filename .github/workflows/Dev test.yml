@@ -32,7 +32,7 @@ jobs:
           - mqtt-2-bigquery
           - hue-outbound
           - telegram-bot
-          - voice-alert
+          - notification-voice
           - task-scheduler
     uses: ./.github/workflows/build-service.yml
     with:
