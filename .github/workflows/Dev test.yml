@@ -16,7 +16,7 @@ jobs:
       matrix:
         service:
           - monitor-http-request
-          - ble-sensors-2-mqtt
+          - ble-inbound
           - data-panel-api
           - data-panel-front
           - dns-updater
