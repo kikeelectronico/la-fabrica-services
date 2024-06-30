@@ -39,7 +39,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    if: (needs.path-filter.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && inputs.tag == "main"
+    if: (needs.path-filter.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && inputs.tag == 'main'
     steps:
       - name: Authenticate to Google Cloud
         uses: 'google-github-actions/auth@v2'
