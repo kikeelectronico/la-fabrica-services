@@ -74,7 +74,7 @@ def on_message(client, userdata, msg):
 	payload = typifyPayload(topic, msg.payload)
 	# The request depends on the device
 	if topic == "heartbeats/request":
-		mqtt_client.publish("heartbeats", "bigquery-outbound")
+		mqtt_client.publish("heartbeats", SERVICE)
 	elif topic == "device/current001/brightness" and payload != latest_power:
 		sendPowerRequest(payload)
 		latest_power = payload
