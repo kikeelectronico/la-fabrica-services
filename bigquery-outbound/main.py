@@ -129,7 +129,6 @@ def on_message(client, userdata, msg):
 
 # Insert data into the databse
 def sendPowerRequest(payload):
-	pass
 	ts = int(time.time())
 	bigquery_client.query(
 			"""
@@ -141,7 +140,6 @@ def sendPowerRequest(payload):
 
 # Insert data into the databse
 def sendThermostatRequest(payload, last_value, location, magnitude, units):
-	pass
 	ts = int(time.time())
 	bigquery_client.query(
 		"""\
