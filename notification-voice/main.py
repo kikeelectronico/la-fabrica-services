@@ -66,7 +66,7 @@ if __name__ == "__main__":
   # Wake up alert
   hour = int(time.strftime("%H"))
   message = ""
-  if hour >= 22 or (hour > 0 and hour < 7):
+  if hour >= 22 or (hour >= 0 and hour < 7):
     message = "buenas noches. Ya estoy operativo"
   elif hour >= 7 and hour < 15:
     message = "buenos días. Ya estoy operativo"
