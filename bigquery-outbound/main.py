@@ -42,7 +42,7 @@ latest_bathroom_humidity = 0
 latest_bedroom_humidity = 0
 
 # Instantiate objects
-mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 bigquery_client = bigquery.Client()
 
@@ -56,7 +56,7 @@ def typifyPayload(topic, payload):
 		return int(payload)
 
 # Suscribe to topics on connect
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties):
 	for topic in TOPICS:
 		client.subscribe(topic)
 
@@ -129,6 +129,7 @@ def on_message(client, userdata, msg):
 
 # Insert data into the databse
 def sendPowerRequest(payload):
+	pass
 	ts = int(time.time())
 	bigquery_client.query(
 			"""
@@ -140,6 +141,7 @@ def sendPowerRequest(payload):
 
 # Insert data into the databse
 def sendThermostatRequest(payload, last_value, location, magnitude, units):
+	pass
 	ts = int(time.time())
 	bigquery_client.query(
 		"""\
