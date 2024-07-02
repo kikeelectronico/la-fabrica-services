@@ -163,26 +163,20 @@ if __name__ == "__main__":
 	# Check env vars
 	def report(message):
 		print(message)
-		#logger.log(message, severity="ERROR")
 		exit()
-	if MQTT_USER == "no_set":
-		report("MQTT_USER env vars no set")
-	if MQTT_PASS == "no_set":
-		report("MQTT_PASS env vars no set")
-	if MQTT_HOST == "no_set":
-		report("MQTT_HOST env vars no set")
-	if POWER_DDBB == "no_set":
-		report("POWER_DDBB env vars no set")
-	if AMBIENT_DDBB == "no_set":
-		report("AMBIENT_DDBB env vars no set")
+	if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+	if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+	if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+	if POWER_DDBB == "no_set": report("POWER_DDBB env vars no set")
+	if AMBIENT_DDBB == "no_set": report("AMBIENT_DDBB env vars no set")
 		
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
 	mqtt_client.on_connect = on_connect
-  # Connect to the mqtt broker
+  	# Connect to the mqtt broker
 	mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
 	mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
 	logger.log("Starting " + SERVICE , severity="INFO")
-  # Main loop
+  	# Main loop
 	mqtt_client.loop_forever()
  
