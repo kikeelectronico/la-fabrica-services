@@ -79,6 +79,8 @@ def on_message(client, userdata, msg):
 					VALUES ({},{},4);
 				""".format(ts, device_id, param, value)
 			)
+			# Update las_value
+			last_value[topic] = payload
 
 # Main entry point
 if __name__ == "__main__":
