@@ -33,13 +33,7 @@ TOPICS = [
 SERVICE = "bigquery-outbound-" + ENV
 
 # Declare variables
-latest_power = 0
-latest_livingroom_temperature = 0
-latest_bathroom_temperature = 0
-latest_bedroom_temperature = 0
-latest_livingroom_humidity = 0
-latest_bathroom_humidity = 0
-latest_bedroom_humidity = 0
+last_value = {}
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
@@ -62,99 +56,29 @@ def on_connect(client, userdata, flags, rc, properties):
 
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
-	global latest_power
-	global latest_livingroom_temperature
-	global latest_bathroom_temperature
-	global latest_bedroom_temperature
-	global latest_livingroom_humidity
-	global latest_bathroom_humidity
-	global latest_bedroom_humidity
+
+	global last_value
 	# Rename variables
 	topic = msg.topic
 	payload = typifyPayload(topic, msg.payload)
 	# The request depends on the device
 	if topic == "heartbeats/request":
 		mqtt_client.publish("heartbeats", SERVICE)
-	elif topic == "device/current001/brightness" and payload != latest_power:
-		sendPowerRequest(payload)
-		latest_power = payload
-	elif topic == "device/thermostat_livingroom/thermostatTemperatureAmbient" \
-				and payload != latest_livingroom_temperature:
-		sendThermostatRequest(payload, 
-							last_value=latest_livingroom_temperature,
-							location="livingroom",
-							magnitude="temperature",
-							units="C")
-		latest_livingroom_temperature = payload
-	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" \
-				and payload != latest_bathroom_temperature:
-		sendThermostatRequest(payload, 
-							last_value=latest_bathroom_temperature,
-							location="bathroom",
-							magnitude="temperature",
-							units="C")
-		latest_bathroom_temperature = payload
-	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" \
-				and payload != latest_bedroom_temperature:
-		sendThermostatRequest(payload, 
-							last_value=latest_bedroom_temperature,
-							location="bedroom",
-							magnitude="temperature",
-							units="C")
-		latest_bedroom_temperature = payload
-	elif topic == "device/thermostat_livingroom/thermostatHumidityAmbient" \
-				and payload != latest_livingroom_humidity:
-		sendThermostatRequest(payload, 
-							last_value=latest_livingroom_humidity,
-							location="livingroom",
-							magnitude="humidity",
-							units="%")
-		latest_livingroom_humidity = payload
-	elif topic == "device/thermostat_bathroom/thermostatHumidityAmbient" \
-				and payload != latest_bathroom_humidity:
-		sendThermostatRequest(payload, 
-							last_value=latest_bathroom_humidity,
-							location="bathroom",
-							magnitude="humidity",
-							units="%")
-		latest_bathroom_humidity = payload
-	elif topic == "device/thermostat_dormitorio/thermostatHumidityAmbient" \
-				and payload != latest_bedroom_humidity:
-		sendThermostatRequest(payload, 
-							last_value=latest_bedroom_humidity,
-							location="bedroom",
-							magnitude="humidity",
-							units="%")
-		latest_bedroom_humidity = payload
-
-# Insert data into the databse
-def sendPowerRequest(payload):
-	ts = int(time.time())
-	bigquery_client.query(
-			"""
-				INSERT INTO `{}`
-				(time, power, version)
-				VALUES ({},{},4);
-			""".format(POWER_DDBB, ts, payload * POWER_CONSTANT)
-	)
-
-# Insert data into the databse
-def sendThermostatRequest(payload, last_value, location, magnitude, units):
-	ts = int(time.time())
-	bigquery_client.query(
-		"""\
-			INSERT INTO `{}`\
-			(time, magnitude, value, location, units)\
-			VALUES ({},"{}",{},"{}","{}");\
-		""".format(AMBIENT_DDBB, ts, magnitude, last_value, location, units)
-	)
-	bigquery_client.query(
-		"""\
-			INSERT INTO `{}`\
-			(time, magnitude, value, location, units)\
-			VALUES ({},"{}",{},"{}","{}");\
-		""".format(AMBIENT_DDBB, ts, magnitude, payload, location, units)
-	)
+	else:
+		if payload != last_value.setdefault(topic, 0):
+			# Prepare data
+			ts = int(time.time())
+			device_id = topic.split("/")[1]
+			param = topic.split("/")[2] if not "current001" in topic else "current"
+			value = payload if not "current001" in topic else payload * POWER_CONSTANT
+			# Insert data
+			bigquery_client.query(
+				"""
+					INSERT INTO device
+					(time, device_id, param, value)
+					VALUES ({},{},4);
+				""".format(ts, device_id, param, value)
+			)
 
 # Main entry point
 if __name__ == "__main__":
