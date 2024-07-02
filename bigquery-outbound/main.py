@@ -53,9 +53,8 @@ def on_connect(client, userdata, flags, rc, properties):
 	for topic in TOPICS:
 		client.subscribe(topic)
 
-# Do tasks when a message is received
+# Do a tasks when a message is received
 def on_message(client, userdata, msg):
-
 	global last_value
 	# Rename variables
 	topic = msg.topic
@@ -65,12 +64,12 @@ def on_message(client, userdata, msg):
 		mqtt_client.publish("heartbeats", SERVICE)
 	else:
 		if payload != last_value.setdefault(topic, 0):
-			# Prepare data
+			# Prepare the data
 			ts = int(time.time())
 			device_id = topic.split("/")[1]
 			param = topic.split("/")[2] if not "current001" in topic else "current"
 			value = payload if not "current001" in topic else payload * POWER_CONSTANT
-			# Insert data
+			# Insert the data
 			bigquery_client.query(
 				"""
 					INSERT INTO {}
@@ -78,7 +77,7 @@ def on_message(client, userdata, msg):
 					VALUES ({},"{}","{}","{}", "{}");
 				""".format(DEVICE_DDBB, ts, device_id, param, str(value), value.__class__.__name__)
 			)
-			# Update las_value
+			# Update last_value
 			last_value[topic] = payload
 
 # Main entry point
