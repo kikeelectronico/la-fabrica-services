@@ -81,50 +81,50 @@ def on_message(client, userdata, msg):
 	elif topic == "device/thermostat_livingroom/thermostatTemperatureAmbient" \
 				and payload != latest_livingroom_temperature:
 		sendThermostatRequest(payload, 
-													last_value=latest_livingroom_temperature,
-													location="livingroom",
-													magnitude="temperature",
-													units="C")
+							last_value=latest_livingroom_temperature,
+							location="livingroom",
+							magnitude="temperature",
+							units="C")
 		latest_livingroom_temperature = payload
 	elif topic == "device/thermostat_bathroom/thermostatTemperatureAmbient" \
 				and payload != latest_bathroom_temperature:
 		sendThermostatRequest(payload, 
-													last_value=latest_bathroom_temperature,
-													location="bathroom",
-													magnitude="temperature",
-													units="C")
+							last_value=latest_bathroom_temperature,
+							location="bathroom",
+							magnitude="temperature",
+							units="C")
 		latest_bathroom_temperature = payload
 	elif topic == "device/thermostat_dormitorio/thermostatTemperatureAmbient" \
 				and payload != latest_bedroom_temperature:
 		sendThermostatRequest(payload, 
-													last_value=latest_bedroom_temperature,
-													location="bedroom",
-													magnitude="temperature",
-													units="C")
+							last_value=latest_bedroom_temperature,
+							location="bedroom",
+							magnitude="temperature",
+							units="C")
 		latest_bedroom_temperature = payload
 	elif topic == "device/thermostat_livingroom/thermostatHumidityAmbient" \
 				and payload != latest_livingroom_humidity:
 		sendThermostatRequest(payload, 
-													last_value=latest_livingroom_humidity,
-													location="livingroom",
-													magnitude="humidity",
-													units="%")
+							last_value=latest_livingroom_humidity,
+							location="livingroom",
+							magnitude="humidity",
+							units="%")
 		latest_livingroom_humidity = payload
 	elif topic == "device/thermostat_bathroom/thermostatHumidityAmbient" \
 				and payload != latest_bathroom_humidity:
 		sendThermostatRequest(payload, 
-													last_value=latest_bathroom_humidity,
-													location="bathroom",
-													magnitude="humidity",
-													units="%")
+							last_value=latest_bathroom_humidity,
+							location="bathroom",
+							magnitude="humidity",
+							units="%")
 		latest_bathroom_humidity = payload
 	elif topic == "device/thermostat_dormitorio/thermostatHumidityAmbient" \
 				and payload != latest_bedroom_humidity:
 		sendThermostatRequest(payload, 
-													last_value=latest_bedroom_humidity,
-													location="bedroom",
-													magnitude="humidity",
-													units="%")
+							last_value=latest_bedroom_humidity,
+							location="bedroom",
+							magnitude="humidity",
+							units="%")
 		latest_bedroom_humidity = payload
 
 # Insert data into the databse
