@@ -13,8 +13,7 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
-POWER_DDBB = os.environ.get("POWER_DDBB", "no_set")
-AMBIENT_DDBB = os.environ.get("AMBIENT_DDBB", "no_set")
+DEVICE_DDBB = os.environ.get("DEVICE_DDBB", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
 # Define constants
@@ -74,10 +73,10 @@ def on_message(client, userdata, msg):
 			# Insert data
 			bigquery_client.query(
 				"""
-					INSERT INTO device
-					(time, device_id, param, value)
-					VALUES ({},{},4);
-				""".format(ts, device_id, param, value)
+					INSERT INTO {}
+					(time, device_id, param, value, type)
+					VALUES ({},"{}","{}","{}", "{}");
+				""".format(DEVICE_DDBB, ts, device_id, param, str(value), value.__class__.__name__)
 			)
 			# Update las_value
 			last_value[topic] = payload
@@ -91,8 +90,7 @@ if __name__ == "__main__":
 	if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
 	if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
 	if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
-	if POWER_DDBB == "no_set": report("POWER_DDBB env vars no set")
-	if AMBIENT_DDBB == "no_set": report("AMBIENT_DDBB env vars no set")
+	if DEVICE_DDBB == "no_set": report("DEVICE_DDBB env vars no set")
 		
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
