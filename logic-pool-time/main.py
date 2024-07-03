@@ -165,7 +165,8 @@ def main():
       homeware.execute("scene_astro_day","enable",True)
     elif hour == astro_data["sunset"] and not hour == just_executed:
       just_executed = hour
-      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
+      if homeware.get("scene_winter", "enable"):
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       homeware.execute("scene_astro_day","enable",False)
 
     # Reset the last just_executed block

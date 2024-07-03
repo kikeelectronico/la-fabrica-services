@@ -27,10 +27,11 @@ def green(homeware, topic, payload):
 def atHome(homeware, topic, payload):
   if topic == "device/switch_at_home/on":
     if payload:
-      homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
-      homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
-      homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
-      homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
+      if homeware.get("scene_winter", "enable"):
+        homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
+        homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
+        homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
       homeware.execute("hue_1", "on", True)
       homeware.execute("hue_4", "on", True)
       homeware.execute("hue_5", "on", True)
