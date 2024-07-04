@@ -6,7 +6,7 @@ export default function Thermostat(props) {
   const thermostatMode = () => {
     var mode = props.homeware.status.thermostat_livingroom.thermostatMode
     if (mode == "heat") return "Calor"
-    if (mode == "cool") return "Frio"
+    if (mode == "cool") return "Frío"
     if (mode == "off") return "Apagado"
   }
 
