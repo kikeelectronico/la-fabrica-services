@@ -38,26 +38,16 @@ def main():
   # Check env vars
   def report(message):
     print(message)
-    #logger.log_text(message, severity="ERROR")
     exit()
-  if GET_IP_ENDPOINT == "no_set":
-    report("GET_IP_ENDPOINT env vars no set")
-  if CLOUDFLARE_ZONE == "no_set":
-    report("CLOUDFLARE_ZONE env vars no set")
-  if CLOUDFLARE_DNS_ID == "no_set":
-    report("CLOUDFLARE_DNS_ID env vars no set")
-  if CLOUDFLARE_DNS_ID_DIP == "no_set":
-    report("CLOUDFLARE_DNS_ID_DIP env vars no set")
-  if CLOUDFLARE_DNS_ID_PB == "no_set":
-    report("CLOUDFLARE_DNS_ID_PB env vars no set")
-  if CLOUDFLARE_TOKEN == "no_set":
-    report("CLOUDFLARE_TOKEN env vars no set")
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
+  if GET_IP_ENDPOINT == "no_set": report("GET_IP_ENDPOINT env vars no set")
+  if CLOUDFLARE_ZONE == "no_set": report("CLOUDFLARE_ZONE env vars no set")
+  if CLOUDFLARE_DNS_ID == "no_set": report("CLOUDFLARE_DNS_ID env vars no set")
+  if CLOUDFLARE_DNS_ID_DIP == "no_set": report("CLOUDFLARE_DNS_ID_DIP env vars no set")
+  if CLOUDFLARE_DNS_ID_PB == "no_set": report("CLOUDFLARE_DNS_ID_PB env vars no set")
+  if CLOUDFLARE_TOKEN == "no_set": report("CLOUDFLARE_TOKEN env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
 
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
