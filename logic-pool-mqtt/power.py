@@ -73,7 +73,7 @@ def powerManagment(homeware, topic, payload):
     if power_pre_alert and power < 100:
       power_pre_alert = False
     # Disable alert
-    if power < 40 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
+    if power < 65 and power_alert and (time.time() - power_timestamp) > TIME_TO_DISABLE_POWER_ALERT:
       power_alert = False
       power_pre_alert = False
     # Power distribution
