@@ -165,7 +165,7 @@ def main():
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > 10:
-      mqtt_client.publish("heartbeats", "logic-pool-time")
+      mqtt_client.publish("heartbeats", SERVICE)
       last_heartbeat_timestamp = time.time()
     
     time.sleep(0.1)

@@ -49,7 +49,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "heartbeats/request":
-			mqtt_client.publish("heartbeats", "hue-outbound")
+			mqtt_client.publish("heartbeats", SERVICE)
 		else:
 			topic = msg.topic
 			payload = json.loads(msg.payload)

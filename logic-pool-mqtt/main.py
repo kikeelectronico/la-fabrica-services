@@ -75,7 +75,7 @@ def on_message(client, userdata, msg):
   try:
     if msg.topic == "heartbeats/request":
       # Send heartbeat
-      mqtt_client.publish("heartbeats", "logic-pool-mqtt")
+      mqtt_client.publish("heartbeats", SERVICE)
     else:
       # Exec the logic
       payload = functions.loadPayload(msg.payload)

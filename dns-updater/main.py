@@ -116,7 +116,7 @@ def main():
         mqtt_client.publish("message-alerts", "Problemas al actualizar la IP de PB")
       last_ip = ip
     # Send heartbeat
-    mqtt_client.publish("heartbeats", "dns-updater")
+    mqtt_client.publish("heartbeats", SERVICE)
     # Wait until next iteration
     time.sleep(SLEEP_TIME)
 
