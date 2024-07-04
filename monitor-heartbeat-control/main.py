@@ -81,18 +81,12 @@ if __name__ == "__main__":
 	# Check env vars
 	def report(message):
 		print(message)
-		#logger.log(message, severity="ERROR")
 		exit()
-	if MQTT_USER == "no_set":
-		report("MQTT_USER env vars no set")
-	if MQTT_PASS == "no_set":
-		report("MQTT_PASS env vars no set")
-	if MQTT_HOST == "no_set":
-		report("MQTT_HOST env vars no set")
-	if HOMEWARE_API_URL == "no_set":
-		report("HOMEWARE_API_URL env vars no set")
-	if HOMEWARE_API_KEY == "no_set":
-		report("HOMEWARE_API_KEY env vars no set")
+	if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+	if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+	if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+	if HOMEWARE_API_URL == "no_set": report("HOMEWARE_API_URL env vars no set")
+	if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
     
 	# Declare the callback functions
 	mqtt_client.on_message = on_message
