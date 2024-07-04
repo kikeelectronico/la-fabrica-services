@@ -32,22 +32,22 @@ jobs:
             changed:
             - "${{ inputs.service }}/**"
 
-  create-rollback:
-    name: Create rollback for ${{ inputs.service }}
-    runs-on: ubuntu-latest
-    needs: path-filter
-    permissions:
-      contents: read
-      packages: write
-    if: (needs.path-filter.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && inputs.tag == 'main'
-    steps:
-      - name: Authenticate to Google Cloud
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      - name: Tag rollback image
-        run: |
-          gcloud container images add-tag ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}-rollback
+  # create-rollback:
+  #   name: Create rollback for ${{ inputs.service }}
+  #   runs-on: ubuntu-latest
+  #   needs: path-filter
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   if: (needs.path-filter.outputs.changed == 'true' || github.event_name == 'workflow_dispatch') && inputs.tag == 'main'
+  #   steps:
+  #     - name: Authenticate to Google Cloud
+  #       uses: 'google-github-actions/auth@v2'
+  #       with:
+  #         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  #     - name: Tag rollback image
+  #       run: |
+  #         gcloud container images add-tag ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}-rollback
   build:
     name: Build ${{ inputs.service }}
     runs-on: ubuntu-latest
