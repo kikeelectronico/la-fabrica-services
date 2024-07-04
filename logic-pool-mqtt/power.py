@@ -97,7 +97,7 @@ def powerManagment(homeware, topic, payload):
           bedroom = False
           bathroom = False
           livingroom_ac = shouldCool(homeware, "thermostat_livingroom", "ac_001")
-          heater = True
+          heater = not livingroom_ac
         else:
           livingroom = False
           bedroom = False
