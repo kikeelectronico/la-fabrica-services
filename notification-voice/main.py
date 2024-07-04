@@ -34,7 +34,7 @@ def on_message(client, userdata, msg):
   if msg.topic in TOPICS:
     if msg.topic == "heartbeats/request":
       # Send heartbeart
-      mqtt_client.publish("heartbeats", "voice-alert")
+      mqtt_client.publish("heartbeats", SERVICE)
     elif msg.topic == "voice-alert/text":
       # Send the message to the Smart Speakers
       payload = msg.payload.decode('utf-8').replace("\'", "\"")
@@ -47,14 +47,10 @@ if __name__ == "__main__":
   # Check env vars
   def report(message):
     print(message)
-    #logger.log(message, severity="ERROR")
     exit()
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
   
   # Declare the callback functions
   mqtt_client.on_message = on_message

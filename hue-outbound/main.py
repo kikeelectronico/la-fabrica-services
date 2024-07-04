@@ -49,7 +49,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
 	if msg.topic in TOPICS:
 		if msg.topic == "heartbeats/request":
-			mqtt_client.publish("heartbeats", "hue-outbound")
+			mqtt_client.publish("heartbeats", SERVICE)
 		else:
 			topic = msg.topic
 			payload = json.loads(msg.payload)
@@ -65,19 +65,16 @@ def on_message(client, userdata, msg):
 
 # Send an update request to Hue bridge API
 def sendToHue(hue_id, hue_status):
-	if HUE_TOKEN == "no_set" or HUE_HOST == "no_set":
-		logger.log("Hue env vars aren't set", severity="ERROR")
-	else:
-		try:
-			url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
-			headers = {
-				"Content-Type": "application/json"
-			}
-			response = requests.put(url, data = json.dumps(hue_status), headers = headers)
-			if not response.status_code == 200:
-				logger.log("Fail to update to Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
-		except (requests.ConnectionError, requests.Timeout) as exception:
-			logger.log("Fail to update Hue Bridge lights. Conection error.", severity="WARNING")
+	try:
+		url = "http://" + HUE_HOST + "/api/" +	HUE_TOKEN + "/lights/" + hue_id + "/state"
+		headers = {
+			"Content-Type": "application/json"
+		}
+		response = requests.put(url, data = json.dumps(hue_status), headers = headers)
+		if not response.status_code == 200:
+			logger.log("Fail to update to Hue Bridge lights. Status code: " + str(response.status_code), severity="WARNING")
+	except (requests.ConnectionError, requests.Timeout) as exception:
+		logger.log("Fail to update Hue Bridge lights. Conection error.", severity="WARNING")
 
 
 # Main entry point
@@ -85,18 +82,12 @@ if __name__ == "__main__":
 	# Check env vars
 	def report(message):
 		print(message)
-		#logger.log(message, severity="ERROR")
 		exit()
-	if MQTT_USER == "no_set":
-		report("MQTT_USER env vars no set")
-	if MQTT_PASS == "no_set":
-		report("MQTT_PASS env vars no set")
-	if MQTT_HOST == "no_set":
-		report("MQTT_HOST env vars no set")
-	if HUE_HOST == "no_set":
-		report("HUE_HOST env vars no set")
-	if HUE_TOKEN == "no_set":
-		report("HUE_TOKEN env vars no set")
+	if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+	if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+	if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+	if HUE_HOST == "no_set": report("HUE_HOST env vars no set")
+	if HUE_TOKEN == "no_set": report("HUE_TOKEN env vars no set")
 
 	# Declare the callback functions
 	mqtt_client.on_message = on_message

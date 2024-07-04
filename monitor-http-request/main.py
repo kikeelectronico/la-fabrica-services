@@ -33,22 +33,14 @@ if __name__ == "__main__":
   # Check env vars
   def report(message):
     print(message)
-    #logger.log(message, severity="ERROR")
     exit()
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
-  if HOMEWARE_API_URL == "no_set":
-    report("HOMEWARE_API_URL env vars no set")
-  if HOMEWARE_API_KEY == "no_set":
-    report("HOMEWARE_API_KEY env vars no set")
-  if HUE_HOST == "no_set":
-    report("HUE_HOST env vars no set")
-  if HUE_TOKEN == "no_set":
-    report("HUE_TOKEN env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if HOMEWARE_API_URL == "no_set": report("HOMEWARE_API_URL env vars no set")
+  if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
+  if HUE_HOST == "no_set": report("HUE_HOST env vars no set")
+  if HUE_TOKEN == "no_set": report("HUE_TOKEN env vars no set")
 
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -68,7 +60,7 @@ if __name__ == "__main__":
       mqtt_client.publish("voice-alert/text", "Hue bridge no responde")
       mqtt_client.publish("message-alerts", "Hue bridge no responde")
     # Send heartbeart
-    mqtt_client.publish("heartbeats", "monitor-http-request")
+    mqtt_client.publish("heartbeats", SERVICE)
     # Wait until next iteration
     time.sleep(SLEEP_TIME)
 

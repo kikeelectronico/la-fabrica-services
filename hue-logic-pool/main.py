@@ -47,27 +47,20 @@ if __name__ == "__main__":
   # Check env vars
   def report(message):
     print(message)
-    #logger.log(message, severity="ERROR")
     exit()
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
-  if HOMEWARE_API_URL == "no_set":
-    report("HOMEWARE_API_URL env vars no set")
-  if HOMEWARE_API_KEY == "no_set":
-    report("HOMEWARE_API_KEY env vars no set")
-  if HUE_HOST == "no_set":
-    report("HUE_HOST env vars no set")
-  if HUE_TOKEN == "no_set":
-    report("HUE_TOKEN env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if HOMEWARE_API_URL == "no_set": report("HOMEWARE_API_URL env vars no set")
+  if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
+  if HUE_HOST == "no_set": report("HUE_HOST env vars no set")
+  if HUE_TOKEN == "no_set": report("HUE_TOKEN env vars no set")
   
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
   mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
   logger.log("Starting " + SERVICE , severity="INFO")
+
   # Connect to Hue bridge
   url = "https://" + HUE_HOST + "/eventstream/clip/v2"
   headers = {
@@ -76,6 +69,7 @@ if __name__ == "__main__":
   }
   stream_response = requests.get(url, headers=headers, stream=True, verify=False)
   client = SSEClient(stream_response)
+  
   # Handle events
   for message in client.events():
     for event in json.loads(message.data):

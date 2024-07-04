@@ -56,7 +56,6 @@ def updateAstroData():
         "sunset": sunset,
         "sunrise": sunrise
       }
-      print(astro_data)
     else:
       logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
   except (requests.ConnectionError, requests.Timeout) as exception:
@@ -69,22 +68,14 @@ def main():
   # Check env vars
   def report(message):
     print(message)
-    #logger.log(message, severity="ERROR")
     exit()
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
-  if HOMEWARE_API_URL == "no_set":
-    report("HOMEWARE_API_URL env vars no set")
-  if HOMEWARE_API_KEY == "no_set":
-    report("HOMEWARE_API_KEY env vars no set")
-  if WHEATHER_API_KEY == "no_set":
-    report("HOMEWARE_API_KEY env vars no set")
-  if WHEATHER_QUERY == "no_set":
-    report("HOMEWARE_API_KEY env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if HOMEWARE_API_URL == "no_set": report("HOMEWARE_API_URL env vars no set")
+  if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
+  if WHEATHER_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
+  if WHEATHER_QUERY == "no_set": report("HOMEWARE_API_KEY env vars no set")
 
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -156,7 +147,6 @@ def main():
       just_executed = hour
       if homeware.get("scene_winter", "enable"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
-      # alert.voice("Quizá te interese activar el modo de luz tenue", speaker="livingroom", gpt3=False)
       homeware.execute("scene_dim","enable",True)
 
     #Astro time blocks
@@ -175,7 +165,7 @@ def main():
 
     # Send the heartbeat
     if time.time() - last_heartbeat_timestamp > 10:
-      mqtt_client.publish("heartbeats", "logic-pool-time")
+      mqtt_client.publish("heartbeats", SERVICE)
       last_heartbeat_timestamp = time.time()
     
     time.sleep(0.1)
