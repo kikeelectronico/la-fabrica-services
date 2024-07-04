@@ -73,6 +73,7 @@ if __name__ == "__main__":
   }
   stream_response = requests.get(url, headers=headers, stream=True, verify=False)
   client = SSEClient(stream_response)
+  
   # Handle events
   for message in client.events():
     for event in json.loads(message.data):
