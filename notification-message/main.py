@@ -46,7 +46,6 @@ if __name__ == "__main__":
   # Check env vars
   def report(message):
     print(message)
-    #logger.log(message, severity="ERROR")
     exit()
   if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
   if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
