@@ -48,16 +48,11 @@ if __name__ == "__main__":
     print(message)
     #logger.log(message, severity="ERROR")
     exit()
-  if MQTT_USER == "no_set":
-    report("MQTT_USER env vars no set")
-  if MQTT_PASS == "no_set":
-    report("MQTT_PASS env vars no set")
-  if MQTT_HOST == "no_set":
-    report("MQTT_HOST env vars no set")
-  if BOT_TOKEN == "no_set":
-    report("BOT_TOKEN env vars no set")
-  if ENRIQUE_CHAT_ID == "no_set":
-    report("ENRIQUE_CHAT_ID env vars no set")
+  if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
+  if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
+  if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if BOT_TOKEN == "no_set": report("BOT_TOKEN env vars no set")
+  if ENRIQUE_CHAT_ID == "no_set": report("ENRIQUE_CHAT_ID env vars no set")
 
   # Declare the callback functions
   mqtt_client.on_message = on_message
