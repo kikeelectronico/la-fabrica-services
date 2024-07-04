@@ -48,9 +48,8 @@ jobs:
       - name: Tag rollback image
         run: |
           gcloud container images add-tag ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }} ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}-rollback
-  
-  build_and_push:
-    name: Build and push ${{ inputs.service }}
+  build:
+    name: Build ${{ inputs.service }}
     runs-on: ubuntu-latest
     needs: path-filter
     permissions:
