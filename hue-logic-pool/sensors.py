@@ -52,7 +52,6 @@ def livingroom_light(service, homeware):
     light_level = service["light"]["light_level"]
     new_table_brightness = (light_level * MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS)/MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE
     new_table_brightness = round(new_table_brightness)
-    print(new_table_brightness)
     if not homeware.get("hue_11", "brightness") == new_table_brightness:
       homeware.execute("hue_11","brightness",new_table_brightness)
 
