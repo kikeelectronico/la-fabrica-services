@@ -81,4 +81,5 @@ if __name__ == "__main__":
         sensors.bedroom(service, homeware, mqtt_client)
         sensors.bathroom(service, homeware, mqtt_client)
         sensors.hall(service, homeware)
+        sensors.livingroom_motion(service, homeware, mqtt_client)
         sensors.livingroom_light(service, homeware)
