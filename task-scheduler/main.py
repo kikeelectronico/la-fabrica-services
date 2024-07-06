@@ -53,7 +53,13 @@ def on_message(client, userdata, msg):
     time_string = now.strftime("%H:%M")
     for index, task in enumerate(tasks):
       if task["time"] == time_string:
-        homeware.execute(task["device_id"], task["param"], task["value"])
+        assert_pass = True
+        for condition in task["asserts"]:
+          if not homeware.get(condition["device_id"],condition["param"]) == condition["value"]:
+            assert_pass = False
+            break
+        if assert_pass:
+          homeware.execute(task["target"]["device_id"], task["target"]["param"], task["target"]["value"])
         del tasks[index]
   else:
     new_task = json.loads(msg.payload)

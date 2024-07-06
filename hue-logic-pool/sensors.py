@@ -15,8 +15,48 @@ def bedroom(service, homeware, mqtt_client):
             homeware.execute("hue_6","on",True)
     else:
         if not homeware.get("hue_sensor_12", "on"):
-          mqtt_client.publish("tasks", json.dumps({"id": "bedroom_hue_6", "action": "set", "delta": 1, "device_id": "hue_6", "param": "on", "value": False}))
-          mqtt_client.publish("tasks", json.dumps({"id": "bedroom_rgb003", "action": "set", "delta": 1, "device_id": "rgb003", "param": "on", "value": False}))
+          mqtt_client.publish("tasks", 
+            json.dumps(
+              {
+                "id": "bedroom_hue_6",
+                "action": "set",
+                "delta": 1,
+                "target": {
+                  "device_id": "hue_6",
+                  "param": "on",
+                  "value": False
+                },
+                "asserts": [
+                  {
+                    "device_id": "c2b38173-883e-4766-bcb5-0cce2dc0e00e",
+                    "param": "occupancy",
+                    "value": "UNOCCUPIED"
+                  }
+                ]
+              }
+            )
+          )
+          mqtt_client.publish("tasks", 
+            json.dumps(
+              {
+                "id": "bedroom_rgb003",
+                "action": "set",
+                "delta": 1,
+                "target": {
+                  "device_id": "rgb003",
+                  "param": "on",
+                  "value": False
+                },
+                "asserts": [
+                  {
+                    "device_id": "c2b38173-883e-4766-bcb5-0cce2dc0e00e",
+                    "param": "occupancy",
+                    "value": "UNOCCUPIED"
+                  }
+                ]
+              }
+            )
+          )
 
 def bathroom(service, homeware, mqtt_client):
   if service["id"] == "73ef0d76-de9f-4cd1-b460-ec626fbc70fc":
@@ -33,8 +73,48 @@ def bathroom(service, homeware, mqtt_client):
           homeware.execute("light001","on",True)
     else:
         if not homeware.get("hue_sensor_14", "on"):
-          mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "set", "delta": 1, "device_id": "hue_sensor_2", "param": "on", "value": False}))
-          mqtt_client.publish("tasks", json.dumps({"id": "bathroom_light001", "action": "set", "delta": 1, "device_id": "light001", "param": "on", "value": False}))
+          mqtt_client.publish("tasks", 
+            json.dumps(
+              {
+                "id": "bathroom_hue_sensor_2",
+                "action": "set",
+                "delta": 1,
+                "target": {
+                  "device_id": "hue_sensor_2",
+                  "param": "on",
+                  "value": False
+                },
+                "asserts": [
+                  {
+                    "device_id": "06612edc-4b7c-4ef3-9f3c-157b9d482f8c",
+                    "param": "occupancy",
+                    "value": "UNOCCUPIED"
+                  }
+                ]
+              }
+            )
+          )
+          mqtt_client.publish("tasks", 
+            json.dumps(
+              {
+                "id": "bathroom_light001",
+                "action": "set",
+                "delta": 1,
+                "target": {
+                  "device_id": "light001",
+                  "param": "on",
+                  "value": False
+                },
+                "asserts": [
+                  {
+                    "device_id": "06612edc-4b7c-4ef3-9f3c-157b9d482f8c",
+                    "param": "occupancy",
+                    "value": "UNOCCUPIED"
+                  }
+                ]
+              }
+            )
+          )
 
 def hall(service, homeware):
   if service["id"] == "918cdad4-9c5e-40f7-9ef2-e6a64072a2ae":
@@ -56,6 +136,7 @@ def livingroom_motion(service, homeware, mqtt_client):
 MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 14602
 MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30
 MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS = 100
+MIN_LIVINGROOM_DARKNESS_TRIGGER = 12000
 
 def livingroom_light(service, homeware):
   if service["id"] == "953a8b79-47b3-4d37-a209-06eeaacda11b":
@@ -70,6 +151,11 @@ def livingroom_light(service, homeware):
     new_fairy_lights_brightness = round(new_fairy_lights_brightness)
     if not homeware.get("rgb001", "brightness") == new_fairy_lights_brightness:
       homeware.execute("rgb001","brightness",new_fairy_lights_brightness)
+    # The spot lamp
+    if light_level < MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable"):
+      homeware.execute("hue_1", "on", True)
+    elif light_level >= MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable"):
+      homeware.execute("hue_1", "on", False)
 
 
 
