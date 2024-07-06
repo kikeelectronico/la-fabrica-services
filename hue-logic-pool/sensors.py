@@ -44,6 +44,18 @@ def hall(service, homeware):
     else:
       homeware.execute("hue_7","on",False)
 
+MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 14602
+MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30 
+
+def livingroom_light(service, homeware):
+  if service["id"] == "953a8b79-47b3-4d37-a209-06eeaacda11b":
+    light_level = service["light"]["light_level"]
+    new_table_brightness = (light_level * MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS)/MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE
+    new_table_brightness = round(new_table_brightness)
+    print(new_table_brightness)
+    if not homeware.get("hue_11", "brightness") == new_table_brightness:
+      homeware.execute("hue_11","brightness",new_table_brightness)
+
 
 
 
