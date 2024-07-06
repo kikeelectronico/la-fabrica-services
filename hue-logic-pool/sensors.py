@@ -44,6 +44,33 @@ def hall(service, homeware):
     else:
       homeware.execute("hue_7","on",False)
 
+def livingroom_motion(service, homeware, mqtt_client):
+  if service["id"] == "f6615afc-fddb-4677-ad5a-ccabb906d7aa":
+    state = service["motion"]["motion"]
+    if state:
+      mqtt_client.publish("tasks", json.dumps({"id": "bathroom_light001", "action": "delete"}))
+      mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "delete"}))
+      homeware.execute("light001","on",False)
+      homeware.execute("hue_sensor_2","on",False)
+
+MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 14602
+MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30
+MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS = 100
+
+def livingroom_light(service, homeware):
+  if service["id"] == "953a8b79-47b3-4d37-a209-06eeaacda11b":
+    light_level = service["light"]["light_level"]
+    # Table light
+    new_table_brightness = (light_level * MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS)/MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE
+    new_table_brightness = round(new_table_brightness)
+    if not homeware.get("hue_11", "brightness") == new_table_brightness:
+      homeware.execute("hue_11","brightness",new_table_brightness)
+    # Fairy lights
+    new_fairy_lights_brightness = (light_level * MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS)/MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE
+    new_fairy_lights_brightness = round(new_fairy_lights_brightness)
+    if not homeware.get("rgb001", "brightness") == new_fairy_lights_brightness:
+      homeware.execute("rgb001","brightness",new_fairy_lights_brightness)
+
 
 
 
