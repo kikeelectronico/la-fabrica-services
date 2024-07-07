@@ -152,9 +152,9 @@ def livingroom_light(service, homeware):
     if not homeware.get("rgb001", "brightness") == new_fairy_lights_brightness:
       homeware.execute("rgb001","brightness",new_fairy_lights_brightness)
     # The spot lamp
-    if light_level < MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable"):
+    if light_level < MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable") and not homeware.get("sensor_001", "on"):
       homeware.execute("hue_1", "on", True)
-    elif light_level >= MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable"):
+    elif light_level >= MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable") and not homeware.get("sensor_001", "on"):
       homeware.execute("hue_1", "on", False)
 
 
