@@ -14,6 +14,7 @@ import power
 import general
 import sensors
 import switches
+import thermostats
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -62,19 +63,20 @@ TOPICS = [
 SERVICE = "logic-pool-mqtt-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 alert = Alert(mqtt_client, openai, logger)
 
 # Suscribe to topics on connect
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties):
   for topic in TOPICS:
     client.subscribe(topic)
 
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
-  try:
+  # try:
+  if True: 
     if msg.topic == "heartbeats/request":
       # Send heartbeat
       mqtt_client.publish("heartbeats", SERVICE)
@@ -102,9 +104,10 @@ def on_message(client, userdata, msg):
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
-  except Exception as e:
-    logger.log("Excepción en Logic pool mqtt", severity="WARNING")
-    logger.log(str(e), severity="WARNING") 
+        thermostats.livingroom(homeware, msg.topic, payload)
+  # except Exception as e:
+  #   logger.log("Excepción en Logic pool mqtt", severity="WARNING")
+  #   logger.log(str(e), severity="WARNING") 
 
 if __name__ == "__main__":
   # Check env vars
