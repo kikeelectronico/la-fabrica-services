@@ -44,7 +44,6 @@ class Spotify:
     if self.__refresh_token == "no_set" or self.__app_auth == "no_set" or self._covers_ddbb == "no_set":
       spotify = {
         "playing": False,
-        "tries": self._tries,
         "quota_exceeded": False
       }
 
@@ -95,7 +94,6 @@ class Spotify:
                   "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                   "image": self._track_image,
                   "image_position": self._track_image_position,
-                  "tries": self._tries,
                   "quota_exceeded": False
                 }
 
@@ -116,7 +114,6 @@ class Spotify:
                   "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                   "image": "",
                   "image_position": self._track_image_position,
-                  "tries": self._tries,
                   "quota_exceeded": True
                 }
 
@@ -133,7 +130,6 @@ class Spotify:
                   "artists": ", ".join([artist["name"] for artist in playing['item']['artists']]),
                   "image": self._track_image,
                   "image_position": self._track_image_position,
-                  "tries": self._tries,
                   "quota_exceeded": time.time() < self._stop_until
                 }
 
@@ -143,7 +139,6 @@ class Spotify:
           else:
             spotify = {
               "playing": False,
-              "tries": self._tries,
               "quota_exceeded": False
             }
 
@@ -154,7 +149,6 @@ class Spotify:
           self.logger.log("Spotify API returns a 204 code", severity="INFO")
           spotify = {
             "playing": False,
-            "tries": self._tries,
             "quota_exceeded": False
           }
 
@@ -164,7 +158,6 @@ class Spotify:
           self.logger.log("Spotify API quota exceeded", severity="WARNING")
           spotify = {
             "playing": False,
-            "tries": self._tries,
             "quota_exceeded": True
           }
 
@@ -177,7 +170,6 @@ class Spotify:
           else:
             spotify = {
               "playing": False,
-              "tries": self._tries,
               "quota_exceeded": False
             }
 
@@ -188,7 +180,6 @@ class Spotify:
           self.logger.log("Spotify API returns a " + str(error['status']) + " code", severity="INFO")
           spotify = {
             "playing": False,
-            "tries": self._tries,
             "quota_exceeded": False
           }
 
@@ -204,7 +195,6 @@ class Spotify:
         self.logger.log("Fail to get Spotify player data. Conection error.", severity="WARNING")
         spotify = {
           "playing": False,
-          "tries": self._tries,
           "quota_exceeded": False
         }
 

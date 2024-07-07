@@ -1,8 +1,11 @@
 import imp
 import paho.mqtt.client as mqtt
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
+import json
+from asyncio import sleep
 
 from spotify import Spotify
 from weather import Weather
@@ -64,6 +67,36 @@ internet = Internet(logger)
 @app.get("/")
 async def root():
   return {"message": "Hello, World!"}
+
+async def streamEvents():
+  last = {}
+  while True:
+    connected = internet.checkConnectivity()
+    if not last.get("connected", False) == connected:
+      event = {
+        "type": "internet",
+        "data": {
+          "connected": connected
+        }
+      }
+      last["connected"] = connected
+      yield f"data: {event}\n\n"
+      await sleep(1)
+    playing = spotify.getPlaying(max_tries=2)
+    if not last.get("playing", {}) == playing:
+      event = {
+        "type": "spotify",
+        "data": {
+          "playing": playing
+        }
+      }
+      last["playing"] = playing
+      yield f"data: {event}\n\n"
+      await sleep(1)
+
+@app.get("/stream")
+async def stream():
+  return StreamingResponse(streamEvents(), media_type="text/event-stream")
 
 @app.get("/spotify")
 async def spotifyEndPoint():
