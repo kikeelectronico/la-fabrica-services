@@ -12,6 +12,7 @@ import alerts
 import lights
 import power
 import general
+import sensors
 import switches
 
 # Load env vars
@@ -56,6 +57,7 @@ TOPICS = [
   "device/thermostat_dormitorio/capacityRemaining",
   "device/thermostat_livingroom/capacityRemaining",
   "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
+  "device/sensor_001/on",
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
 
@@ -96,6 +98,7 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
+        sensors.sofa_sensor(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
