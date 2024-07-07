@@ -149,6 +149,7 @@ def livingroom_light(service, homeware):
     # Fairy lights
     new_fairy_lights_brightness = (light_level * MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS)/MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE
     new_fairy_lights_brightness = round(new_fairy_lights_brightness)
+    if new_fairy_lights_brightness < 10: new_fairy_lights_brightness = 10
     if not homeware.get("rgb001", "brightness") == new_fairy_lights_brightness:
       homeware.execute("rgb001","brightness",new_fairy_lights_brightness)
     # The spot lamp
