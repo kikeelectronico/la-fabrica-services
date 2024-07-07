@@ -22,12 +22,12 @@ TOPICS = ["heartbeats/request","message-alerts"]
 SERVICE = "notification-message-" + ENV
 
 # Instantiate objects
-mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id=SERVICE)
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 bot = telebot.TeleBot(token=BOT_TOKEN)
 
 # Suscribe to topics on connect
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc, properties):
     for topic in TOPICS:
         client.subscribe(topic)
 
