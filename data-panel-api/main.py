@@ -119,20 +119,22 @@ async def streamEvents():
       last["forecast"] = forecast
       yield f"data: {event}\n\n"
       await sleep(1)
+    # Launches
+    (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
+    if not last.get("launches", {}) == launches:
+      event = {
+        "type": "launches",
+        "data": {
+          "launches": launches
+        }
+      }
+      last["launches"] = launches
+      yield f"data: {event}\n\n"
+      await sleep(1)
 
 @app.get("/stream")
 async def stream():
   return StreamingResponse(streamEvents(), media_type="text/event-stream")
-
-@app.get("/launches")
-async def launchesEndPoint():
-  (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
-
-  return {
-    "fail_to_update": fail_to_update,
-    "launches_flag": launches_flag,
-    "launches": launches
-  }
 
 if __name__ == "__main__":
    import uvicorn
