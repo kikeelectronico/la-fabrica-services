@@ -23,6 +23,31 @@ const scenes_to_show = [
   }
 ]
 
+const home_alerts = [
+  {
+    "text": "Humedad baja",
+    "severity": "normal",
+    "image": "drops.png",
+    "assert": {
+      "device_id": "thermostat_livingroom",
+      "param": "thermostatHumidityAmbient",
+      "value": 30,
+      "comparator": "<"
+    }
+  },
+  {
+    "text": "Humedad alta",
+    "severity": "normal",
+    "image": "drops.png",
+    "assert": {
+      "device_id": "thermostat_livingroom",
+      "param": "thermostatHumidityAmbient",
+      "value": 55,
+      "comparator": ">"
+    }
+  }
+]
+
 export default function Home(props) {
 
   const [internet, setInternet] = useState(null)
@@ -41,7 +66,6 @@ export default function Home(props) {
       else if (event.type === "weather") setWeather(event.data)
       else if (event.type === "launches") setLaunches(event.data)
       else if (event.type === "spotify") setSpotify(event.data)
-      console.log(event.data)
     };
     sse.onerror = () => {
       sse.close();
@@ -84,6 +108,13 @@ export default function Home(props) {
             home ? 
               scenes_to_show.map(scene => {
                 return <LightingScene data={home} scene={scene}/>
+              })
+            : <></>
+          }
+          { 
+            home ? 
+              home_alerts.map(alert => {
+                return <Alerts data={home} alert={alert}/>
               })
             : <></>
           }
