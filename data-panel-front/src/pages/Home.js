@@ -31,11 +31,11 @@ export default function Home(props) {
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
-    const events = (event) => {
+    sse.onmessage = e => {
+      let event = JSON.parse(e.data)
       if (event.type === "internet") setInternet(event.data)
       else if (event.type === "home") setHome(event.data)
-    }
-    sse.onmessage = event => events(JSON.parse(event.data));
+    };
     sse.onerror = () => {
       sse.close();
     }
