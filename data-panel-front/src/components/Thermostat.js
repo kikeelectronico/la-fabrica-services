@@ -5,15 +5,15 @@ export default function Thermostat(props) {
 
   const thermostatMode = () => {
     var mode = props.data.status.thermostat_livingroom.thermostatMode
-    if (mode == "heat") return "Calor"
-    if (mode == "cool") return "Frío"
-    if (mode == "off") return "Apagado"
+    if (mode === "heat") return "Calor"
+    if (mode === "cool") return "Frío"
+    if (mode === "off") return "Apagado"
   }
 
   const getColor = () => {
     var mode = props.data.status.thermostat_livingroom.thermostatMode
-    if (mode == "heat" && props.data.status.hue_8.on) return "255,0,0"
-    else if (mode == "cool") return "0,0,255"
+    if (mode === "heat" && props.data.status.hue_8.on) return "255,0,0"
+    else if (mode === "cool") return "0,0,255"
     else return "0,0,0"
   }
 

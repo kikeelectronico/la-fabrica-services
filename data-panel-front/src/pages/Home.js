@@ -85,7 +85,7 @@ export default function Home(props) {
         }
       )
     }
-  }, [spotify])
+  }, [props, spotify])
 
   return (
     <div className="homePage">
@@ -119,6 +119,7 @@ export default function Home(props) {
                 || (condition.comparator === "=" && home.status[condition.device_id][condition.param] === condition.value)
                 || (condition.comparator === ">" && home.status[condition.device_id][condition.param] > condition.value) )
                   return <Alerts alert={alert} key={index}/>
+                return <></>
               })
             : <></>
           }
