@@ -26,12 +26,14 @@ const scenes_to_show = [
 export default function Home(props) {
 
   const [internet, setInternet] = useState(null)
+  const [home, setHome] = useState(null)
   const [playing_spotify, setPlayingSpotify] = useState(false);
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     const events = (event) => {
       if (event.type === "internet") setInternet(event.data)
+      else if (event.type === "home") setHome(event.data)
     }
     sse.onmessage = event => events(JSON.parse(event.data));
     sse.onerror = () => {
@@ -50,7 +52,8 @@ export default function Home(props) {
         <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
-          {/* <Thermostat homeware={homeware} api_requested={api_requested}/>
+          { home ? <Thermostat data={home}/> : <></> }
+          {/*
           <Weather/>
           <Air/>
           <Power homeware={homeware} api_requested={api_requested}/>
@@ -64,7 +67,8 @@ export default function Home(props) {
             scenes_to_show.map(scene => {
               return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
             })
-          } */}
+          }
+          */}
         </div>
     </div>
   )
