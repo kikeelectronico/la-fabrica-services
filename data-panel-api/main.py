@@ -71,6 +71,7 @@ async def root():
 async def streamEvents():
   last = {}
   while True:
+    # Internet
     connected = internet.checkConnectivity()
     if not last.get("connected", False) == connected:
       event = {
@@ -82,6 +83,7 @@ async def streamEvents():
       last["connected"] = connected
       yield f"data: {event}\n\n"
       await sleep(1)
+    # Spotify
     playing = spotify.getPlaying(max_tries=2)
     if not last.get("playing", {}) == playing:
       event = {
