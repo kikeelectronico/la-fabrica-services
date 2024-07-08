@@ -59,10 +59,10 @@ export default function Home(props) {
           { weather ? <Air data={weather}/> : <></> }
           { home ? <Power data={home}/> : <></> }
           { home ? <Shower data={home}/> : <></> }
+          { home ? <Bedroom data={home}/> : <></> }
           {/*
           <Alerts/>
           <Launches/>
-          <Bedroom homeware={homeware} api_requested={api_requested}/>
           <NotAtHome homeware={homeware} api_requested={api_requested}/>
           <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
           {

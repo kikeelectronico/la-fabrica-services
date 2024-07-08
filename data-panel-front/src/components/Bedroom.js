@@ -5,8 +5,8 @@ export default function Bedroom(props) {
   return (
     <>
       {
-        props.api_requested && props.homeware.status_flag && 
-        ( props.homeware.status.hue_6.on || props.homeware.status.rgb003.on ) ? 
+        props.data && 
+        ( props.data.status.hue_6.on || props.data.status.rgb003.on ) ? 
           <div className="bedroomCard">
             <div className="bedroomMain">
               Dormitorio 
