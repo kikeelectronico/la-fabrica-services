@@ -81,7 +81,7 @@ async def streamEvents():
         }
       }
       last["connected"] = connected
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
     # Spotify
     playing = spotify.getPlaying(max_tries=2)
@@ -93,7 +93,7 @@ async def streamEvents():
         }
       }
       last["playing"] = playing
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
     # Home
     (status_flag, home_status) = homeware.getStatus()
@@ -105,7 +105,7 @@ async def streamEvents():
         }
       }
       last["home_status"] = home_status
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
     # Weather
     (fail_to_update, weather_flag, forecast) = weatherapi.getWeather()
@@ -117,7 +117,7 @@ async def streamEvents():
         }
       }
       last["forecast"] = forecast
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
     # Launches
     (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
@@ -129,7 +129,7 @@ async def streamEvents():
         }
       }
       last["launches"] = launches
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
 
 @app.get("/stream")

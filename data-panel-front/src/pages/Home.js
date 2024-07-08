@@ -25,26 +25,22 @@ const scenes_to_show = [
 
 export default function Home(props) {
 
-  const [homeware, setHomeware] = useState({status_flag: false});
-  const [api_requested, setApiRequested] = useState(false);
+  const [internet, setInternet] = useState(null)
   const [playing_spotify, setPlayingSpotify] = useState(false);
 
   useEffect(() => {
-    let random_delay = Math.random() * 900
-    setTimeout(() => {
-      getHomeware()
-      const interval = setInterval(() => getHomeware(), 2000)
-    },random_delay)
+    const sse = new EventSource(API + "/stream", { withCredentials: false });
+    const events = (event) => {
+      if (event.type === "internet") setInternet(event.data)
+    }
+    sse.onmessage = event => events(JSON.parse(event.data));
+    sse.onerror = () => {
+      sse.close();
+    }
+    return () => {
+      sse.close();
+    };
   }, [])
-
-  const getHomeware = () => {
-    fetch(API + "/homeware")
-    .then((response) => response.json())
-    .then((homeware) => setHomeware(homeware))
-    .catch((error) => console.log(error))
-    .finally(() => setApiRequested(true))
-  }
-
 
   return (
     <div className="homePage">
@@ -53,8 +49,8 @@ export default function Home(props) {
         </div>
         <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
-          <Internet/>
-          <Thermostat homeware={homeware} api_requested={api_requested}/>
+          { internet ? <Internet data={internet}/> : <></> }
+          {/* <Thermostat homeware={homeware} api_requested={api_requested}/>
           <Weather/>
           <Air/>
           <Power homeware={homeware} api_requested={api_requested}/>
@@ -68,7 +64,7 @@ export default function Home(props) {
             scenes_to_show.map(scene => {
               return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
             })
-          }
+          } */}
         </div>
     </div>
   )
