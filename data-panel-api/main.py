@@ -134,30 +134,6 @@ async def launchesEndPoint():
     "launches": launches
   }
 
-@app.get("/alerts")
-async def alertsEndPoint():
-  alerts = []
-
-  # Forecast
-  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
-  forecast = weather['forecast']['forecastday']
-
-  for (i, day) in enumerate(forecast):
-    if day['day']['daily_will_it_rain'] == 1 and i == 0:
-      alerts.append({
-        "text": "Hoy llueve",
-        "severity": "normal",
-        "image": "cloud.png"
-      })
-    elif day['day']['daily_will_it_rain'] == 1 and i == 1:
-      alerts.append({
-        "text": "Mañana va a llover",
-        "severity": "normal",
-        "image": "cloud.png"
-      })
-
-  return alerts
-
 if __name__ == "__main__":
    import uvicorn
    uvicorn.run(
