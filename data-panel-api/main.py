@@ -107,20 +107,22 @@ async def streamEvents():
       last["home_status"] = home_status
       yield f"data: {event}\n\n"
       await sleep(1)
+    # Weather
+    (fail_to_update, weather_flag, forecast) = weatherapi.getWeather()
+    if not last.get("forecast", {}) == forecast:
+      event = {
+        "type": "weather",
+        "data": {
+          "forecast": forecast
+        }
+      }
+      last["forecast"] = forecast
+      yield f"data: {event}\n\n"
+      await sleep(1)
 
 @app.get("/stream")
 async def stream():
   return StreamingResponse(streamEvents(), media_type="text/event-stream")
-
-@app.get("/weather")
-async def weatherEndPoint():
-  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
-
-  return {
-    "fail_to_update": fail_to_update,
-    "weather_flag": weather_flag,
-    "weather": weather
-  }
 
 @app.get("/launches")
 async def launchesEndPoint():
