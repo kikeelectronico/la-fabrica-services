@@ -106,15 +106,15 @@ export default function Home(props) {
           { spotify ? <Spotify data={spotify}/> : <></> }
           { 
             home ? 
-              scenes_to_show.map(scene => {
-                return <LightingScene data={home} scene={scene}/>
+              scenes_to_show.map((scene, index) => {
+                return <LightingScene data={home} scene={scene} key={index}/>
               })
             : <></>
           }
           { 
             home ? 
-              home_alerts.map(alert => {
-                return <Alerts data={home} alert={alert}/>
+              home_alerts.map((alert, index) => {
+                return <Alerts data={home} alert={alert} key={index}/>
               })
             : <></>
           }
