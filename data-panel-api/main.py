@@ -93,15 +93,22 @@ async def streamEvents():
       last["playing"] = playing
       yield f"data: {event}\n\n"
       await sleep(1)
+    # Home
+    (status_flag, home_status) = homeware.getStatus()
+    if not last.get("home_status", {}) == home_status:
+      event = {
+        "type": "home",
+        "data": {
+          "status": home_status
+        }
+      }
+      last["home_status"] = home_status
+      yield f"data: {event}\n\n"
+      await sleep(1)
 
 @app.get("/stream")
 async def stream():
   return StreamingResponse(streamEvents(), media_type="text/event-stream")
-
-@app.get("/spotify")
-async def spotifyEndPoint():
-  playing = spotify.getPlaying(max_tries=2)
-  return playing
 
 @app.get("/weather")
 async def weatherEndPoint():
@@ -113,18 +120,6 @@ async def weatherEndPoint():
     "weather": weather
   }
 
-@app.get("/homeware")
-async def homewareEndPoint():
-  (status_flag, status) = homeware.getStatus()
-  #(devices_flag, devices) = homeware.getDevices()
-
-  return {
-    "status_flag": status_flag,
-    #"devices_flag": devices_flag,
-    "status": status,
-    #"devices": devices,
-  }
-
 @app.get("/launches")
 async def launchesEndPoint():
   (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
@@ -134,11 +129,6 @@ async def launchesEndPoint():
     "launches_flag": launches_flag,
     "launches": launches
   }
-
-@app.get("/internet")
-async def internetEndPoint():
-  connectivity = internet.checkConnectivity()
-  return connectivity
 
 @app.get("/alerts")
 async def alertsEndPoint():
@@ -161,22 +151,6 @@ async def alertsEndPoint():
         "severity": "normal",
         "image": "cloud.png"
       })
-
-  # Home alerts      
-  (status_flag, status) = homeware.getStatus()
-  humidity = status["thermostat_livingroom"]["thermostatHumidityAmbient"]
-  if humidity < 30:
-    alerts.append({
-      "text": "Humedad baja",
-      "severity": "normal",
-      "image": "drops.png"
-    })
-  elif humidity > 55:
-    alerts.append({
-      "text": "Humedad alta",
-      "severity": "normal",
-      "image": "drops.png"
-    })
 
   return alerts
 
