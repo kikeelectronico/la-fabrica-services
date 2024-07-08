@@ -57,8 +57,8 @@ export default function Home(props) {
           { home ? <Thermostat data={home}/> : <></> }
           { weather ? <Weather data={weather}/> : <></> }
           { weather ? <Air data={weather}/> : <></> }
+          { home ? <Power data={home}/> : <></> }
           {/*
-          <Power homeware={homeware} api_requested={api_requested}/>
           <Alerts/>
           <Launches/>
           <Shower homeware={homeware} api_requested={api_requested}/>
