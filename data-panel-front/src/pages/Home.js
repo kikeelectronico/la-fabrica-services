@@ -80,13 +80,15 @@ export default function Home(props) {
           { home ? <NotAtHome data={home}/> : <></> }
           { launches ? <Launches data={launches}/> : <></> }
           { spotify ? <Spotify data={spotify}/> : <></> }
+          { 
+            home ? 
+              scenes_to_show.map(scene => {
+                return <LightingScene data={home} scene={scene}/>
+              })
+            : <></>
+          }
           {/*
           <Alerts/>
-          {
-            scenes_to_show.map(scene => {
-              return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
-            })
-          }
           */}
         </div>
     </div>
