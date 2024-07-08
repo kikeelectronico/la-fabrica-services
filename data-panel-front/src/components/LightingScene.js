@@ -5,7 +5,7 @@ export default function LightingScene(props) {
   return (
     <>
       {
-        props.api_requested && props.homeware.status_flag && props.homeware.status[props.scene.id].enable ? 
+        props.data && props.data.status[props.scene.id].enable ? 
           <div className="sceneCard">
             <div className="sceneMain">
               Escena

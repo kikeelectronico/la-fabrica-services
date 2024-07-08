@@ -1,48 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./alerts.css"
 
-const API = process.env.REACT_APP_DATA_PANEL_API_URL
+export default function Alerts(props) {
 
-export default function Alerts() {
-
-  const [alerts, setAlerts] = useState([]);
-
-  useEffect(() => {
-    let random_delay = Math.random() * 900
-    setTimeout(() => {
-      getData();
-      const interval = setInterval(() => getData(), 10000)
-    },random_delay)
-  }, [])
-
-  const getData = () => {
-    fetch(API + "/alerts")
-    .then((response) => response.json())
-    .then((data) => setAlerts(data))
-    .catch((error) => console.log(error))
+  const getStyle = () => {
+    var style_name = "alertsCritical"
+    if (props.alert['severity'] === "normal") style_name = "alertsNormal"
+    else if (props.alert['severity'] === "high") style_name = "alertsHigh"
+    else if (props.alert['severity'] === "low") style_name = "alertsLow"
+    return style_name
   }
 
   return (
-    <>
-      {
-        alerts.map((alert) => {
-          var style_name = "alertsCritical"
-          if (alert['severity'] === "normal") style_name = "alertsNormal"
-          else if (alert['severity'] === "high") style_name = "alertsHigh"
-          else if (alert['severity'] === "low") style_name = "alertsLow"
-
-          return (
-            <div
-              className={ "alertsCard " + (alert['severity'] === "critical" ? "criticalShadow" : "")}
-            >
-              <img className="alertImage" src={alert['image']} alt="cloud"/>
-              <div className={style_name}>
-                {alert['text']} 
-              </div>
-            </div>
-          )
-        })
-      }
-    </> 
+    <div
+      className={ "alertsCard " + (props.alert['severity'] === "critical" ? "criticalShadow" : "")}
+    >
+      <img className="alertImage" src={props.alert['image']} alt="cloud"/>
+      <div className={getStyle()}>
+        {props.alert['text']} 
+      </div>
+    </div>
   )
 }

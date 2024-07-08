@@ -1,8 +1,11 @@
 import imp
 import paho.mqtt.client as mqtt
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
+import json
+from asyncio import sleep
 
 from spotify import Spotify
 from weather import Weather
@@ -65,87 +68,73 @@ internet = Internet(logger)
 async def root():
   return {"message": "Hello, World!"}
 
-@app.get("/spotify")
-async def spotifyEndPoint():
-  playing = spotify.getPlaying(max_tries=2)
-  return playing
+async def streamEvents():
+  last = {}
+  while True:
+    # Internet
+    connected = internet.checkConnectivity()
+    if not last.get("connected", False) == connected:
+      event = {
+        "type": "internet",
+        "data": {
+          "connected": connected
+        }
+      }
+      last["connected"] = connected
+      yield f"data: {json.dumps(event)}\n\n"
+      await sleep(1)
+    # Spotify
+    playing = spotify.getPlaying(max_tries=2)
+    if not last.get("playing", {}) == playing:
+      event = {
+        "type": "spotify",
+        "data": {
+          "playing": playing
+        }
+      }
+      last["playing"] = playing
+      yield f"data: {json.dumps(event)}\n\n"
+      await sleep(1)
+    # Home
+    (status_flag, home_status) = homeware.getStatus()
+    if not last.get("home_status", {}) == home_status:
+      event = {
+        "type": "home",
+        "data": {
+          "status": home_status
+        }
+      }
+      last["home_status"] = home_status
+      yield f"data: {json.dumps(event)}\n\n"
+      await sleep(1)
+    # Weather
+    (fail_to_update, weather_flag, forecast) = weatherapi.getWeather()
+    if not last.get("forecast", {}) == forecast:
+      event = {
+        "type": "weather",
+        "data": {
+          "forecast": forecast
+        }
+      }
+      last["forecast"] = forecast
+      yield f"data: {json.dumps(event)}\n\n"
+      await sleep(1)
+    # Launches
+    (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
+    if not last.get("launches", {}) == launches:
+      event = {
+        "type": "launches",
+        "data": {
+          "launches": launches
+        }
+      }
+      last["launches"] = launches
+      yield f"data: {json.dumps(event)}\n\n"
+      await sleep(1)
 
-@app.get("/weather")
-async def weatherEndPoint():
-  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
-
-  return {
-    "fail_to_update": fail_to_update,
-    "weather_flag": weather_flag,
-    "weather": weather
-  }
-
-@app.get("/homeware")
-async def homewareEndPoint():
-  (status_flag, status) = homeware.getStatus()
-  #(devices_flag, devices) = homeware.getDevices()
-
-  return {
-    "status_flag": status_flag,
-    #"devices_flag": devices_flag,
-    "status": status,
-    #"devices": devices,
-  }
-
-@app.get("/launches")
-async def launchesEndPoint():
-  (fail_to_update, launches_flag, launches) = launchesapi.getLaunches()
-
-  return {
-    "fail_to_update": fail_to_update,
-    "launches_flag": launches_flag,
-    "launches": launches
-  }
-
-@app.get("/internet")
-async def internetEndPoint():
-  connectivity = internet.checkConnectivity()
-  return connectivity
-
-@app.get("/alerts")
-async def alertsEndPoint():
-  alerts = []
-
-  # Forecast
-  (fail_to_update, weather_flag, weather) = weatherapi.getWeather()
-  forecast = weather['forecast']['forecastday']
-
-  for (i, day) in enumerate(forecast):
-    if day['day']['daily_will_it_rain'] == 1 and i == 0:
-      alerts.append({
-        "text": "Hoy llueve",
-        "severity": "normal",
-        "image": "cloud.png"
-      })
-    elif day['day']['daily_will_it_rain'] == 1 and i == 1:
-      alerts.append({
-        "text": "Mañana va a llover",
-        "severity": "normal",
-        "image": "cloud.png"
-      })
-
-  # Home alerts      
-  (status_flag, status) = homeware.getStatus()
-  humidity = status["thermostat_livingroom"]["thermostatHumidityAmbient"]
-  if humidity < 30:
-    alerts.append({
-      "text": "Humedad baja",
-      "severity": "normal",
-      "image": "drops.png"
-    })
-  elif humidity > 55:
-    alerts.append({
-      "text": "Humedad alta",
-      "severity": "normal",
-      "image": "drops.png"
-    })
-
-  return alerts
+@app.get("/stream")
+async def stream():
+  return StreamingResponse(streamEvents(), media_type="text/event-stream")
 
 if __name__ == "__main__":
    import uvicorn
