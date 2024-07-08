@@ -28,6 +28,7 @@ export default function Home(props) {
   const [internet, setInternet] = useState(null)
   const [home, setHome] = useState(null)
   const [weather, setWeather] = useState(null)
+  const [launches, setLaunches] = useState(null)
   const [playing_spotify, setPlayingSpotify] = useState(false);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export default function Home(props) {
       if (event.type === "internet") setInternet(event.data)
       else if (event.type === "home") setHome(event.data)
       else if (event.type === "weather") setWeather(event.data)
+      else if (event.type === "launches") setLaunches(event.data)
     };
     sse.onerror = () => {
       sse.close();
@@ -61,9 +63,9 @@ export default function Home(props) {
           { home ? <Shower data={home}/> : <></> }
           { home ? <Bedroom data={home}/> : <></> }
           { home ? <NotAtHome data={home}/> : <></> }
+          { launches ? <Launches data={launches}/> : <></> }
           {/*
           <Alerts/>
-          <Launches/>
           <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
           {
             scenes_to_show.map(scene => {
