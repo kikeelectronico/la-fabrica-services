@@ -27,6 +27,7 @@ export default function Home(props) {
 
   const [internet, setInternet] = useState(null)
   const [home, setHome] = useState(null)
+  const [weather, setWeather] = useState(null)
   const [playing_spotify, setPlayingSpotify] = useState(false);
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Home(props) {
       let event = JSON.parse(e.data)
       if (event.type === "internet") setInternet(event.data)
       else if (event.type === "home") setHome(event.data)
+      else if (event.type === "weather") setWeather(event.data)
     };
     sse.onerror = () => {
       sse.close();
@@ -53,8 +55,8 @@ export default function Home(props) {
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
           { home ? <Thermostat data={home}/> : <></> }
+          { weather ? <Weather data={weather}/> : <></> }
           {/*
-          <Weather/>
           <Air/>
           <Power homeware={homeware} api_requested={api_requested}/>
           <Alerts/>
