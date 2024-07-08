@@ -23,52 +23,108 @@ const scenes_to_show = [
   }
 ]
 
+const home_alerts = [
+  {
+    "text": "Humedad baja",
+    "severity": "normal",
+    "image": "drops.png",
+    "assert": {
+      "device_id": "thermostat_livingroom",
+      "param": "thermostatHumidityAmbient",
+      "value": 30,
+      "comparator": "<"
+    }
+  },
+  {
+    "text": "Humedad alta",
+    "severity": "normal",
+    "image": "drops.png",
+    "assert": {
+      "device_id": "thermostat_livingroom",
+      "param": "thermostatHumidityAmbient",
+      "value": 55,
+      "comparator": ">"
+    }
+  }
+]
+
 export default function Home(props) {
 
-  const [homeware, setHomeware] = useState({status_flag: false});
-  const [api_requested, setApiRequested] = useState(false);
-  const [playing_spotify, setPlayingSpotify] = useState(false);
+  const [internet, setInternet] = useState(null)
+  const [home, setHome] = useState(null)
+  const [weather, setWeather] = useState(null)
+  const [launches, setLaunches] = useState(null)
+  const [spotify, setSpotify] = useState(null)
+  const [spotify_playing, setSpotifyPlaying] = useState(false);
 
   useEffect(() => {
-    let random_delay = Math.random() * 900
-    setTimeout(() => {
-      getHomeware()
-      const interval = setInterval(() => getHomeware(), 2000)
-    },random_delay)
+    const sse = new EventSource(API + "/stream", { withCredentials: false });
+    sse.onmessage = e => {
+      let event = JSON.parse(e.data)
+      if (event.type === "internet") setInternet(event.data)
+      else if (event.type === "home") setHome(event.data)
+      else if (event.type === "weather") setWeather(event.data)
+      else if (event.type === "launches") setLaunches(event.data)
+      else if (event.type === "spotify") setSpotify(event.data)
+    };
+    sse.onerror = () => {
+      sse.close();
+    }
+    return () => {
+      sse.close();
+    };
   }, [])
 
-  const getHomeware = () => {
-    fetch(API + "/homeware")
-    .then((response) => response.json())
-    .then((homeware) => setHomeware(homeware))
-    .catch((error) => console.log(error))
-    .finally(() => setApiRequested(true))
-  }
-
+  useEffect(() => {
+    if (spotify) {
+      setSpotifyPlaying(spotify.playing.playing)
+      props.setBackgroundImage(
+        {
+          url: spotify.playing.image,
+          position: "0% " + spotify.playing.image_position*10 + "%"
+        }
+      )
+    }
+  }, [props.setBackgroundImage, spotify])
 
   return (
     <div className="homePage">
         <div className="title">
           <h1>La fábrica</h1>
         </div>
-        <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
+        <div className={"homeCardsContainer" + (spotify_playing ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
-          <Internet/>
-          <Thermostat homeware={homeware} api_requested={api_requested}/>
-          <Weather/>
-          <Air/>
-          <Power homeware={homeware} api_requested={api_requested}/>
-          <Alerts/>
-          <Launches/>
-          <Shower homeware={homeware} api_requested={api_requested}/>
-          <Bedroom homeware={homeware} api_requested={api_requested}/>
-          <NotAtHome homeware={homeware} api_requested={api_requested}/>
-          <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
-          {
-            scenes_to_show.map(scene => {
-              return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
-            })
+          { internet ? <Internet data={internet}/> : <></> }
+          { home ? <Thermostat data={home}/> : <></> }
+          { weather ? <Weather data={weather}/> : <></> }
+          { weather ? <Air data={weather}/> : <></> }
+          { home ? <Power data={home}/> : <></> }
+          { home ? <Shower data={home}/> : <></> }
+          { home ? <Bedroom data={home}/> : <></> }
+          { home ? <NotAtHome data={home}/> : <></> }
+          { launches ? <Launches data={launches}/> : <></> }
+          { spotify ? <Spotify data={spotify}/> : <></> }
+          { 
+            home ? 
+              scenes_to_show.map((scene, index) => {
+                return <LightingScene data={home} scene={scene} key={index}/>
+              })
+            : <></>
           }
+          { 
+            home ? 
+              home_alerts.map((alert, index) => {
+                const condition = alert.assert
+                if ( (condition.comparator === "<" && home.status[condition.device_id][condition.param] < condition.value)
+                || (condition.comparator === "=" && home.status[condition.device_id][condition.param] === condition.value)
+                || (condition.comparator === ">" && home.status[condition.device_id][condition.param] > condition.value) )
+                  return <Alerts alert={alert} key={index}/>
+              })
+            : <></>
+          }
+          {/*
+          <Alerts/>
+          */}
         </div>
     </div>
   )

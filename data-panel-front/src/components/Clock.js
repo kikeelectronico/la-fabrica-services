@@ -3,7 +3,6 @@ import "./clock.css"
 
 export default function Clock() {
 
-  const [show, setShow] = useState(true);
   const [time, setTime] = useState("11:20");
 
   useEffect(() => {
@@ -22,20 +21,10 @@ export default function Clock() {
   }
 
   return (
-    <>
-      {
-        show ?
-          <>
-            <div className="clockCard">
-              <div className="clockTime">
-                {time}
-              </div>
-            </div>
-          </>
-          : <></>
-      }
-      
-      
-    </> 
+    <div className="clockCard">
+      <div className="clockTime">
+        {time}
+      </div>
+    </div>
   )
 }
