@@ -60,10 +60,10 @@ export default function Home(props) {
           { home ? <Power data={home}/> : <></> }
           { home ? <Shower data={home}/> : <></> }
           { home ? <Bedroom data={home}/> : <></> }
+          { home ? <NotAtHome data={home}/> : <></> }
           {/*
           <Alerts/>
           <Launches/>
-          <NotAtHome homeware={homeware} api_requested={api_requested}/>
           <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
           {
             scenes_to_show.map(scene => {
