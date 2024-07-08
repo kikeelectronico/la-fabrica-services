@@ -29,7 +29,8 @@ export default function Home(props) {
   const [home, setHome] = useState(null)
   const [weather, setWeather] = useState(null)
   const [launches, setLaunches] = useState(null)
-  const [playing_spotify, setPlayingSpotify] = useState(false);
+  const [spotify, setSpotify] = useState(null)
+  const [spotify_playing, setSpotifyPlaying] = useState(false);
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
@@ -39,6 +40,8 @@ export default function Home(props) {
       else if (event.type === "home") setHome(event.data)
       else if (event.type === "weather") setWeather(event.data)
       else if (event.type === "launches") setLaunches(event.data)
+      else if (event.type === "spotify") setSpotify(event.data)
+      console.log(event.data)
     };
     sse.onerror = () => {
       sse.close();
@@ -48,12 +51,24 @@ export default function Home(props) {
     };
   }, [])
 
+  useEffect(() => {
+    if (spotify) {
+      setSpotifyPlaying(spotify.playing.playing)
+      props.setBackgroundImage(
+        {
+          url: spotify.playing.image,
+          position: "0% " + spotify.playing.image_position*10 + "%"
+        }
+      )
+    }
+  }, [spotify])
+
   return (
     <div className="homePage">
         <div className="title">
           <h1>La fábrica</h1>
         </div>
-        <div className={"homeCardsContainer" + (playing_spotify ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
+        <div className={"homeCardsContainer" + (spotify_playing ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
           { home ? <Thermostat data={home}/> : <></> }
@@ -64,9 +79,9 @@ export default function Home(props) {
           { home ? <Bedroom data={home}/> : <></> }
           { home ? <NotAtHome data={home}/> : <></> }
           { launches ? <Launches data={launches}/> : <></> }
+          { spotify ? <Spotify data={spotify}/> : <></> }
           {/*
           <Alerts/>
-          <Spotify setPlayingSpotify={setPlayingSpotify} setBackgroundImage={props.setBackgroundImage} />
           {
             scenes_to_show.map(scene => {
               return <LightingScene homeware={homeware} api_requested={api_requested} scene={scene}/>
