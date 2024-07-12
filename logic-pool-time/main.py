@@ -103,6 +103,12 @@ def main():
     elif hour == "04:00:00" and not hour == just_executed:
       just_executed = hour
       updateAstroData()
+    elif hour == "06:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("thermostat_livingroom", "thermostatMode", "cool")
+    elif hour == "07:00:00" and not hour == just_executed:
+      just_executed = hour
+      homeware.execute("thermostat_livingroom", "thermostatMode", "off")
     elif hour == "08:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
