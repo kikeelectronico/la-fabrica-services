@@ -52,8 +52,11 @@ export default function Home(props) {
 
   const [internet, setInternet] = useState(null)
   const [home, setHome] = useState(null)
+  const [home_flag, setHomeFlag] = useState(null)
   const [weather, setWeather] = useState(null)
+  const [weather_flag, setWeatherFlag] = useState(null)
   const [launches, setLaunches] = useState(null)
+  const [launches_flag, setLaunchesFlag] = useState(null)
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
 
@@ -61,11 +64,11 @@ export default function Home(props) {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     sse.onmessage = e => {
       let event = JSON.parse(e.data)
-      if (event.type === "internet") setInternet(event.data)
-      else if (event.type === "home") setHome(event.data)
-      else if (event.type === "weather") setWeather(event.data)
-      else if (event.type === "launches") setLaunches(event.data)
-      else if (event.type === "spotify") setSpotify(event.data)
+      if (event.type === "internet") {setInternet(event.data)}
+      else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
+      else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
+      else if (event.type === "launches") {setLaunches(event.data); setLaunchesFlag(event.flags)}
+      else if (event.type === "spotify") {setSpotify(event.data)}
     };
     sse.onerror = () => {
       sse.close();
@@ -95,14 +98,14 @@ export default function Home(props) {
         <div className={"homeCardsContainer" + (spotify_playing ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
-          { home ? <Thermostat data={home}/> : <></> }
-          { weather ? <Weather data={weather}/> : <></> }
-          { weather ? <Air data={weather}/> : <></> }
-          { home ? <Power data={home}/> : <></> }
-          { home ? <Shower data={home}/> : <></> }
-          { home ? <Bedroom data={home}/> : <></> }
-          { home ? <NotAtHome data={home}/> : <></> }
-          { launches ? <Launches data={launches}/> : <></> }
+          { home && home_flag ? <Thermostat data={home}/> : <></> }
+          { weather && weather_flag ? <Weather data={weather}/> : <></> }
+          { weather && weather_flag ? <Air data={weather}/> : <></> }
+          { home && home_flag ? <Power data={home}/> : <></> }
+          { home && home_flag ? <Shower data={home}/> : <></> }
+          { home && home_flag ? <Bedroom data={home}/> : <></> }
+          { home && home_flag ? <NotAtHome data={home}/> : <></> }
+          { launches && launches_flag ? <Launches data={launches}/> : <></> }
           { spotify ? <Spotify data={spotify}/> : <></> }
           { 
             home ? 
