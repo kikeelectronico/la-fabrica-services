@@ -102,18 +102,24 @@ async def streamEvents():
         "type": "home",
         "data": {
           "status": home_status
+        },
+        "flags": {
+          "status": status_flag
         }
       }
       last["home_status"] = home_status
       yield f"data: {json.dumps(event)}\n\n"
       await sleep(1)
     # Weather
-    (fail_to_update, weather_flag, forecast) = weatherapi.getWeather()
+    (fail_to_update, forecast_flag, forecast) = weatherapi.getWeather()
     if not last.get("forecast", {}) == forecast:
       event = {
         "type": "weather",
         "data": {
           "forecast": forecast
+        },
+        "flags": {
+          "forecast": forecast_flag
         }
       }
       last["forecast"] = forecast
@@ -126,6 +132,9 @@ async def streamEvents():
         "type": "launches",
         "data": {
           "launches": launches
+        },
+        "flags": {
+          "launches": launches_flag
         }
       }
       last["launches"] = launches
