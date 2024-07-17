@@ -45,6 +45,17 @@ const home_alerts = [
       "value": 55,
       "comparator": ">"
     }
+  },
+  {
+    "text": "Ventana abierta",
+    "severity": "normal",
+    "image": "window.png",
+    "assert": {
+      "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+      "param": "openPercent",
+      "value": 100,
+      "comparator": "="
+    }
   }
 ]
 
