@@ -15,7 +15,11 @@ export default function Alerts(props) {
     <div
       className={ "alertsCard " + (props.alert['severity'] === "critical" ? "criticalShadow" : "")}
     >
-      <img className="alertImage" src={props.alert['image']} alt="cloud"/>
+      {
+        props.alert.image ?
+          <img className="alertImage" src={props.alert['image']} alt="cloud"/>
+        : <></>
+      }
       <div className={getStyle()}>
         {props.alert['text']} 
       </div>

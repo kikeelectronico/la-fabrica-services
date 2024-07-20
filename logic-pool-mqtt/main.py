@@ -59,6 +59,8 @@ TOPICS = [
   "device/thermostat_livingroom/capacityRemaining",
   "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
   "device/sensor_001/on",
+  "device/hue_4/brightness",
+  "device/hue_5/brightness",
 ]
 SERVICE = "logic-pool-mqtt-" + ENV
 
@@ -91,6 +93,7 @@ def on_message(client, userdata, msg):
         general.atHome(homeware, msg.topic, payload)
         general.prepareHome(homeware, msg.topic, payload)
         lights.resetEdisonBulb(homeware, msg.topic, payload)
+        lights.mirrorPyramids(homeware, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
         scenes.workTable(homeware, alert, msg.topic, payload)

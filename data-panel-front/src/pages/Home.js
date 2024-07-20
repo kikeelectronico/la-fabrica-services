@@ -70,11 +70,13 @@ export default function Home(props) {
   const [launches_flag, setLaunchesFlag] = useState(null)
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
+  const [weather_alerts, setWeatherAlerts] = useState(null)
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     sse.onmessage = e => {
       let event = JSON.parse(e.data)
+      console.log(event)
       if (event.type === "internet") {setInternet(event.data)}
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
       else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
@@ -101,6 +103,27 @@ export default function Home(props) {
     }
   }, [props.setBackgroundImage, spotify])
 
+  useEffect(() => {
+    if (weather_flag) {
+      let _weather_alerts = []
+      console.log(weather)
+      for (let i = 0; i < weather.alerts.alert.length; i++) {
+        let alert = weather.alerts.alert[i]
+        let severity = "low"
+        if (alert.category.includes("Extreme")) severity = "critical"
+        _weather_alerts.push(
+          {
+            "text": alert.desc,
+            "severity": severity,
+            "image": null
+          }
+        )
+        console.log(_weather_alerts)
+        setWeatherAlerts(_weather_alerts)
+      }
+    }
+  }, [weather, weather_flag])
+
   return (
     <div className="homePage">
         <div className="title">
@@ -110,8 +133,8 @@ export default function Home(props) {
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
           { home && home_flag ? <Thermostat data={home}/> : <></> }
-          { weather && weather_flag ? <Weather data={weather}/> : <></> }
-          { weather && weather_flag ? <Air data={weather}/> : <></> }
+          { weather && weather_flag.current ? <Weather data={weather.current}/> : <></> }
+          { weather && weather_flag.current ? <Air data={weather.current}/> : <></> }
           { home && home_flag ? <Power data={home}/> : <></> }
           { home && home_flag ? <Shower data={home}/> : <></> }
           { home && home_flag ? <Bedroom data={home}/> : <></> }
@@ -132,6 +155,13 @@ export default function Home(props) {
                 if ( (condition.comparator === "<" && home.status[condition.device_id][condition.param] < condition.value)
                 || (condition.comparator === "=" && home.status[condition.device_id][condition.param] === condition.value)
                 || (condition.comparator === ">" && home.status[condition.device_id][condition.param] > condition.value) )
+                  return <Alerts alert={alert} key={index}/>
+              })
+            : <></>
+          }
+          { 
+            weather_alerts ? 
+              weather_alerts.map((alert, index) => {
                   return <Alerts alert={alert} key={index}/>
               })
             : <></>
