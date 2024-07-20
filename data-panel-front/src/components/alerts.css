@@ -44,6 +44,7 @@
 
 .alertImage {
   height: 80px;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width:600px) {
