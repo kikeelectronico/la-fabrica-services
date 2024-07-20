@@ -121,6 +121,7 @@ def hall(service, homeware):
     state = service["motion"]["motion"]
     if state:
       homeware.execute("hue_7","on",True)
+      homeware.execute("scene_sensors_enable", "enable", True)
     else:
       homeware.execute("hue_7","on",False)
 
@@ -132,6 +133,7 @@ def livingroom_motion(service, homeware, mqtt_client):
       mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "delete"}))
       homeware.execute("light001","on",False)
       homeware.execute("hue_sensor_2","on",False)
+      homeware.execute("scene_sensors_enable", "enable", True)
 
 MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 25000
 MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30
