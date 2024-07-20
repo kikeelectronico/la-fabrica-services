@@ -4,7 +4,7 @@ import "./air.css"
 export default function Air(props) {
 
   const shadowColor = () => {
-    var aqi = props.data.forecast.current.air_quality['us-epa-index']
+    var aqi = props.data.air_quality['us-epa-index']
     if (aqi < 50) return "0,0,0"
     else if (aqi < 100) return "255,255,0"
     else if (aqi < 150) return "255,126,0"
@@ -24,20 +24,20 @@ export default function Air(props) {
             }}
           >
             <div className="airMain">
-              AQI {props.data.forecast.current.air_quality['us-epa-index']}
+              AQI {props.data.air_quality['us-epa-index']}
             </div>
             <hr className="airDivider"/>
             <div className="airThird">
-              CO: {Math.round(props.data.forecast.current.air_quality.co)} ppm
+              CO: {Math.round(props.data.air_quality.co)} ppm
             </div>
             <div className="airThird">
-              NO2: {Math.round(props.data.forecast.current.air_quality.no2*100)/100} ppm
+              NO2: {Math.round(props.data.air_quality.no2*100)/100} ppm
             </div>
             <div className="airThird">
-              O3: {Math.round(props.data.forecast.current.air_quality.o3*100)/100} ppm
+              O3: {Math.round(props.data.air_quality.o3*100)/100} ppm
             </div>
             <div className="airThird">
-              SO2: {Math.round(props.data.forecast.current.air_quality.so2*100)/100} ppm
+              SO2: {Math.round(props.data.air_quality.so2*100)/100} ppm
             </div>
           </div>
         : <></>

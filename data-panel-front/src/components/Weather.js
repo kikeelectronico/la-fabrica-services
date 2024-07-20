@@ -4,7 +4,7 @@ import "./weather.css"
 export default function Weather(props) {
 
   const shadowColor = () => {
-    var uv = props.data.forecast.current.uv
+    var uv = props.data.uv
     if (uv <= 2) return "0,0,0"
     else if (uv <= 5) return "255,255,0"
     else if (uv <= 7) return "255,126,0"
@@ -22,15 +22,15 @@ export default function Weather(props) {
               boxShadow: "0 0.1rem 1rem rgba(" + shadowColor()  + ", 0.8)"
             }}
           >
-            <img className="weatherIcon" alt="f" src={props.data.forecast.current.condition.icon}/>
+            <img className="weatherIcon" alt="f" src={props.data.condition.icon}/>
             <div className="weatherTemperature">
-              {props.data.forecast.current.temp_c} ºC - {props.data.forecast.current.feelslike_c} ºC
+              {props.data.temp_c} ºC - {props.data.feelslike_c} ºC
             </div>
             <div className="weatherUltraviolet">
-              UV {props.data.forecast.current.uv}
+              UV {props.data.uv}
             </div>
             <div className="weatherWind">
-              {props.data.forecast.current.wind_kph} km/h - {props.data.forecast.current.wind_dir}
+              {props.data.wind_kph} km/h - {props.data.wind_dir}
             </div>
           </div>
         : 

@@ -75,6 +75,7 @@ export default function Home(props) {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     sse.onmessage = e => {
       let event = JSON.parse(e.data)
+      console.log(event)
       if (event.type === "internet") {setInternet(event.data)}
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
       else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
@@ -110,8 +111,8 @@ export default function Home(props) {
           <Clock/>
           { internet ? <Internet data={internet}/> : <></> }
           { home && home_flag ? <Thermostat data={home}/> : <></> }
-          { weather && weather_flag ? <Weather data={weather}/> : <></> }
-          { weather && weather_flag ? <Air data={weather}/> : <></> }
+          { weather && weather_flag.current ? <Weather data={weather.current}/> : <></> }
+          { weather && weather_flag.current ? <Air data={weather.current}/> : <></> }
           { home && home_flag ? <Power data={home}/> : <></> }
           { home && home_flag ? <Shower data={home}/> : <></> }
           { home && home_flag ? <Bedroom data={home}/> : <></> }

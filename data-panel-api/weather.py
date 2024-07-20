@@ -31,7 +31,7 @@ class Weather:
       self.logger.log("Wheather env vars aren't set", severity="ERROR")
     else:
       try:
-        url = "https://api.weatherapi.com/v1/forecast.json?key=" + self.__api_key + "&q=" + self._query + "&days=2&aqi=yes&alerts=no"
+        url = "https://api.weatherapi.com/v1/forecast.json?key=" + self.__api_key + "&q=" + self._query + "&days=2&aqi=yes&alerts=yes"
         response = requests.request("GET", url, verify=False, timeout=5)
         if response.status_code == 200:
           self._weather = response.json()
@@ -49,6 +49,8 @@ class Weather:
       self._last_update = now
       self.updateWeather()
 
-    weather_flag = "location" in self._weather.keys()
+    current_flag = "current" in self._weather.keys()
+    forecast_flag = "forecast" in self._weather.keys()
+    alerts_flag = "alerts" in self._weather.keys()
 
-    return (self._fail_to_update, weather_flag, self._weather)
+    return (self._fail_to_update, current_flag, self._weather["current"], forecast_flag, self._weather["forecast"], alerts_flag, self._weather["alerts"])
