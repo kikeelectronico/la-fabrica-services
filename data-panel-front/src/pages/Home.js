@@ -70,6 +70,7 @@ export default function Home(props) {
   const [launches_flag, setLaunchesFlag] = useState(null)
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
+  const [weather_alerts, setWeatherAlerts] = useState(null)
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
@@ -102,6 +103,27 @@ export default function Home(props) {
     }
   }, [props.setBackgroundImage, spotify])
 
+  useEffect(() => {
+    if (weather_flag) {
+      let _weather_alerts = []
+      console.log(weather)
+      for (let i = 0; i < weather.alerts.alert.length; i++) {
+        let alert = weather.alerts.alert[i]
+        let severity = "low"
+        if (alert.category.includes("Extreme")) severity = "critical"
+        _weather_alerts.push(
+          {
+            "text": alert.desc,
+            "severity": severity,
+            "image": null
+          }
+        )
+        console.log(_weather_alerts)
+        setWeatherAlerts(_weather_alerts)
+      }
+    }
+  }, [weather, weather_flag])
+
   return (
     <div className="homePage">
         <div className="title">
@@ -133,6 +155,13 @@ export default function Home(props) {
                 if ( (condition.comparator === "<" && home.status[condition.device_id][condition.param] < condition.value)
                 || (condition.comparator === "=" && home.status[condition.device_id][condition.param] === condition.value)
                 || (condition.comparator === ">" && home.status[condition.device_id][condition.param] > condition.value) )
+                  return <Alerts alert={alert} key={index}/>
+              })
+            : <></>
+          }
+          { 
+            weather_alerts ? 
+              weather_alerts.map((alert, index) => {
                   return <Alerts alert={alert} key={index}/>
               })
             : <></>
