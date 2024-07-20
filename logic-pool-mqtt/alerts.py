@@ -26,16 +26,32 @@ def battery(homeware, alert, topic, payload):
 
 TEMPERATURE_THRESHOLD = 20
 abnormal_livingroom_temperature_alert = False
+temperature_reference = 100
 
-def AbnormalLivingroomTemperature(homeware, alert, topic, payload):
+def abnormalLivingroomTemperature(homeware, alert, topic, payload):
+  global abnormal_livingroom_temperature_alert
+  global temperature_reference
   if topic == "device/thermostat_livingroom":
+    # Low temperature
     if payload["thermostatTemperatureAmbient"] < TEMPERATURE_THRESHOLD:
-      if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
-        abnormal_livingroom_temperature_alert = True
-        alert.voice("La temperatura está disminuyento demasiado y la ventana está abierta.", speaker="livingroom", gpt3=False)
-      elif abnormal_livingroom_temperature_alert:
-        abnormal_livingroom_temperature_alert = False
-        alert.voice("Se ha cerrado la ventana.", speaker="livingroom", gpt3=False)
+      if homeware.get("scene_winter", "enable"):
+        if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
+          abnormal_livingroom_temperature_alert = True
+          alert.voice("La temperatura está disminuyento demasiado y la ventana está abierta.", speaker="livingroom", gpt3=False)
+    # High temperature
+    if payload["thermostatTemperatureAmbient"] > temperature_reference:
+      if homeware.get("scene_summer", "enable"):
+        if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
+          abnormal_livingroom_temperature_alert = True
+          alert.voice("La temperatura está aumentando y la ventana está abierta.", speaker="livingroom", gpt3=False)
+    temperature_reference = payload["thermostatTemperatureAmbient"]
+
+  if "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent":
+    # Thanks for closing the window
+    if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0 and abnormal_livingroom_temperature_alert:
+      abnormal_livingroom_temperature_alert = False
+      alert.voice("Gracias por cerrar la ventana.", speaker="livingroom", gpt3=False)
+    
 
 
       

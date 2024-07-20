@@ -87,7 +87,7 @@ def on_message(client, userdata, msg):
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
         alerts.battery(homeware, alert, msg.topic, payload)
-        alerts.AbnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
+        alerts.abnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
         general.hood(homeware, msg.topic, payload)
         general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
