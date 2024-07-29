@@ -8,6 +8,7 @@ import requests
 from hue import Hue
 from homeware import Homeware
 from logger import Logger
+import init
 import services
 
 import urllib3
@@ -65,7 +66,14 @@ if __name__ == "__main__":
   for hue_device in hue_devices:
     for service in hue_device["services"]:
       device_id_service_id[service["rid"]] = hue_device["id"]
-      
+
+  # Get initial values
+  init.contact(HUE_HOST, HUE_TOKEN, homeware, logger, device_id_service_id)
+  init.motion(HUE_HOST, HUE_TOKEN, homeware, logger, device_id_service_id)
+  init.connectivity(HUE_HOST, HUE_TOKEN, homeware, logger, device_id_service_id)
+  init.power(HUE_HOST, HUE_TOKEN, homeware, logger, device_id_service_id)
+  init.lightlevel(HUE_HOST, HUE_TOKEN, homeware, logger, device_id_service_id)
+
   # Connect to Hue bridge
   url = "https://" + HUE_HOST + "/eventstream/clip/v2"
   headers = {
