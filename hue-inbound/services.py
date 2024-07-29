@@ -42,7 +42,15 @@ def power(service, homeware, device_id_service_id):
     homeware.execute(device_id,"descriptiveCapacityRemaining", descriptiveCapacityRemaining)
     homeware.execute(device_id, "capacityRemaining", [{"rawValue": battery_level, "unit":"PERCENTAGE"}])
 
-def light(service, homeware, device_id_service_id):
+def lightlevel(service, homeware, device_id_service_id):
   if service["type"] == "light_level":
     brightness = round(service["light"]["light_level"] * 100 / 44000)
     homeware.execute(device_id_service_id[service["id"]], "brightness", brightness)
+
+def light(service, homeware, device_id_service_id):
+  if service["type"] == "light":
+    if "id_v1" in service:
+      device_id = "hue_" + service["id_v1"].split("/")[2]
+      status = service["on"]["on"]
+      if not status == homeware.get(device_id, "on"):
+        homeware.execute(device_id,"on", service["on"]["on"])

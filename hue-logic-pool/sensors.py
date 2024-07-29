@@ -135,6 +135,56 @@ def livingroom_motion(service, homeware, mqtt_client):
       homeware.execute("hue_sensor_2","on",False)
       homeware.execute("scene_sensors_enable", "enable", True)
 
+      if not homeware.get("scene_awake", "enable"):
+        mqtt_client.publish("tasks", json.dumps({"id": "hue_11", "action": "delete"}))
+        mqtt_client.publish("tasks", json.dumps({"id": "rgb001", "action": "delete"}))
+        homeware.execute("hue_11", "on", True)
+        homeware.execute("rgb001", "on", True)
+    else:
+      if not homeware.get("scene_awake", "enable"):
+        mqtt_client.publish("tasks", 
+          json.dumps(
+            {
+              "id": "hue_11",
+              "action": "set",
+              "delta": 1,
+              "target": {
+                "device_id": "hue_11",
+                "param": "on",
+                "value": False
+              },
+              "asserts": [
+                {
+                  "device_id": "c8bd20a2-69a5-4946-b6d6-3423b560ffa9",
+                  "param": "occupancy",
+                  "value": "UNOCCUPIED"
+                }
+              ]
+            }
+          )
+        )
+        mqtt_client.publish("tasks", 
+          json.dumps(
+            {
+              "id": "rgb001",
+              "action": "set",
+              "delta": 1,
+              "target": {
+                "device_id": "rgb001",
+                "param": "on",
+                "value": False
+              },
+              "asserts": [
+                {
+                  "device_id": "c8bd20a2-69a5-4946-b6d6-3423b560ffa9",
+                  "param": "occupancy",
+                  "value": "UNOCCUPIED"
+                }
+              ]
+            }
+          )
+        )
+
 MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 25000
 MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30
 MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS = 100
