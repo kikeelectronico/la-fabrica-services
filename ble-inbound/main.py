@@ -29,6 +29,9 @@ DEVICES = {
   },
   "thermostat_bathroom": {
     "mac": "F6:5C:6E:AA:3E:C8",
+  },
+  "temperature_001": {
+    "mac": "C8:6B:82:C6:0E:3E",
   }
 }
 # API UUIDs
@@ -75,9 +78,13 @@ class MyDelegate(btle.DefaultDelegate):
                 temp_int = (data[2] - 128) if data[2] >= 128 else (data[2] * -1)
                 temp_dec = data[1] if data[1] < 16 else 0
                 temp = temp_int + (temp_dec/10)
-                hum = data[3] if data[3] < 128 else (data[3] - 128)           
-                homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
-                homeware.execute(device_id,"thermostatHumidityAmbient",hum)
+                hum = data[3] if data[3] < 128 else (data[3] - 128)
+                if "thermostat" in device_id:
+                  homeware.execute(device_id,"thermostatTemperatureAmbient",temp)
+                  homeware.execute(device_id,"thermostatHumidityAmbient",hum)
+                elif "temperature" in device_id:
+                  homeware.execute(device_id,"temperatureAmbientCelsius",temp)
+                  homeware.execute(device_id,"humidityAmbientPercent",hum)
                 homeware.execute(device_id,"online",True)
             else:
                 self.logger.log("Unknown package from " + device, severity="WARNING")
