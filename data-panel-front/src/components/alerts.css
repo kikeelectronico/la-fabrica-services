@@ -1,6 +1,7 @@
 .alertsCard {
   width: 200px;
   height: 200px;
+  padding: 10px;
   border-radius: 20px;
   background-color: rgb(44, 43, 43);
   box-shadow: 0 0.1rem 1rem rgba(0,0,0,0.8);
