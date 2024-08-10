@@ -133,16 +133,31 @@ export default function Home(props) {
       const asserted = true
       switch(condition.comparator) {
         case "<":
-          if (!(home.status[condition.device_id][condition.param] < condition.value))
-            return false
+          if (typeof(condition.value) === "object"){
+            if (!(home.status[condition.device_id][condition.param] < home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] < condition.value))
+              return false
+          }
           break
         case "=":
-          if (!(home.status[condition.device_id][condition.param] === condition.value))
-            return false
+          if (typeof(condition.value) === "object") {
+            if (!(home.status[condition.device_id][condition.param] === home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] === condition.value))
+              return false
+          }
           break
         case ">":
-          if (!(home.status[condition.device_id][condition.param] > condition.value))
-            return false
+          if (typeof(condition.value) === "object") {
+            if (!(home.status[condition.device_id][condition.param] > home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] > condition.value))
+              return false
+          }
           break
       }
     }
