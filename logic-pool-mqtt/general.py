@@ -15,14 +15,6 @@ def hood(homeware, topic, payload):
       state = bathroom_humidity > bedroom_humidity + HUMIDITY_TRIGGER_OFFSET
     homeware.execute("hood001", "on", state)
 
-# Toggle the kitchen light
-def green(homeware, topic, payload):  
-  if topic == "device/switch003/on":
-    control_ids=["light004"]
-    for control_id in control_ids:
-      status = not homeware.get(control_id, "on")
-      homeware.execute(control_id, "on", status)
-
 # Do several task when leaving and arriving at home
 def atHome(homeware, topic, payload):
   if topic == "device/switch_at_home/on":

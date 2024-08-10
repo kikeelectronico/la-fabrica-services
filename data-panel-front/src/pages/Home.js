@@ -28,34 +28,94 @@ const home_alerts = [
     "text": "Humedad baja",
     "severity": "normal",
     "image": "drops.png",
-    "assert": {
-      "device_id": "thermostat_livingroom",
-      "param": "thermostatHumidityAmbient",
-      "value": 30,
-      "comparator": "<"
-    }
+    "conditions": [
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatHumidityAmbient",
+        "value": 30,
+        "comparator": "<"
+      }
+    ]
   },
   {
     "text": "Humedad alta",
     "severity": "normal",
     "image": "drops.png",
-    "assert": {
-      "device_id": "thermostat_livingroom",
-      "param": "thermostatHumidityAmbient",
-      "value": 55,
-      "comparator": ">"
-    }
+    "conditions": [
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatHumidityAmbient",
+        "value": 55,
+        "comparator": ">"
+      }
+    ]
   },
   {
     "text": "Ventana abierta",
     "severity": "normal",
     "image": "window.png",
-    "assert": {
-      "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
-      "param": "openPercent",
-      "value": 100,
-      "comparator": "="
-    }
+    "conditions": [
+      {
+        "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 100,
+        "comparator": "="
+      }
+    ]
+  },
+  {
+    "text": "Abre la ventana",
+    "severity": "low",
+    "conditions": [
+      {
+        "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 0,
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatMode",
+        "value": "cool",
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatTemperatureAmbient",
+        "value": {
+          "device_id": "temperature_001",
+          "param": "temperatureAmbientCelsius"
+        },
+        "comparator": ">"
+      }
+    ]
+  },
+  {
+    "text": "Cierra la ventana",
+    "severity": "low",
+    "conditions": [
+      {
+        "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 100,
+        "comparator": "="
+      },
+      {
+        "device_id": "scene_summer",
+        "param": "thermostatMode",
+        "value": true,
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatTemperatureAmbient",
+        "value": {
+          "device_id": "temperature_001",
+          "param": "temperatureAmbientCelsius"
+        },
+        "comparator": "<"
+      }
+    ]
   }
 ]
 
@@ -71,12 +131,13 @@ export default function Home(props) {
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
   const [weather_alerts, setWeatherAlerts] = useState(null)
+  const [see_closed, setSeeClosed] = useState(false)
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     sse.onmessage = e => {
+      setSeeClosed(false)
       let event = JSON.parse(e.data)
-      console.log(event)
       if (event.type === "internet") {setInternet(event.data)}
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
       else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
@@ -84,7 +145,8 @@ export default function Home(props) {
       else if (event.type === "spotify") {setSpotify(event.data)}
     };
     sse.onerror = () => {
-      sse.close();
+      setSeeClosed(true)
+      // sse.close();
     }
     return () => {
       sse.close();
@@ -106,7 +168,6 @@ export default function Home(props) {
   useEffect(() => {
     if (weather_flag) {
       let _weather_alerts = []
-      console.log(weather)
       for (let i = 0; i < weather.alerts.alert.length; i++) {
         let alert = weather.alerts.alert[i]
         let severity = "low"
@@ -118,11 +179,47 @@ export default function Home(props) {
             "image": null
           }
         )
-        console.log(_weather_alerts)
         setWeatherAlerts(_weather_alerts)
       }
     }
   }, [weather, weather_flag])
+
+  const assertAlert = (conditions) => {
+    for (let i = 0; i < conditions.length; i++) {
+      let condition = conditions[i]
+      const asserted = true
+      switch(condition.comparator) {
+        case "<":
+          if (typeof(condition.value) === "object"){
+            if (!(home.status[condition.device_id][condition.param] < home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] < condition.value))
+              return false
+          }
+          break
+        case "=":
+          if (typeof(condition.value) === "object") {
+            if (!(home.status[condition.device_id][condition.param] === home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] === condition.value))
+              return false
+          }
+          break
+        case ">":
+          if (typeof(condition.value) === "object") {
+            if (!(home.status[condition.device_id][condition.param] > home.status[condition.value.device_id][condition.value.param]))
+              return false
+          } else {
+            if (!(home.status[condition.device_id][condition.param] > condition.value))
+              return false
+          }
+          break
+      }
+    }
+    return true
+  }
 
   return (
     <div className="homePage">
@@ -131,7 +228,6 @@ export default function Home(props) {
         </div>
         <div className={"homeCardsContainer" + (spotify_playing ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
-          { internet ? <Internet data={internet}/> : <></> }
           { home && home_flag ? <Thermostat data={home}/> : <></> }
           { weather && weather_flag.current ? <Weather data={weather.current}/> : <></> }
           { weather && weather_flag.current ? <Air data={weather.current}/> : <></> }
@@ -151,10 +247,7 @@ export default function Home(props) {
           { 
             home ? 
               home_alerts.map((alert, index) => {
-                const condition = alert.assert
-                if ( (condition.comparator === "<" && home.status[condition.device_id][condition.param] < condition.value)
-                || (condition.comparator === "=" && home.status[condition.device_id][condition.param] === condition.value)
-                || (condition.comparator === ">" && home.status[condition.device_id][condition.param] > condition.value) )
+                if (assertAlert(alert.conditions))
                   return <Alerts alert={alert} key={index}/>
               })
             : <></>
@@ -166,9 +259,8 @@ export default function Home(props) {
               })
             : <></>
           }
-          {/*
-          <Alerts/>
-          */}
+          { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
+          { internet ? <Internet data={internet}/> : <></> }
         </div>
     </div>
   )

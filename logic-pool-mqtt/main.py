@@ -45,7 +45,6 @@ TOPICS = [
   "device/thermostat_dormitorio",
   "device/control",
   "device/scene_dim/enable",
-  "device/switch003/on",
   "device/switch_at_home/on",
   "device/switch_prepare_home/on",
   "device/switch_hood/on",
@@ -89,7 +88,6 @@ def on_message(client, userdata, msg):
         alerts.battery(homeware, alert, msg.topic, payload)
         alerts.abnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
         general.hood(homeware, msg.topic, payload)
-        general.green(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
         general.prepareHome(homeware, msg.topic, payload)
         lights.resetEdisonBulb(homeware, msg.topic, payload)
