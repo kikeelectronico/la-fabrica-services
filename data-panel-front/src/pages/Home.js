@@ -143,7 +143,7 @@ export default function Home(props) {
       else if (event.type === "spotify") {setSpotify(event.data)}
     };
     sse.onerror = () => {
-      sse.close();
+      // sse.close();
     }
     return () => {
       sse.close();
