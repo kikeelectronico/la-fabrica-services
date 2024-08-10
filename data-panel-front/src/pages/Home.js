@@ -62,6 +62,60 @@ const home_alerts = [
         "comparator": "="
       }
     ]
+  },
+  {
+    "text": "Abre la ventana",
+    "severity": "low",
+    "conditions": [
+      {
+        "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 0,
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatMode",
+        "value": "cool",
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatTemperatureAmbient",
+        "value": {
+          "device_id": "temperature_001",
+          "param": "temperatureAmbientCelsius"
+        },
+        "comparator": ">"
+      }
+    ]
+  },
+  {
+    "text": "Cierra la ventana",
+    "severity": "low",
+    "conditions": [
+      {
+        "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 100,
+        "comparator": "="
+      },
+      {
+        "device_id": "scene_summer",
+        "param": "thermostatMode",
+        "value": true,
+        "comparator": "="
+      },
+      {
+        "device_id": "thermostat_livingroom",
+        "param": "thermostatTemperatureAmbient",
+        "value": {
+          "device_id": "temperature_001",
+          "param": "temperatureAmbientCelsius"
+        },
+        "comparator": "<"
+      }
+    ]
   }
 ]
 
