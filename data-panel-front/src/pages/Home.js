@@ -228,7 +228,6 @@ export default function Home(props) {
         </div>
         <div className={"homeCardsContainer" + (spotify_playing ? " homeCardsContainerPlaying" : " homeCardsContainerNotPlaying")}>
           <Clock/>
-          { internet ? <Internet data={internet}/> : <></> }
           { home && home_flag ? <Thermostat data={home}/> : <></> }
           { weather && weather_flag.current ? <Weather data={weather.current}/> : <></> }
           { weather && weather_flag.current ? <Air data={weather.current}/> : <></> }
@@ -261,6 +260,7 @@ export default function Home(props) {
             : <></>
           }
           { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
+          { internet ? <Internet data={internet}/> : <></> }
           {/*
           <Alerts/>
           */}
