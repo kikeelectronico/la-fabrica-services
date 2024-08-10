@@ -131,10 +131,12 @@ export default function Home(props) {
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
   const [weather_alerts, setWeatherAlerts] = useState(null)
+  const [see_closed, setSeeClosed] = useState(false)
 
   useEffect(() => {
     const sse = new EventSource(API + "/stream", { withCredentials: false });
     sse.onmessage = e => {
+      setSeeClosed(false)
       let event = JSON.parse(e.data)
       if (event.type === "internet") {setInternet(event.data)}
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
@@ -143,6 +145,7 @@ export default function Home(props) {
       else if (event.type === "spotify") {setSpotify(event.data)}
     };
     sse.onerror = () => {
+      setSeeClosed(true)
       // sse.close();
     }
     return () => {
@@ -257,6 +260,7 @@ export default function Home(props) {
               })
             : <></>
           }
+          { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
           {/*
           <Alerts/>
           */}
