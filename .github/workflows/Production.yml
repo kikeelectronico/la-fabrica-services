@@ -17,6 +17,7 @@ jobs:
         service:
           - bigquery-outbound
           - ble-inbound
+          - chromecast-logic-pool
           - data-panel-api
           - data-panel-front
           - dns-updater
