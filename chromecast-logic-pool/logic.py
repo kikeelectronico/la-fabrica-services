@@ -6,6 +6,7 @@ def playingLights(homeware):
   homeware.execute("hue_10", "on", False)
   homeware.execute("hue_4", "on", False)
   homeware.execute("hue_5", "on", False)
+  homeware.execute("light004", "on", False)
   global prev_player_playing_state
   prev_player_playing_state = True
       
