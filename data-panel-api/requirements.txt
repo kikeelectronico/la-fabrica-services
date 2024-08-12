@@ -7,4 +7,4 @@ tensorflow==2.14.0
 Pillow==10.3.0
 paho-mqtt==2.1.0
 google-cloud-logging==3.11.1
-numpy<2
+numpy<3
