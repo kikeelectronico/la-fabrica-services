@@ -44,7 +44,12 @@ def abnormalLivingroomTemperature(homeware, alert, topic, payload):
         if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
           abnormal_livingroom_temperature_alert = True
           alert.voice("La temperatura está aumentando y la ventana está abierta.", speaker="livingroom", gpt3=False)
-    temperature_reference = payload["thermostatTemperatureAmbient"]
+      temperature_reference = payload["thermostatTemperatureAmbient"]
+    if payload["thermostatTemperatureAmbient"] < temperature_reference:
+      if homeware.get("scene_summer", "enable"):
+        if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
+          temperature_reference = payload["thermostatTemperatureAmbient"]
+      
 
   if "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent":
     # Thanks for closing the window
