@@ -248,14 +248,14 @@ export default function Home(props) {
             home ? 
               home_alerts.map((alert, index) => {
                 if (assertAlert(alert.conditions))
-                  return <Alerts alert={alert} key={index}/>
+                  return <Alerts alert={alert} key={index} wide={false}/>
               })
             : <></>
           }
           { 
             weather_alerts ? 
               weather_alerts.map((alert, index) => {
-                  return <Alerts alert={alert} key={index}/>
+                  return <Alerts alert={alert} key={index} wide={true}/>
               })
             : <></>
           }

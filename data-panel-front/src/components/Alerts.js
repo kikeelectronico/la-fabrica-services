@@ -13,7 +13,7 @@ export default function Alerts(props) {
 
   return (
     <div
-      className={ "alertsCard " + (props.alert['severity'] === "critical" ? "criticalShadow" : "")}
+      className={ "alertsCard " + (props.wide ? "alertsCardWide" : "") +  " " + (props.alert['severity'] === "critical" ? "criticalShadow" : "")}
     >
       {
         props.alert.image ?
