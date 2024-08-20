@@ -1,6 +1,7 @@
 prev_player_playing_state = False 
 
-def playingLights(homeware):global prev_player_playing_state
+def playingLights(homeware):
+  global prev_player_playing_state
   if not prev_player_playing_state:
     homeware.execute("hue_1", "on", False)
     homeware.execute("hue_9", "on", False)
