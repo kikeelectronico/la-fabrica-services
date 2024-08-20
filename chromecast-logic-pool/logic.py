@@ -1,14 +1,15 @@
 prev_player_playing_state = False 
 
-def playingLights(homeware):
-  homeware.execute("hue_1", "on", False)
-  homeware.execute("hue_9", "on", False)
-  homeware.execute("hue_10", "on", False)
-  homeware.execute("hue_4", "on", False)
-  homeware.execute("hue_5", "on", False)
-  homeware.execute("light004", "on", False)
-  global prev_player_playing_state
-  prev_player_playing_state = True
+def playingLights(homeware):global prev_player_playing_state
+  if not prev_player_playing_state:
+    homeware.execute("hue_1", "on", False)
+    homeware.execute("hue_9", "on", False)
+    homeware.execute("hue_10", "on", False)
+    homeware.execute("hue_4", "on", False)
+    homeware.execute("hue_5", "on", False)
+    if homeware.get("thermostat_livingroom", "thermostatMode") == "cool":
+      homeware.execute("thermostat_livingroom", "thermostatMode", "off")
+    prev_player_playing_state = True
       
 def notPlayingLights(homeware):
   global prev_player_playing_state
