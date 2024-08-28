@@ -170,12 +170,13 @@ export default function Home(props) {
       let _weather_alerts = []
       for (let i = 0; i < weather.alerts.alert.length; i++) {
         let alert = weather.alerts.alert[i]
+        console.log(alert)
         let severity = "low"
         if (alert.category.includes("Extreme")) severity = "critical"
         else if (alert.event.includes("Moderate")) severity = "normal"
         _weather_alerts.push(
           {
-            "text": alert.event + alert.desc != "" ? ": " + alert.desc : "",
+            "text": alert.event + (alert.desc != "" ? " - " + alert.desc : ""),
             "severity": severity,
             "image": null
           }
