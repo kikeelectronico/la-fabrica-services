@@ -172,9 +172,10 @@ export default function Home(props) {
         let alert = weather.alerts.alert[i]
         let severity = "low"
         if (alert.category.includes("Extreme")) severity = "critical"
+        else if (alert.evnet.includes("Moderate")) severity = "normal"
         _weather_alerts.push(
           {
-            "text": alert.desc,
+            "text": alert.event + ": " + alert.desc,
             "severity": severity,
             "image": null
           }
