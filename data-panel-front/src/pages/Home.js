@@ -175,7 +175,7 @@ export default function Home(props) {
         else if (alert.evnet.includes("Moderate")) severity = "normal"
         _weather_alerts.push(
           {
-            "text": alert.event + ": " + alert.desc,
+            "text": alert.event + alert.desc != "" ? ": " + alert.desc : "",
             "severity": severity,
             "image": null
           }
