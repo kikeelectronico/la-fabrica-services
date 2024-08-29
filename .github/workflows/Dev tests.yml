@@ -33,7 +33,7 @@ jobs:
     uses: ./.github/workflows/build-service.yml
     with:
       service: ${{ matrix.service }}
-      tag: only-test
+      tag: test
     secrets:
       REGISTRY: ${{secrets.REGISTRY}}
       REGISTRY_REPO: ${{secrets.REGISTRY_REPO}}
