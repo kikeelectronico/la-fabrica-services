@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 import json
 from asyncio import sleep
+import time
 
 from spotify import Spotify
 from weather import Weather
@@ -143,6 +144,15 @@ async def streamEvents():
       }
       last["launches"] = launches
       yield f"data: {json.dumps(event)}\n\n"
+      await sleep(0.1)
+    if time.time() - last.get("ping", 0) > 5:
+      event = {
+        "type": "ping",
+        "data": {},
+        "flags": {}
+      }
+      last["ping"] = time.time()
+      yield f"data: {event}\n\n"
       await sleep(0.1)
 
 @app.get("/stream")
