@@ -66,11 +66,11 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Authenticate to Google Cloud
         uses: 'google-github-actions/auth@v2'
-        if: inputs.tag != 'only-test'
+        if: inputs.tag != 'test'
         with:
           credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       - name: Configure docker
-        if: inputs.tag != 'only-test'
+        if: inputs.tag != 'test'
         run: |
           gcloud auth configure-docker ${{ secrets.REGISTRY }}
       - name: Build and push Docker image
@@ -79,5 +79,5 @@ jobs:
           context: ${{ inputs.service }}
           file: ${{ inputs.service }}/Dockerfile
           platforms: linux/amd64
-          push: ${{ inputs.tag != 'only-test' }}
+          push: ${{ inputs.tag != 'test' }}
           tags: ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}
