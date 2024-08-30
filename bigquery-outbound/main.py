@@ -27,7 +27,9 @@ TOPICS = [
 	"device/thermostat_bathroom/thermostatTemperatureAmbient",
 	"device/thermostat_bathroom/thermostatHumidityAmbient",
 	"device/thermostat_dormitorio/thermostatTemperatureAmbient",
-	"device/thermostat_dormitorio/thermostatHumidityAmbient"
+	"device/thermostat_dormitorio/thermostatHumidityAmbient",
+	"device/temperature_001/temperatureAmbientCelsius",
+	"device/temperature_001/humidityAmbientPercent"
 ]
 SERVICE = "bigquery-outbound-" + ENV
 
