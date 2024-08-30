@@ -47,6 +47,8 @@ def typifyPayload(topic, payload):
 		return payload
 	elif "Temperature" in topic:
 		return float(payload)
+	elif "temperature" in topic:
+		return float(payload)
 	else:
 		return int(payload)
 
