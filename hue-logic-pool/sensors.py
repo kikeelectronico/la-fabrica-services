@@ -158,6 +158,11 @@ def livingroom_motion(service, homeware, mqtt_client):
                   "device_id": "c8bd20a2-69a5-4946-b6d6-3423b560ffa9",
                   "param": "occupancy",
                   "value": "UNOCCUPIED"
+                },
+                {
+                  "device_id": "scene_awake",
+                  "param": "enable",
+                  "value": False
                 }
               ]
             }
@@ -179,6 +184,11 @@ def livingroom_motion(service, homeware, mqtt_client):
                   "device_id": "c8bd20a2-69a5-4946-b6d6-3423b560ffa9",
                   "param": "occupancy",
                   "value": "UNOCCUPIED"
+                },
+                {
+                  "device_id": "scene_awake",
+                  "param": "enable",
+                  "value": False
                 }
               ]
             }
