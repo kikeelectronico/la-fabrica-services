@@ -10,7 +10,7 @@ def getHomewareTest(api_url, api_key):
     try:
         url = api_url + "/api/status/get/scene_dim"
         headers = {
-            "Authorization": "baerer " + api_key
+            "Authorization": "bearer " + api_key
         }
 
         response = requests.get(url, headers=headers)

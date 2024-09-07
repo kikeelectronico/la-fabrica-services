@@ -28,7 +28,7 @@ class Homeware:
       try:
         url = self.__url + "/api/status/get/"
         headers = {
-            "Authorization": "baerer " + self.__api_key
+            "Authorization": "bearer " + self.__api_key
         }
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
@@ -50,7 +50,7 @@ class Homeware:
       try:
         url = self.__url + "/api/devices/get/"
         headers = {
-            "Authorization": "baerer " + self.__api_key
+            "Authorization": "bearer " + self.__api_key
         }
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
