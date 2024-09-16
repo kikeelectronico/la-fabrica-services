@@ -57,6 +57,38 @@ def bedroom(service, homeware, mqtt_client):
               }
             )
           )
+          # Fan
+          mqtt_client.publish("tasks", 
+            json.dumps(
+              {
+                "id": "bedroom_fan",
+                "action": "set",
+                "delta": 1,
+                "target": {
+                  "device_id": "hue_8",
+                  "param": "on",
+                  "value": False
+                },
+                "asserts": [
+                  {
+                    "device_id": "c2b38173-883e-4766-bcb5-0cce2dc0e00e",
+                    "param": "occupancy",
+                    "value": "UNOCCUPIED"
+                  },
+                  {
+                    "device_id": "scene_summer",
+                    "param": "enable",
+                    "value": True
+                  },
+                  {
+                    "device_id": "hue_8",
+                    "param": "on",
+                    "value": True
+                  }
+                ]
+              }
+            )
+          )
 
 def bathroom(service, homeware, mqtt_client):
   if service["id"] == "73ef0d76-de9f-4cd1-b460-ec626fbc70fc":
