@@ -31,7 +31,7 @@ class Homeware:
     else:
       try:
         url = self.__url + "/api/status/get/" + id
-        headers = {"Authorization": "baerer " + self.__token}
+        headers = {"Authorization": "bearer " + self.__token}
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
           return response.json()[param]

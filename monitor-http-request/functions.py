@@ -6,7 +6,7 @@ def homewareTest(api_url, api_key, logger):
   try:
     url = api_url + "/api/status/get/scene_dim"
     headers = {
-        "Authorization": "baerer " + api_key
+        "Authorization": "bearer " + api_key
     }
 
     response = requests.get(url, headers=headers)
