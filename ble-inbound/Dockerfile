@@ -1,4 +1,4 @@
-FROM python:3.12.5-bullseye
+FROM python:3.12.6-bullseye
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
