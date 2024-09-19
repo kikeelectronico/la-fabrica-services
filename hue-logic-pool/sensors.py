@@ -71,9 +71,9 @@ def bedroom(service, homeware, mqtt_client):
                 },
                 "asserts": [
                   {
-                    "device_id": "c2b38173-883e-4766-bcb5-0cce2dc0e00e",
+                    "device_id": "c8bd20a2-69a5-4946-b6d6-3423b560ffa9",
                     "param": "occupancy",
-                    "value": "UNOCCUPIED"
+                    "value": "OCCUPIED"
                   },
                   {
                     "device_id": "scene_summer",
