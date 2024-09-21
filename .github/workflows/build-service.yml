@@ -80,4 +80,4 @@ jobs:
           file: ${{ inputs.service }}/Dockerfile
           platforms: linux/amd64
           push: ${{ inputs.tag != 'test' }}
-          tags: ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_REPO }}/${{ inputs.service }}:${{ inputs.tag }}
+          tags: ${{ inputs.tag != 'test' && format('{0}/{1}/{2}:{3}', secrets.REGISTRY,secrets.REGISTRY_REPO, inputs.service, inputs.tag) || format('{{0}:{1}', inputs.service, inputs.tag)}}

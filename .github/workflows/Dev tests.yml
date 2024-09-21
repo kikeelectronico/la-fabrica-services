@@ -1,4 +1,4 @@
-name: Dev tests
+name: Dev pull request
 
 on:
   workflow_dispatch:
