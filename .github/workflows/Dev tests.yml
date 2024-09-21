@@ -1,4 +1,4 @@
-name: Dev PR
+name: Dev pull request
 
 on:
   workflow_dispatch:
