@@ -1,4 +1,4 @@
-name: Dev tests
+name: Dev PR
 
 on:
   workflow_dispatch:
