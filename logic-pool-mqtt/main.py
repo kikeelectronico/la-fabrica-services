@@ -57,7 +57,7 @@ TOPICS = [
   "device/thermostat_dormitorio/capacityRemaining",
   "device/thermostat_livingroom/capacityRemaining",
   "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
-  "device/sensor_001/on",
+  "device/pressure001/occupancy",
   "device/hue_4/brightness",
   "device/hue_4/color",
   "device/hue_5/brightness",
