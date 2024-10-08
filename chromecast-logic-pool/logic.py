@@ -1,13 +1,17 @@
+import time
+
 prev_player_playing_state = False 
 
 def playingLights(homeware):
   global prev_player_playing_state
   if not prev_player_playing_state:
-    homeware.execute("hue_1", "on", False)
-    homeware.execute("hue_9", "on", False)
-    homeware.execute("hue_10", "on", False)
     homeware.execute("hue_4", "on", False)
     homeware.execute("hue_5", "on", False)
+    time.sleep(0.2)
+    homeware.execute("hue_1", "on", False)
+    time.sleep(0.2)
+    homeware.execute("hue_9", "on", False)
+    homeware.execute("hue_10", "on", False)
     if homeware.get("thermostat_livingroom", "thermostatMode") == "cool":
       homeware.execute("thermostat_livingroom", "thermostatMode", "off")
     prev_player_playing_state = True
