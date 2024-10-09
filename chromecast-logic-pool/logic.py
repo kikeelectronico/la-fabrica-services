@@ -7,9 +7,9 @@ def playingLights(homeware):
   if not prev_player_playing_state:
     homeware.execute("hue_4", "on", False)
     homeware.execute("hue_5", "on", False)
-    time.sleep(0.2)
+    time.sleep(0.5)
     homeware.execute("hue_1", "on", False)
-    time.sleep(0.2)
+    time.sleep(0.5)
     homeware.execute("hue_9", "on", False)
     homeware.execute("hue_10", "on", False)
     if homeware.get("thermostat_livingroom", "thermostatMode") == "cool":
