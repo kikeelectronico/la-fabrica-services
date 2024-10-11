@@ -230,7 +230,6 @@ def livingroom_motion(service, homeware, mqtt_client):
 MAX_LIVINGROOM_TABLE_LIGHT_LIGHT_LEVEL_REFERENCE = 25000
 MAX_LIVINGROOM_TABLE_LIGHT_BRIGHTNESS = 30
 MAX_LIVINGROOM_FAIRY_LIGHTS_BRIGHTNESS = 100
-MIN_LIVINGROOM_DARKNESS_TRIGGER = 12000
 
 def livingroom_light(service, homeware):
   if service["id"] == "953a8b79-47b3-4d37-a209-06eeaacda11b":
@@ -246,11 +245,7 @@ def livingroom_light(service, homeware):
     if new_fairy_lights_brightness < 10: new_fairy_lights_brightness = 10
     if not homeware.get("rgb001", "brightness") == new_fairy_lights_brightness:
       homeware.execute("rgb001","brightness",new_fairy_lights_brightness)
-    # The spot lamp
-    if light_level < MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable") and homeware.get("pressure001", "occupancy") == "UNOCCUPIED":
-      homeware.execute("hue_1", "on", True)
-    elif light_level >= MIN_LIVINGROOM_DARKNESS_TRIGGER and homeware.get("scene_awake", "enable") and homeware.get("pressure001", "occupancy") == "UNOCCUPIED":
-      homeware.execute("hue_1", "on", False)
+
 
 
 
