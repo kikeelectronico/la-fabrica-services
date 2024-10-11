@@ -26,7 +26,7 @@ def mirrorPyramids(homeware, topic, payload):
     if not payload["temperatureK"] == homeware.get("hue_4", "color")["temperatureK"]:
       homeware.execute("hue_4", "color", payload)
 
-MIN_LIVINGROOM_DARKNESS_TRIGGER = 15
+MIN_LIVINGROOM_DARKNESS_TRIGGER = 20
 
 def sofaLight(homeware, topic, payload):
   if topic == "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness" or topic == "device/pressure001/occupancy":
