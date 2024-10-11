@@ -12,7 +12,6 @@ import alerts
 import lights
 import power
 import general
-import sensors
 import switches
 import thermostats
 
@@ -57,6 +56,7 @@ TOPICS = [
   "device/thermostat_dormitorio/capacityRemaining",
   "device/thermostat_livingroom/capacityRemaining",
   "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
+  "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness",
   "device/pressure001/occupancy",
   "device/hue_4/brightness",
   "device/hue_4/color",
@@ -94,6 +94,7 @@ def on_message(client, userdata, msg):
         general.prepareHome(homeware, msg.topic, payload)
         lights.resetEdisonBulb(homeware, msg.topic, payload)
         lights.mirrorPyramids(homeware, msg.topic, payload)
+        lights.sofaLight(homeware, msg.topic, payload)
         scenes.cinema(homeware, alert, msg.topic, payload)
         scenes.dinningroom(homeware, alert, msg.topic, payload)
         scenes.workTable(homeware, alert, msg.topic, payload)
@@ -103,7 +104,6 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
-        sensors.sofa_sensor(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
