@@ -1,6 +1,4 @@
 import React from "react";
-import ReactMarkdown from 'react-markdown'
-import remarkBreaks from 'remark-breaks';
 import "./alerts.css"
 
 export default function Alerts(props) {
@@ -23,7 +21,7 @@ export default function Alerts(props) {
         : <></>
       }
       <div className={getStyle()}>
-        <ReactMarkdown>{props.alert['text']}</ReactMarkdown> 
+        {props.alert['text']} 
       </div>
     </div>
   )
