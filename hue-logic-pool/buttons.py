@@ -21,8 +21,9 @@ def kitchen(service, homeware):
     elif state == "short_release":
       homeware.execute("light004","on",buttons_preloaded_data["light004/on"])
     elif state == "long_press":
-      homeware.execute("hue_4", "on", True)
-      homeware.execute("hue_5", "on", True)
+      new_state = not homeware.get("hue_4","on")
+      homeware.execute("hue_4", "on", new_state)
+      homeware.execute("hue_5", "on", new_state)
 
 def bathroom(service, homeware):
   if service["id"] == "04db1f5f-3467-4a26-9e17-7d9e6586a536":
