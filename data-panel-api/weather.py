@@ -35,6 +35,15 @@ class Weather:
         response = requests.request("GET", url, verify=False, timeout=5)
         if response.status_code == 200:
           self._weather = response.json()
+          # Delete repeated alerts
+          seen_alerts = []
+          unique_alerts = []
+          for alert in self._weather["alerts"]["alert"]:
+            if not alert in seen_alerts:
+              seen_alerts.append(alert)
+              unique_alerts.append(alert)
+          self._weather["alerts"]["alert"] = unique_alerts
+
           self._fail_to_update = False
         else:
           self.logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
