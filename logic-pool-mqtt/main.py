@@ -12,6 +12,7 @@ import alerts
 import lights
 import power
 import general
+import sensors
 import switches
 import thermostats
 
@@ -104,6 +105,7 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
+        sensors.livingroomLight(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
