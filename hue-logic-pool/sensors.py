@@ -161,12 +161,12 @@ def livingroom_motion(service, homeware, mqtt_client):
   if service["id"] == "f6615afc-fddb-4677-ad5a-ccabb906d7aa":
     state = service["motion"]["motion"]
     if state:
-      mqtt_client.publish("tasks", json.dumps({"id": "bathroom_light001", "action": "delete"}))
-      mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "delete"}))
-      homeware.execute("light001","on",False)
-      homeware.execute("hue_sensor_2","on",False)
       homeware.execute("scene_sensors_enable", "enable", True)
-
+      if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
+        mqtt_client.publish("tasks", json.dumps({"id": "bathroom_light001", "action": "delete"}))
+        mqtt_client.publish("tasks", json.dumps({"id": "bathroom_hue_sensor_2", "action": "delete"}))
+        homeware.execute("light001","on",False)
+        homeware.execute("hue_sensor_2","on",False)
       if not homeware.get("scene_awake", "enable"):
         mqtt_client.publish("tasks", json.dumps({"id": "hue_11", "action": "delete"}))
         mqtt_client.publish("tasks", json.dumps({"id": "rgb001", "action": "delete"}))
