@@ -1,6 +1,5 @@
 import paho.mqtt.client as mqtt
 import os
-import time
 import json
 from sseclient import SSEClient
 import requests
