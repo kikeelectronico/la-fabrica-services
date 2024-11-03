@@ -208,7 +208,7 @@ def shower(homeware, alert, topic, payload):
       alert.voice("El baño está listo", speaker="livingroom,bedroom", gpt3=False)
       waiting_for_shower = False
 
-BATHROOM_HUMIDITY_DELTA = 20
+BATHROOM_HUMIDITY_DELTA = 10
 
 def disableShowerScene(homeware, alert, topic, payload):
   if topic == "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy":
