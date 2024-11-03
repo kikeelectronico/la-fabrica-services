@@ -213,11 +213,12 @@ BATHROOM_HUMIDITY_DELTA = 10
 def disableShowerScene(homeware, alert, topic, payload):
   if topic == "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy":
     if payload == "OCCUPIED":
-      if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
-        global initial_bathroom_humidity
-        if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
-          homeware.execute("scene_ducha", "enable", False)
-          alert.voice("He desactivado el modo ducha", speaker="livingroom", gpt3=False)
+      if homeware.get("scene_ducha", "enable"):
+        if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
+          global initial_bathroom_humidity
+          if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
+            homeware.execute("scene_ducha", "enable", False)
+            alert.voice("He desactivado el modo ducha", speaker="livingroom", gpt3=False)
 
 # Set the power alert scene
 def powerAlert(homeware, alert, topic, payload):
