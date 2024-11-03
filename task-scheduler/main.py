@@ -1,12 +1,9 @@
 import paho.mqtt.client as mqtt
 import datetime
 import os
-import time
-import openai
 import json
 
 from homeware import Homeware
-from Alert import Alert
 from logger import Logger
 
 # Load env vars
@@ -36,7 +33,6 @@ tasks = []
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
-alert = Alert(mqtt_client, openai, SERVICE)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc, properties):
@@ -88,6 +84,8 @@ def main():
   if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
   if WHEATHER_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
   if WHEATHER_QUERY == "no_set": report("HOMEWARE_API_KEY env vars no set")
+  
+  logger.log("Starting " + SERVICE , severity="INFO")
 
   # Declare the callback functions
   mqtt_client.on_message = on_message

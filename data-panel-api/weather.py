@@ -1,6 +1,5 @@
 import os
 import requests
-import json
 import time
 
 RELOAD_TIME = 60
