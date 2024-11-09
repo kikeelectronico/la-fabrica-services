@@ -23,7 +23,7 @@ jobs:
           - hue-sensors-alerts
           - logger
           - logic-pool
-          - logic-pool-time
+          - timer
           - monitor-heartbeat-control
           - monitor-heartbeat-request
           - monitor-http-request
