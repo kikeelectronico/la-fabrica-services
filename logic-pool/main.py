@@ -7,12 +7,9 @@ import functions
 from Homeware import Homeware
 from logger import Logger
 from Alert import Alert
-import scenes
 import alerts
-import lights
 import power
 import general
-import sensors
 import switches
 import thermostats
 
@@ -33,37 +30,24 @@ ENV = os.environ.get("ENV", "dev")
 MQTT_PORT = 1883
 TOPICS = [
   "heartbeats/request",
-  "device/scene_kitchen/enable",
+  "device/thermostat_bathroom/capacityRemaining",
+  "device/thermostat_dormitorio/capacityRemaining",
+  "device/thermostat_livingroom/capacityRemaining",
+  "device/thermostat_livingroom",
+  "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
+  "device/switch_at_home/on",
+  "device/switch_prepare_home/on",
   "device/scene_ducha/enable",
-  "device/scene_cinema/enable",
-  "device/scene_diningroom/enable",
-  "device/scene_work_table/enable",
-  "device/scene_main_presence/enable",
   "device/current001/brightness",
   "device/thermostat_livingroom",
   "device/thermostat_bathroom",
   "device/thermostat_dormitorio",
-  "device/control",
-  "device/scene_dim/enable",
-  "device/switch_at_home/on",
-  "device/switch_prepare_home/on",
-  "device/switch_hood/on",
-  "device/hue_sensor_2/on",
+  "device/switch_at_home/on"
+  "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
-  "device/hue_11/color",
-  "device/hue_11/brightness",
-  "device/thermostat_bathroom/capacityRemaining",
-  "device/thermostat_dormitorio/capacityRemaining",
-  "device/thermostat_livingroom/capacityRemaining",
-  "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
-  "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness",
-  "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy",
-  "device/pressure001/occupancy",
-  "device/hue_4/brightness",
-  "device/hue_4/color",
-  "device/hue_5/brightness",
-  "device/hue_5/color",
+  "device/hue_sensor_2/on"
+  "device/thermostat_livingroom"
 ]
 SERVICE = "logic-pool-" + ENV
 
@@ -91,23 +75,9 @@ def on_message(client, userdata, msg):
       if payload is not None:
         alerts.battery(homeware, alert, msg.topic, payload)
         alerts.abnormalLivingroomTemperature(homeware, alert, msg.topic, payload)
-        general.hood(homeware, msg.topic, payload)
         general.atHome(homeware, msg.topic, payload)
         general.prepareHome(homeware, msg.topic, payload)
-        lights.resetEdisonBulb(homeware, msg.topic, payload)
-        lights.mirrorPyramids(homeware, msg.topic, payload)
-        lights.sofaLight(homeware, msg.topic, payload)
-        scenes.cinema(homeware, alert, msg.topic, payload)
-        scenes.dinningroom(homeware, alert, msg.topic, payload)
-        scenes.workTable(homeware, alert, msg.topic, payload)
-        scenes.mainPresence(homeware, alert, msg.topic, payload)
-        scenes.kitchen(homeware, alert, msg.topic, payload)
-        scenes.dim(homeware, msg.topic, payload)
-        scenes.shower(homeware, alert, msg.topic, payload)
-        scenes.disableShowerScene(homeware, alert, msg.topic, payload)
-        scenes.powerAlert(homeware, alert, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
-        sensors.livingroomLight(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
