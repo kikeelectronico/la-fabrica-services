@@ -65,7 +65,7 @@ TOPICS = [
   "device/hue_5/brightness",
   "device/hue_5/color",
 ]
-SERVICE = "logic-pool-mqtt-" + ENV
+SERVICE = "logic-pool-" + ENV
 
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)

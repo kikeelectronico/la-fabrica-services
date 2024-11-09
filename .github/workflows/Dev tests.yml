@@ -22,7 +22,7 @@ jobs:
           - hue-outbound
           - hue-sensors-alerts
           - logger
-          - logic-pool-mqtt
+          - logic-pool
           - logic-pool-time
           - monitor-heartbeat-control
           - monitor-heartbeat-request
