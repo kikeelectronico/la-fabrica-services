@@ -16,6 +16,7 @@ jobs:
           - chromecast-logic-pool
           - data-panel-api
           - data-panel-front
+          - device-controller
           - dns-updater
           - hue-inbound
           - hue-logic-pool
