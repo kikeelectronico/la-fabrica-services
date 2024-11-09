@@ -8,8 +8,8 @@ from Homeware import Homeware
 from logger import Logger
 from Alert import Alert
 import lights
-import general
-import sensors
+import air
+import scenes
 
 # Load env vars
 if os.environ.get("MQTT_PASS", "no_set") == "no_set":
@@ -64,11 +64,11 @@ def on_message(client, userdata, msg):
       # Exec the logic
       payload = functions.loadPayload(msg.payload)
       if payload is not None:
-        general.hood(homeware, msg.topic, payload)
+        air.hood(homeware, msg.topic, payload)
         lights.resetEdisonBulb(homeware, msg.topic, payload)
         lights.mirrorPyramids(homeware, msg.topic, payload)
         lights.sofaLight(homeware, msg.topic, payload)
-        sensors.livingroomLight(homeware, msg.topic, payload)
+        scenes.livingroomLight(homeware, msg.topic, payload)
   except Exception as e:
     logger.log("Excepción en Logic pool mqtt", severity="WARNING")
     logger.log(str(e), severity="WARNING") 
