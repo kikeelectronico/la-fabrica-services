@@ -7,7 +7,6 @@ import functions
 from Homeware import Homeware
 from logger import Logger
 from Alert import Alert
-import scenes
 import lights
 import general
 import sensors
@@ -58,7 +57,6 @@ def on_connect(client, userdata, flags, rc, properties):
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
   # try:
-  if True: 
     if msg.topic == "heartbeats/request":
       # Send heartbeat
       mqtt_client.publish("heartbeats", SERVICE)
@@ -70,10 +68,6 @@ def on_message(client, userdata, msg):
         lights.resetEdisonBulb(homeware, msg.topic, payload)
         lights.mirrorPyramids(homeware, msg.topic, payload)
         lights.sofaLight(homeware, msg.topic, payload)
-        scenes.dim(homeware, msg.topic, payload)
-        scenes.shower(homeware, alert, msg.topic, payload)
-        scenes.disableShowerScene(homeware, alert, msg.topic, payload)
-        scenes.powerAlert(homeware, alert, msg.topic, payload)
         sensors.livingroomLight(homeware, msg.topic, payload)
   # except Exception as e:
   #   logger.log("Excepción en Logic pool mqtt", severity="WARNING")

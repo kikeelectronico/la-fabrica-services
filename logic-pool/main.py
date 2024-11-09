@@ -10,6 +10,7 @@ from Alert import Alert
 import alerts
 import power
 import general
+import scenes
 import switches
 import thermostats
 
@@ -47,7 +48,12 @@ TOPICS = [
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
   "device/hue_sensor_2/on"
-  "device/thermostat_livingroom"
+  "device/thermostat_livingroom",
+  "device/scene_dim/enable",
+  "device/scene_ducha/enable",
+  "device/thermostat_bathroom",
+  "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy",
+  "device/control"
 ]
 SERVICE = "logic-pool-" + ENV
 
@@ -77,6 +83,10 @@ def on_message(client, userdata, msg):
         general.atHome(homeware, msg.topic, payload)
         general.prepareHome(homeware, msg.topic, payload)
         power.powerManagment(homeware, msg.topic, payload)
+        scenes.dim(homeware, msg.topic, payload)
+        scenes.shower(homeware, alert, msg.topic, payload)
+        scenes.disableShowerScene(homeware, alert, msg.topic, payload)
+        scenes.powerAlert(homeware, alert, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
