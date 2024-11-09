@@ -56,7 +56,7 @@ def on_connect(client, userdata, flags, rc, properties):
 
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
-  # try:
+  try:
     if msg.topic == "heartbeats/request":
       # Send heartbeat
       mqtt_client.publish("heartbeats", SERVICE)
@@ -69,9 +69,9 @@ def on_message(client, userdata, msg):
         lights.mirrorPyramids(homeware, msg.topic, payload)
         lights.sofaLight(homeware, msg.topic, payload)
         sensors.livingroomLight(homeware, msg.topic, payload)
-  # except Exception as e:
-  #   logger.log("Excepción en Logic pool mqtt", severity="WARNING")
-  #   logger.log(str(e), severity="WARNING") 
+  except Exception as e:
+    logger.log("Excepción en Logic pool mqtt", severity="WARNING")
+    logger.log(str(e), severity="WARNING") 
 
 if __name__ == "__main__":
   # Check env vars
