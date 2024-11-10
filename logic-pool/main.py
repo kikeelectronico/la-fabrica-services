@@ -47,7 +47,7 @@ TOPICS = [
   "device/e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4/openPercent",
   "device/hue_sensor_12/on",
   "device/hue_sensor_14/on",
-  "device/hue_sensor_2/on"
+  "device/hue_sensor_2/on",
   "device/thermostat_livingroom",
   "device/scene_dim/enable",
   "device/scene_ducha/enable",
