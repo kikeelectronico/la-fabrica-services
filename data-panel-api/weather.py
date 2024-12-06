@@ -10,6 +10,7 @@ class Weather:
   _weather = {}
   _last_update = 0
   _query = ""
+  _alert_areas = ""
   _fail_to_update = True
 
   def __init__(self, logger):
@@ -22,6 +23,10 @@ class Weather:
     self._query = os.environ.get("WHEATHER_QUERY", "no_set")
     if self._query == "no_set": 
       logger.log("WHEATHER_QUERY no set", severity="ERROR")
+    self._alert_areas = os.environ.get("WHEATHER_ALERT_AREAS", "no_set")
+    if self._alert_areas == "no_set": 
+      logger.log("WHEATHER_ALERT_AREAS no set", severity="ERROR")
+    self._alert_areas = self._alert_areas.split(",")
     self.logger = logger
 
   def updateWeather(self):
@@ -35,11 +40,12 @@ class Weather:
         if response.status_code == 200:
           self._weather = response.json()
           # Delete repeated alerts
-          seen_alerts = []
           unique_alerts = []
-          for alert in self._weather["alerts"]["alert"]:
-            if not alert in seen_alerts:
-              seen_alerts.append(alert)
+          for _alert in self._weather["alerts"]["alert"]:
+            alert = _alert
+            del alert["effective"]
+            del alert["expires"]
+            if not alert in unique_alerts and alert["areas"] in self._alert_areas:
               unique_alerts.append(alert)
           self._weather["alerts"]["alert"] = unique_alerts
 
