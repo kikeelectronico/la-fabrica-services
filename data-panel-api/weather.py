@@ -35,11 +35,9 @@ class Weather:
         if response.status_code == 200:
           self._weather = response.json()
           # Delete repeated alerts
-          seen_alerts = []
           unique_alerts = []
           for alert in self._weather["alerts"]["alert"]:
-            if not alert in seen_alerts:
-              seen_alerts.append(alert)
+            if not alert in unique_alerts:
               unique_alerts.append(alert)
           self._weather["alerts"]["alert"] = unique_alerts
 
