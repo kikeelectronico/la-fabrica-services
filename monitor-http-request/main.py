@@ -22,6 +22,7 @@ ENV = os.environ.get("ENV", "dev")
 # Define constants
 MQTT_PORT = 1883
 SLEEP_TIME = 10
+BLOCK_TIME = 300
 SERVICE = "monitor-http-request-" + ENV
 
 # Instantiate objects
@@ -54,11 +55,13 @@ if __name__ == "__main__":
       logger.log("Homeware no responde", severity="WARNING")
       mqtt_client.publish("voice-alert/text", "Homeware no responde")
       mqtt_client.publish("message-alerts", "Homeware no responde")
+      time.sleep(BLOCK_TIME)
     # Verify Hue Bridge connectivity
     if not functions.hueTest(HUE_HOST, HUE_TOKEN, logger):
       logger.log("Hue bridge no responde", severity="WARNING")
       mqtt_client.publish("voice-alert/text", "Hue bridge no responde")
       mqtt_client.publish("message-alerts", "Hue bridge no responde")
+      time.sleep(BLOCK_TIME)
     # Send heartbeart
     mqtt_client.publish("heartbeats", SERVICE)
     # Wait until next iteration
