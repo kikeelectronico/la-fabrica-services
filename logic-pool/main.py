@@ -11,6 +11,7 @@ import alerts
 import power
 import general
 import scenes
+import sensors
 import switches
 import thermostats
 
@@ -53,6 +54,7 @@ TOPICS = [
   "device/scene_ducha/enable",
   "device/thermostat_bathroom",
   "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy",
+  "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness",
   "device/control"
 ]
 SERVICE = "logic-pool-" + ENV
@@ -87,6 +89,7 @@ def on_message(client, userdata, msg):
         scenes.shower(homeware, alert, msg.topic, payload)
         scenes.disableShowerScene(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
+        sensors.livingroom(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
