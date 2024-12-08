@@ -264,7 +264,6 @@ export default function Home(props) {
               })
             : <></>
           }
-          { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
           {
             water ? 
               <>
@@ -275,6 +274,7 @@ export default function Home(props) {
               </>
               : <></>
           }
+          { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
           { internet ? <Internet data={internet}/> : <></> }
         </div>
     </div>
