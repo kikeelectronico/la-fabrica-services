@@ -177,10 +177,10 @@ export default function Home(props) {
         if (alert.category.includes("Extreme")) severity = "critical"
         else if (alert.event.includes("Moderate")) severity = "normal"
         else if (alert.event.includes("amarillo")) severity = "normal"
-        else if (alert.severity == "Moderate") severity = "normal"
+        else if (alert.severity === "Moderate") severity = "normal"
         _weather_alerts.push(
           {
-            "text": alert.event + (alert.event[alert.event.length-1] != "." ? "." : "") + (alert.desc != "" ? " " + alert.desc : "") + (alert.desc[alert.desc.length-1] != "." ? "." : "") + (alert.areas != "" ? " " + alert.areas : ""),
+            "text": alert.event + (alert.event[alert.event.length-1] !== "." ? "." : "") + (alert.desc !== "" ? " " + alert.desc : "") + (alert.desc[alert.desc.length-1] !== "." ? "." : "") + (alert.areas !== "" ? " " + alert.areas : ""),
             "severity": severity,
             "image": null
           }
@@ -193,7 +193,6 @@ export default function Home(props) {
   const assertAlert = (conditions) => {
     for (let i = 0; i < conditions.length; i++) {
       let condition = conditions[i]
-      const asserted = true
       switch(condition.comparator) {
         case "<":
           if (typeof(condition.value) === "object"){
