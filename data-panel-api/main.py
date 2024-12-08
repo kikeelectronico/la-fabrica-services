@@ -167,7 +167,7 @@ async def streamEvents():
         "flags": {}
       }
       last["ping"] = time.time()
-      yield f"data: {event}\n\n"
+      yield f"data: {json.dumps(event)}\n\n"
       await sleep(0.1)
 
 @app.get("/stream")
