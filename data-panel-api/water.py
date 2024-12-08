@@ -1,5 +1,6 @@
 import time
-from selenium import webdriver
+from lxml import html
+import requests
 
 RELOAD_TIME = 86400
 
@@ -14,20 +15,12 @@ class Water:
 
   def updateWater(self):
     try:
-      options = webdriver.ChromeOptions()
-      options.add_argument("--headless=chrome")
-      options.add_argument("--disable-gpu")
-      options.add_argument("--disable-dev-shm-usage")
-      options.add_argument("--no-sandbox")
-
-      driver = webdriver.Chrome(options=options)
-      driver.get("https://www.embalses.net/comunidad-13-comunidad-de-madrid.html")
-
-      self._last_update = driver.find_element("xpath", '//*[@id="index_bodycenter"]/div[2]/div[2]/div[3]/div[1]/strong').get_attribute("innerHTML")
+      page = requests.get("https://www.embalses.net/comunidad-13-comunidad-de-madrid.html")
+      tree = html.fromstring(page.content)
+      self._last_update = tree.xpath('//*[@id="index_bodycenter"]/div[2]/div[2]/div[3]/div[1]/strong/text()')[0]
       self._last_update = self._last_update.split("(")[1].split(")")[0]
-      self._level = driver.find_element("xpath", '//*[@id="index_bodycenter"]/div[2]/div[2]/div[3]/div[4]/strong').get_attribute("innerHTML")
+      self._level = tree.xpath('//*[@id="index_bodycenter"]/div[2]/div[2]/div[3]/div[4]/strong/text()')[0]
       self._level = float(self._level)
-      driver.quit()
     except:
       self.logger.log("Fail to reach embalses.net.", severity="WARNING")
 
