@@ -124,6 +124,7 @@ export default function Home(props) {
   const [internet, setInternet] = useState(null)
   const [home, setHome] = useState(null)
   const [home_flag, setHomeFlag] = useState(null)
+  const [water, setWater] = useState(null)
   const [weather, setWeather] = useState(null)
   const [weather_flag, setWeatherFlag] = useState(null)
   const [launches, setLaunches] = useState(null)
@@ -140,6 +141,7 @@ export default function Home(props) {
       let event = JSON.parse(e.data)
       if (event.type === "internet") {setInternet(event.data)}
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
+      else if (event.type === "water") {setWater(event.data);}
       else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
       else if (event.type === "launches") {setLaunches(event.data); setLaunchesFlag(event.flags)}
       else if (event.type === "spotify") {setSpotify(event.data)}
@@ -264,6 +266,16 @@ export default function Home(props) {
             : <></>
           }
           { see_closed ? <Alerts alert={{text: "Sin conexión con la API", severity: "critical"}}/> : <></>}
+          {
+            water ? 
+              <>
+                { 
+                  water.water.level < 50 ?
+                    <Alerts alert={{text: "Nivel de embalses: " + water.water.level + " %", severity: (water.water.level < 40 ? "normal" : "low")}}/>
+                  : <></>}
+              </>
+              : <></>
+          }
           { internet ? <Internet data={internet}/> : <></> }
         </div>
     </div>
