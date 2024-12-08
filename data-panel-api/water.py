@@ -1,7 +1,7 @@
 import time
 from selenium import webdriver
 
-RELOAD_TIME = 3600
+RELOAD_TIME = 86400
 
 class Water:
 
