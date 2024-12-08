@@ -5,7 +5,6 @@ import {
   Route,
 } from "react-router-dom";
 import Home from "./pages/Home.js"
-import Cocina from "./pages/Cocina.js"
 import React, { useState } from "react";
 
 function App() {
@@ -25,7 +24,6 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home setBackgroundImage={setBackgroundImage}/>} />
-            <Route path="/cocina" element={<Cocina/>} />
           </Routes>
         </BrowserRouter>
       </div>
