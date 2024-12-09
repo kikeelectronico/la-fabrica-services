@@ -3,7 +3,7 @@ pyTelegramBotAPI==4.24.0
 google-api-python-client==2.154.0
 google-auth-httplib2==0.2.0
 gtts==2.5.4
-google-cloud-storage==2.18.2
+google-cloud-storage==2.19.0
 catt==0.12.12
 pytube==15.0.0
 python-dotenv==1.0.1
