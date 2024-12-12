@@ -5,6 +5,10 @@ on:
   push:
     branches: [ dev ]
 
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build
