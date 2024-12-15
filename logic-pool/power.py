@@ -13,7 +13,7 @@ power_pre_alert = False
 power_alert = False
 
 # Decide if a radiator should be turn on or off
-def shouldHeat(homeware, thermostat_id, sensor_id, radiator_id = None, rule_14=False):
+def shouldHeat(homeware, thermostat_id, radiator_id, sensor_id = None, rule_14=False):
   state = homeware.get(thermostat_id, "all")
   sensor_open = homeware.get(sensor_id, "openPercent") == 100 if not sensor_id is None else False
   if (state["thermostatMode"] == "heat" and not sensor_open) or rule_14:
@@ -79,17 +79,17 @@ def powerManagment(homeware, topic, payload):
     # Power distribution
     if not power_alert:
       if homeware.get("scene_ducha", "enable"):
-        bathroom = shouldHeat(homeware, "thermostat_bathroom", None, "radiator003")
-        livingroom = shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "hue_8")
+        bathroom = shouldHeat(homeware, "thermostat_bathroom", "radiator003")
+        livingroom = shouldHeat(homeware, "thermostat_livingroom", "hue_8", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4")
         bedroom = False
         livingroom_ac = False
         heater = not livingroom
       else:
         if homeware.get("scene_winter", "enable"):
           rule_14 = not homeware.get("switch_at_home", "on")
-          livingroom = shouldHeat(homeware, "thermostat_livingroom", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "hue_8", rule_14)
-          bedroom = shouldHeat(homeware, "thermostat_dormitorio", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "radiator002", rule_14)
-          bathroom = (not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14)
+          livingroom = shouldHeat(homeware, "thermostat_livingroom", "hue_8", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", rule_14)
+          bedroom = shouldHeat(homeware, "thermostat_dormitorio", "radiator002", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", rule_14)
+          bathroom = (not bedroom) and shouldHeat(homeware, "thermostat_bathroom", "radiator003", rule_14=rule_14)
           livingroom_ac = False
           heater = not livingroom
         elif homeware.get("scene_summer", "enable"):
