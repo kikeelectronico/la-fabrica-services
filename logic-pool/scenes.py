@@ -136,4 +136,10 @@ def powerAlert(homeware, alert, topic, payload):
         if power_alert_counter == 1:
           power_alert_counter = 0
 
-
+# Set sensors scene
+def sensors(homeware, alert, topic, payload):
+  if topic == "device/scene_sensors_enable/enable":
+    if not payload:
+      homeware.execute("rgb003", "on", False)
+      homeware.execute("hue_6", "on", False)
+      homeware.execute("hue_sensor_12", "on", False)
