@@ -6,6 +6,8 @@ prev_status = {}
 def playingLights(homeware):
   global prev_player_playing_state
   if not prev_player_playing_state:
+    prev_status.setdefault("hue_4", {})
+    prev_status.setdefault("hue_5", {})
     prev_status["hue_4"]["brightness"] = homeware.get("hue_4","brightness")
     prev_status["hue_5"]["brightness"] = homeware.get("hue_5","brightness")
     homeware.execute("hue_4", "brightness", 20)
