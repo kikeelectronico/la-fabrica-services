@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import datetime
+import time
 import os
 import json
 
@@ -45,10 +45,8 @@ def on_message(client, userdata, msg):
   if msg.topic == "heartbeats/request":
     # Send heartbeat
     mqtt_client.publish("heartbeats", SERVICE)
-    now = datetime.datetime.now()
-    time_string = now.strftime("%H:%M")
     for index, task in enumerate(tasks):
-      if task["time"] == time_string:
+      if task["time"] < time.time():
         assert_pass = True
         for condition in task["asserts"]:
           if not homeware.get(condition["device_id"],condition["param"]) == condition["value"]:
@@ -61,9 +59,7 @@ def on_message(client, userdata, msg):
     new_task = json.loads(msg.payload)
     if new_task["action"] == "set":
       if "delta" in new_task:
-        now = datetime.datetime.now()
-        time_string = (now + datetime.timedelta(minutes=new_task["delta"])).strftime("%H:%M")
-        new_task["time"] = time_string      
+        new_task["time"] = time.time() + new_task["delta"]      
       tasks.append(new_task)
       mqtt_client.publish("tasks/ack", json.dumps(new_task))
     elif new_task["action"] == "delete":
