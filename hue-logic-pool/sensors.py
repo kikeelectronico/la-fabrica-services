@@ -20,7 +20,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_hue_6",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_6",
                   "param": "on",
@@ -41,7 +41,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_rgb003",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "rgb003",
                   "param": "on",
@@ -63,7 +63,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_fan",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_8",
                   "param": "on",
@@ -110,7 +110,7 @@ def bathroom(service, homeware, mqtt_client):
               {
                 "id": "bathroom_hue_sensor_2",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_sensor_2",
                   "param": "on",
@@ -131,7 +131,7 @@ def bathroom(service, homeware, mqtt_client):
               {
                 "id": "bathroom_light001",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "light001",
                   "param": "on",
@@ -179,7 +179,7 @@ def livingroom_motion(service, homeware, mqtt_client):
             {
               "id": "hue_11",
               "action": "set",
-              "delta": 1,
+              "delta": 60,
               "target": {
                 "device_id": "hue_11",
                 "param": "on",
@@ -205,7 +205,7 @@ def livingroom_motion(service, homeware, mqtt_client):
             {
               "id": "rgb001",
               "action": "set",
-              "delta": 1,
+              "delta": 60,
               "target": {
                 "device_id": "rgb001",
                 "param": "on",
