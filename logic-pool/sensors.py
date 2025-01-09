@@ -10,7 +10,6 @@ def livingroom(homeware, topic, payload):
       else:
         homeware.execute("scene_dim", "eneable", True)
 
-
 def sofa(homeware, topic, payload):
   if topic == "device/pressure001/occupancy":
     if payload == "OCCUPIED":
