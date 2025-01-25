@@ -5,7 +5,7 @@ export default function Shower(props) {
   return (
     <>
       {
-        props.data && props.data.status.scene_ducha.enable ? 
+        props.data && (props.data.status.scene_ducha.enable || true) ? 
           <div
             className="showerCard"
             style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.data.status.hue_12.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
