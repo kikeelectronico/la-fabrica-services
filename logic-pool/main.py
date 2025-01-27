@@ -62,6 +62,7 @@ TOPICS = [
   "device/hue_9/brightness",  
   "device/hue_10/brightness",
   "device/pressure001/occupancy",
+  "device/pressure002/occupancy",
   "device/control"
 ]
 SERVICE = "logic-pool-" + ENV
