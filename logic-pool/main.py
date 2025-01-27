@@ -101,6 +101,7 @@ def on_message(client, userdata, msg):
         scenes.sensors(homeware, alert, msg.topic, payload)
         sensors.livingroom(homeware, msg.topic, payload)
         sensors.sofa(homeware, msg.topic, payload)
+        sensors.bedroom(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
