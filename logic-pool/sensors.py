@@ -15,3 +15,13 @@ def sofa(homeware, topic, payload):
     if payload == "OCCUPIED":
       homeware.execute("hue_9", "on", False)
       homeware.execute("hue_10", "on", False)
+
+def bedroom(homeware, topic, payload):
+  if topic == "device/pressure002/occupancy":
+    if payload == "OCCUPIED":
+      homeware.execute("scene_dim", "enable", True)
+      if homeware.get("scene_awake","enable"):
+        homeware.execute("scene_sensors_enable", "enable", False)
+    elif payload == "UNOCCUPIED":
+      if homeware.get("scene_awake","enable"):
+        homeware.execute("rgb003","on",True)
