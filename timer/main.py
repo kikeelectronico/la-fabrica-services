@@ -109,7 +109,7 @@ def main():
     # elif hour == "07:00:00" and not hour == just_executed:
     #   just_executed = hour
     #   homeware.execute("thermostat_livingroom", "thermostatMode", "off")
-    elif hour == "07:00:00" and not hour == just_executed:
+    elif hour == "07:30:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
@@ -160,6 +160,10 @@ def main():
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
         homeware.execute("thermostat_bathroom", "thermostatMode", "off")
       homeware.execute("scene_dim","enable",True)
+    elif hour == "23:00:00" and not hour == just_executed:
+      just_executed = hour
+      if homeware.get("scene_winter", "enable"):
+        homeware.execute("thermostat_livingroom", "thermostatMode", "off")
 
     #Astro time blocks
     if hour == astro_data["sunrise"] and not hour == just_executed:
