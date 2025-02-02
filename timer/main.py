@@ -51,10 +51,10 @@ def updateAstroData():
       sunset = data["astronomy"]["astro"]["sunset"].split(" ")[0]
       sunset = str(int(sunset.split(":")[0]) + 12) + ":" + sunset.split(":")[1] + ":00"
       sunrise = data["astronomy"]["astro"]["sunrise"].split(" ")[0]
-      sunrise = str(int(sunrise.split(":")[0]) + 12) + ":" + sunrise.split(":")[1] + ":00"
+      sunrise = str(int(sunrise.split(":")[0])) + ":" + sunrise.split(":")[1] + ":00"
       astro_data = {
-        "sunset": sunset,
-        "sunrise": sunrise
+        "sunrise": sunrise,
+        "sunset": sunset
       }
     else:
       logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
