@@ -22,20 +22,7 @@ export default function Shower(props) {
             </div>        
           </div>
         : <></>
-      }
-      <div
-            className="showerCard"
-            style={{boxShadow: "0 0.1rem 1rem rgba(0,0,0,0.8)"}}
-          >
-            <div className="showerMain">
-              Temp 
-            </div>
-            <hr className="showerDivider"/>
-            <div className="showerSecond">
-              {props.data.status.thermostat_bathroom.thermostatTemperatureAmbient} ºC
-            </div>       
-          </div>
-      
+      }      
     </> 
   )
 }
