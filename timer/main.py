@@ -4,6 +4,7 @@ import os
 import time
 import openai
 import requests
+import json
 
 from homeware import Homeware
 from Alert import Alert
@@ -103,6 +104,7 @@ def main():
     elif hour == "04:00:00" and not hour == just_executed:
       just_executed = hour
       updateAstroData()
+      alert.message("astro day updated: " + json.dumps(astro_data))
     # elif hour == "06:00:00" and not hour == just_executed:
     #   just_executed = hour
     #   homeware.execute("thermostat_livingroom", "thermostatMode", "cool")
@@ -170,9 +172,11 @@ def main():
     #Astro time blocks
     if hour == astro_data["sunrise"] and not hour == just_executed:
       just_executed = hour
+      alert.message("sunrise")
       homeware.execute("scene_astro_day","enable",True)
     elif hour == astro_data["sunset"] and not hour == just_executed:
       just_executed = hour
+      alert.message("sunset")
       if homeware.get("scene_winter", "enable"):
         homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
       homeware.execute("scene_astro_day","enable",False)
