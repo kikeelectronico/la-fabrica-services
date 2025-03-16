@@ -132,7 +132,7 @@ def main():
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
         if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 20)
-          homeware.execute("thermostat_dormitorio", "thermostatMode", "off")
+          homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     elif hour == "10:00:00" and not hour == just_executed:
