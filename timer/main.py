@@ -170,7 +170,7 @@ def main():
         homeware.execute("thermostat_livingroom", "thermostatMode", "off")
 
     #Astro time blocks
-    if hour == astro_data["sunrise"] and not hour == just_executed:
+    if hour == "0" + astro_data["sunrise"] and not hour == just_executed:
       just_executed = hour
       alert.message("sunrise")
       homeware.execute("scene_astro_day","enable",True)
