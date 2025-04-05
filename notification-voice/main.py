@@ -26,7 +26,7 @@ SERVICE = "notification-voice-" + ENV
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
-voice = Voice(SERVICE, homeware)
+voice = Voice(logger, homeware)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc, properties):

@@ -29,7 +29,7 @@ class Homeware:
       self._fail_to_update = True
       self.logger.log("Homeware env vars aren't set", severity="ERROR")
     else:
-      try:
+    #   try:
         url = self.__url + "/api/status/get/" + id
         headers = {"Authorization": "bearer " + self.__token}
         response = requests.get(url, headers=headers)
@@ -40,9 +40,9 @@ class Homeware:
         else:
           self.logger.log("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
           return (False, {})
-      except (requests.ConnectionError, requests.Timeout) as exception:
-        self.logger.log("Fail to get Homeware status. Conection error.", severity="WARNING")
-        self._fail_to_update = False
+    #   except (requests.ConnectionError, requests.Timeout) as exception:
+    #     self.logger.log("Fail to get Homeware status. Conection error.", severity="WARNING")
+    #     self._fail_to_update = False
 
   def getDevices(self):
     if self.__token == "no_set" or self.__url == "no_set":
