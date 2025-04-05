@@ -63,11 +63,11 @@ if __name__ == "__main__":
   hour = int(time.strftime("%H"))
   message = ""
   if hour >= 22 or (hour >= 0 and hour < 7):
-    message = "buenas noches. Ya estoy preparada"
+    message = "buenas noches. Ya estoy preparada."
   elif hour >= 7 and hour < 15:
-    message = "buenos días. Ya estoy preparada"
+    message = "buenos días. Ya estoy preparada."
   elif hour >= 15 and hour < 22:
-    message = "buenas tardes. Ya estoy preparada"
+    message = "buenas tardes. Ya estoy preparada."
   voice.getAndPlay(message)
   # Main loop
   mqtt_client.loop_forever()
