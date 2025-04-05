@@ -67,11 +67,11 @@ class Voice:
     self.speakers = speakers
     
   def getRoom(self):
-    if json.loads(self.homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings"))["last_seen"]:
+    if self.homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings")["last_seen"]:
       return "livingroom"
-    if json.loads(self.homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings"))["last_seen"]:
+    if self.homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings")["last_seen"]:
       return "bedroom"
-    if json.loads(self.homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings"))["last_seen"]:
+    if self.homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings")["last_seen"]:
       return "bathroom"
 
   # Play an announcement
