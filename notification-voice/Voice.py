@@ -55,13 +55,14 @@ class Voice:
         os.system(self.cmd)
 
     threads = []
-    device = self.getRoom()
-    threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
-    threads[-1].start()
-    # for device in DEVICES_IPS:
-    #   if self.speakers == "all" or device in self.speakers.split(","):
-    #     threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
-    #     threads[-1].start()
+    if self.speakers == "all":
+      for device in DEVICES_IPS:
+        threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
+        threads[-1].start()
+    else:
+      device = self.getRoom()
+      threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
+      threads[-1].start()
 
   def setSpeakers(self, speakers):
     self.speakers = speakers
