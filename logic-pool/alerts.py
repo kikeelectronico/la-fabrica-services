@@ -17,7 +17,7 @@ def battery(homeware, alert, topic, payload):
       response_status, devices = homeware.getDevices()
       if response_status:
         device_name = devices[device_id]["name"]["name"]
-        alert.voice("La batería de {} está agotándose. Tiene un {} porciento de carga.".format(device_name, battery_level), speaker="livingroom", gpt3=False)
+        alert.voice("La batería de {} está agotándose. Tiene un {} porciento de carga.".format(device_name, battery_level))
         alert.message("La batería de {} está agotándose. Tiene un {} porciento de carga.".format(device_name, battery_level))
       else:
         alert.message("La batería de un dispositivo está agotándose. Tiene un {} porciento de carga.".format(battery_level))
@@ -37,13 +37,13 @@ def abnormalLivingroomTemperature(homeware, alert, topic, payload):
       if homeware.get("scene_winter", "enable"):
         if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
           abnormal_livingroom_temperature_alert = True
-          alert.voice("La temperatura está disminuyento demasiado y la ventana está abierta.", speaker="livingroom", gpt3=False)
+          alert.voice("La temperatura está disminuyento demasiado y la ventana del salón está abierta.")
     # High temperature
     if payload["thermostatTemperatureAmbient"] > temperature_reference:
       if homeware.get("scene_summer", "enable"):
         if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 100:
           abnormal_livingroom_temperature_alert = True
-          alert.voice("La temperatura está aumentando y la ventana está abierta.", speaker="livingroom", gpt3=False)
+          alert.voice("La temperatura está aumentando y la ventana del salón está abierta.",)
       temperature_reference = payload["thermostatTemperatureAmbient"]
     if payload["thermostatTemperatureAmbient"] < temperature_reference:
       if homeware.get("scene_summer", "enable"):
@@ -55,7 +55,7 @@ def abnormalLivingroomTemperature(homeware, alert, topic, payload):
     # Thanks for closing the window
     if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0 and abnormal_livingroom_temperature_alert:
       abnormal_livingroom_temperature_alert = False
-      alert.voice("Gracias por cerrar la ventana.", speaker="livingroom", gpt3=False)
+      alert.voice("Gracias por cerrar la ventana.")
     
 
 

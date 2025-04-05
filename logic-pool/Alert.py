@@ -10,7 +10,7 @@ class Alert:
     self.logger = logger
 
   # Send a voice alert
-  def voice(self, input_text, speaker="all", gpt3=False):
+  def voice(self, input_text, speaker="", gpt3=False):
     output_text = input_text
     # Process the message using GPT3 if required
     if gpt3:

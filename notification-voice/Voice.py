@@ -11,7 +11,7 @@ DEVICES_IPS = {
 
 class Voice:
 
-  speakers = "all"
+  speakers = ""
 
   def __init__(self, logger, homeware):
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
@@ -55,13 +55,14 @@ class Voice:
         os.system(self.cmd)
 
     threads = []
-    device = self.getRoom()
-    threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
-    threads[-1].start()
-    # for device in DEVICES_IPS:
-    #   if self.speakers == "all" or device in self.speakers.split(","):
-    #     threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
-    #     threads[-1].start()
+    if self.speakers == "all":
+      for device in DEVICES_IPS:
+        threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
+        threads[-1].start()
+    else:
+      device = self.getRoom()
+      threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
+      threads[-1].start()
 
   def setSpeakers(self, speakers):
     self.speakers = speakers
@@ -78,4 +79,4 @@ class Voice:
   def getAndPlay(self, text):
     file_path = self.getFile(text)
     self.playFile(file_path)
-    self.speakers = "all"
+    self.speakers = ""
