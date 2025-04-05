@@ -11,7 +11,7 @@ DEVICES_IPS = {
 
 class Voice:
 
-  speakers = "all"
+  speakers = ""
 
   def __init__(self, logger, homeware):
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
@@ -79,4 +79,4 @@ class Voice:
   def getAndPlay(self, text):
     file_path = self.getFile(text)
     self.playFile(file_path)
-    self.speakers = "all"
+    self.speakers = ""
