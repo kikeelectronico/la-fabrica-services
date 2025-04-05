@@ -19,8 +19,7 @@ class Voice:
       name="es-ES-Chirp3-HD-Kore"
     )
     self.audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3,
-        pitch=1.4
+        audio_encoding=texttospeech.AudioEncoding.MP3
     )
     self.logger = logger
 
