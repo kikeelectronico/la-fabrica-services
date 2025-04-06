@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 import datetime
 import os
 import time
-import openai
 import requests
 import json
 
@@ -40,7 +39,7 @@ astro_data = {
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
-alert = Alert(mqtt_client, openai, SERVICE)
+alert = Alert(mqtt_client, SERVICE)
 
 def updateAstroData():
   try:
@@ -125,7 +124,7 @@ def main():
     elif hour == "08:55:00" and not hour == just_executed:
       just_executed = hour
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
-        alert.voice("5 minutos para las nueve")
+        alert.voice("5 minutos para las nueve.")
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
