@@ -147,4 +147,5 @@ def sensors(homeware, alert, topic, payload):
 # Set dim scene
 def astro_day(homeware, alert, topic, payload):
   if topic == "device/scene_astro_day/enable":
-    homeware.execute("scene_dim", "enable", not payload)
+    if not payload:
+      homeware.execute("scene_dim", "enable", True)
