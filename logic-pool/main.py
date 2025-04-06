@@ -63,6 +63,7 @@ TOPICS = [
   "device/hue_10/brightness",
   "device/pressure001/occupancy",
   "device/pressure002/occupancy",
+  "device/scene_astro_day/enable",
   "device/control"
 ]
 SERVICE = "logic-pool-" + ENV
@@ -100,6 +101,7 @@ def on_message(client, userdata, msg):
         scenes.disableShowerScene(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         scenes.sensors(homeware, alert, msg.topic, payload)
+        scenes.astro_day(homeware, alert, msg.topic, payload)
         sensors.livingroom(homeware, msg.topic, payload)
         sensors.sofa(homeware, msg.topic, payload)
         sensors.bedroom(homeware, msg.topic, payload)

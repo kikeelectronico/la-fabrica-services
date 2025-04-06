@@ -143,3 +143,8 @@ def sensors(homeware, alert, topic, payload):
       homeware.execute("rgb003", "on", False)
       homeware.execute("hue_6", "on", False)
       homeware.execute("hue_sensor_12", "on", False)
+
+# Set dim scene
+def astro_day(homeware, alert, topic, payload):
+  if topic == "device/scene_astro_day/enable":
+    homeware.execute("scene_dim", "enable", not payload)
