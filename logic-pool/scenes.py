@@ -66,6 +66,7 @@ def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/enable":
     if payload:
+      alert.voice("Voy a preparar el baño")
       # Start preparing the bathroom
       homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 25)
       homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
