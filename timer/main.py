@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 import datetime
 import os
 import time
-import openai
 import requests
 import json
 
@@ -40,7 +39,7 @@ astro_data = {
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
-alert = Alert(mqtt_client, openai, SERVICE)
+alert = Alert(mqtt_client, SERVICE)
 
 def updateAstroData():
   try:
