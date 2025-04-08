@@ -8,7 +8,7 @@ export default function Shower(props) {
         props.data && props.data.status.scene_ducha.enable ? 
           <div
             className="showerCard"
-            style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.data.status.radiator003.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
+            style={{boxShadow: "0 0.1rem 1rem rgba(" + (props.data.status.hue_12.on ? "255,0,0" : "0,0,0")  + ", 0.8)"}}
           >
             <div className="showerMain">
               Baño 
@@ -22,8 +22,7 @@ export default function Shower(props) {
             </div>        
           </div>
         : <></>
-      }
-      
+      }      
     </> 
   )
 }

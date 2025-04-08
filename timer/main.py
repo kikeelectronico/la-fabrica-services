@@ -2,8 +2,8 @@ import paho.mqtt.client as mqtt
 import datetime
 import os
 import time
-import openai
 import requests
+import json
 
 from homeware import Homeware
 from Alert import Alert
@@ -39,7 +39,7 @@ astro_data = {
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, SERVICE)
-alert = Alert(mqtt_client, openai, SERVICE)
+alert = Alert(mqtt_client, SERVICE)
 
 def updateAstroData():
   try:
@@ -51,10 +51,10 @@ def updateAstroData():
       sunset = data["astronomy"]["astro"]["sunset"].split(" ")[0]
       sunset = str(int(sunset.split(":")[0]) + 12) + ":" + sunset.split(":")[1] + ":00"
       sunrise = data["astronomy"]["astro"]["sunrise"].split(" ")[0]
-      sunrise = str(int(sunrise.split(":")[0]) + 12) + ":" + sunrise.split(":")[1] + ":00"
+      sunrise = str(int(sunrise.split(":")[0])) + ":" + sunrise.split(":")[1] + ":00"
       astro_data = {
-        "sunset": sunset,
-        "sunrise": sunrise
+        "sunrise": sunrise,
+        "sunset": sunset
       }
     else:
       logger.log("Fail to update weather data. Status code: " + str(response.status_code), severity="WARNING")
@@ -109,7 +109,7 @@ def main():
     # elif hour == "07:00:00" and not hour == just_executed:
     #   just_executed = hour
     #   homeware.execute("thermostat_livingroom", "thermostatMode", "off")
-    elif hour == "07:00:00" and not hour == just_executed:
+    elif hour == "07:30:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
       weekday = today.weekday()
@@ -119,12 +119,12 @@ def main():
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
-          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 22)
+          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     elif hour == "08:55:00" and not hour == just_executed:
       just_executed = hour
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
-        alert.voice("5 minutos para las nueve", speaker="all", gpt3=False)
+        alert.voice("5 minutos para las nueve.")
     elif hour == "09:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
@@ -132,15 +132,18 @@ def main():
       if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
         if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 20)
+          homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
-          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 22)
-      elif (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
+          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
+    elif hour == "10:00:00" and not hour == just_executed:
+      just_executed = hour
+      if (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
         if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
-          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 22)
+          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
     elif hour == "12:00:00" and not hour == just_executed:
       just_executed = hour
@@ -150,15 +153,22 @@ def main():
         if homeware.get("scene_winter", "enable"):
           homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 20)
           homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 22)
-          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 22)
+          homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
     elif hour == "22:00:00" and not hour == just_executed:
       just_executed = hour
       if homeware.get("scene_winter", "enable"):
         homeware.execute("thermostat_dormitorio", "thermostatTemperatureSetpoint", 19)
+        homeware.execute("thermostat_dormitorio", "thermostatMode", "heat")
+        homeware.execute("thermostat_livingroom", "thermostatTemperatureSetpoint", 21)
+        homeware.execute("thermostat_bathroom", "thermostatMode", "off")
       homeware.execute("scene_dim","enable",True)
+    elif hour == "23:00:00" and not hour == just_executed:
+      just_executed = hour
+      if homeware.get("scene_winter", "enable"):
+        homeware.execute("thermostat_livingroom", "thermostatMode", "off")
 
     #Astro time blocks
-    if hour == astro_data["sunrise"] and not hour == just_executed:
+    if hour == "0" + astro_data["sunrise"] and not hour == just_executed:
       just_executed = hour
       homeware.execute("scene_astro_day","enable",True)
     elif hour == astro_data["sunset"] and not hour == just_executed:

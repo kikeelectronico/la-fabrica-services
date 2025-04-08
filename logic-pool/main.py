@@ -1,7 +1,6 @@
 from cmath import e
 import paho.mqtt.client as mqtt
 import os
-import openai
 
 import functions
 from Homeware import Homeware
@@ -26,7 +25,6 @@ MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST", "no_set")
 HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL", "no_set")
 HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
 # Define constants
@@ -52,7 +50,6 @@ TOPICS = [
   "device/hue_sensor_2/on",
   "device/thermostat_livingroom",
   "device/scene_dim/enable",
-  "device/scene_ducha/enable",
   "device/thermostat_bathroom",
   "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy",
   "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness",
@@ -61,6 +58,9 @@ TOPICS = [
   "device/hue_5/brightness",
   "device/hue_9/brightness",  
   "device/hue_10/brightness",
+  "device/pressure001/occupancy",
+  "device/pressure002/occupancy",
+  "device/scene_astro_day/enable",
   "device/control"
 ]
 SERVICE = "logic-pool-" + ENV
@@ -69,7 +69,7 @@ SERVICE = "logic-pool-" + ENV
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
-alert = Alert(mqtt_client, openai, logger)
+alert = Alert(mqtt_client, logger)
 
 # Suscribe to topics on connect
 def on_connect(client, userdata, flags, rc, properties):
@@ -98,7 +98,10 @@ def on_message(client, userdata, msg):
         scenes.disableShowerScene(homeware, alert, msg.topic, payload)
         scenes.powerAlert(homeware, alert, msg.topic, payload)
         scenes.sensors(homeware, alert, msg.topic, payload)
+        scenes.astro_day(homeware, alert, msg.topic, payload)
         sensors.livingroom(homeware, msg.topic, payload)
+        sensors.sofa(homeware, msg.topic, payload)
+        sensors.bedroom(homeware, msg.topic, payload)
         switches.bedroom(homeware, msg.topic, payload)
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
@@ -123,10 +126,6 @@ if __name__ == "__main__":
     report("HOMEWARE_API_URL env vars no set")
   if HOMEWARE_API_KEY == "no_set":
     report("HOMEWARE_API_KEY env vars no set")
-  if OPENAI_API_KEY == "no_set":
-    report("OPENAI_API_KEY env vars no set")
-  # Set the API key for OpenAI
-  openai.api_key = OPENAI_API_KEY
   # Declare the callback functions
   mqtt_client.on_message = on_message
   mqtt_client.on_connect = on_connect
