@@ -87,12 +87,14 @@ def powerManagment(homeware, topic, payload):
           bedroom = False
           bathroom = False
           heater = True
+          livingroom_ac = False
           shower_state = 1
         elif shower_state == 1: # Wait for water to heat up
           if homeware.get("current001", "brightness") < 50:
+            bathroom = False
             livingroom = False
             bedroom = False
-            bathroom = False
+            livingroom_ac = False            
             heater = False
             shower_state = 2
         elif shower_state == 2: # Heat up the bathroom air and keep the livingroom and water tank at temperature 
