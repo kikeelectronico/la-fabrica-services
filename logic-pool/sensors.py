@@ -19,9 +19,9 @@ def sofa(homeware, topic, payload):
 def bedroom(homeware, topic, payload):
   if topic == "device/pressure002/occupancy":
     if payload == "OCCUPIED":
-      homeware.execute("scene_dim", "enable", True)
-      if homeware.get("scene_awake","enable") and homeware.get("scene_astro_day","enable"):
-        homeware.execute("scene_sensors_enable", "enable", False)
+      homeware.execute("scene_sensors_enable", "enable", False)  
+      homeware.execute("scene_dim", "enable", True)      
     elif payload == "UNOCCUPIED":
-      if homeware.get("scene_awake","enable") and homeware.get("scene_astro_day","enable"):
-        homeware.execute("rgb003","on",True)
+      homeware.execute("scene_sensors_enable", "enable", True)
+      if homeware.get("scene_astro_day","enable"):
+        homeware.execute("scene_dim", "enable", False)

@@ -1,6 +1,7 @@
 from google.cloud import texttospeech
 import threading
 import os
+import json
 
 DEVICES_IPS = {
   "livingroom": "192.168.10.15",
@@ -10,19 +11,19 @@ DEVICES_IPS = {
 
 class Voice:
 
-  speakers = "all"
+  speakers = ""
 
-  def __init__(self, logger):
+  def __init__(self, logger, homeware):
     self.text_to_speech_client = texttospeech.TextToSpeechClient()
     self.voice = texttospeech.VoiceSelectionParams(
       language_code="es-ES",
-      name="es-ES-Neural2-C"
+      name="es-ES-Chirp3-HD-Kore"
     )
     self.audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3,
-        pitch=1.4
+        audio_encoding=texttospeech.AudioEncoding.MP3
     )
     self.logger = logger
+    self.homeware = homeware
 
   # Genereate mp3 file if needed
   def getFile(self, text):
@@ -54,16 +55,28 @@ class Voice:
         os.system(self.cmd)
 
     threads = []
-    for device in DEVICES_IPS:
-      if self.speakers == "all" or device in self.speakers.split(","):
+    if self.speakers == "all":
+      for device in DEVICES_IPS:
         threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
         threads[-1].start()
+    else:
+      device = self.getRoom()
+      threads.append(runCommandThread("catt -d " + DEVICES_IPS[device] + " cast " + file_path))
+      threads[-1].start()
 
   def setSpeakers(self, speakers):
     self.speakers = speakers
+    
+  def getRoom(self):
+    if self.homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings")["last_seen"]:
+      return "livingroom"
+    if self.homeware.get("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings")["last_seen"]:
+      return "bedroom"
+    if self.homeware.get("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings")["last_seen"]:
+      return "bathroom"
 
   # Play an announcement
   def getAndPlay(self, text):
     file_path = self.getFile(text)
     self.playFile(file_path)
-    self.speakers = "all"
+    self.speakers = ""
