@@ -66,8 +66,8 @@ def shower(homeware, alert, topic, payload):
   global waiting_for_shower
   if topic == "device/scene_ducha/enable":
     if payload:
+      alert.voice("Vale, preparo el baño.")
       # Start preparing the bathroom
-      # alert.voice("Crea una frase que informe al usuario de que vas a preparar el baño para que se duche.", speaker="livingroom,bedroom", gpt3=True)
       homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 25)
       homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
       waiting_for_shower = True
@@ -75,7 +75,7 @@ def shower(homeware, alert, topic, payload):
       initial_bathroom_humidity = homeware.get("thermostat_bathroom", "thermostatHumidityAmbient")
     else:
       # Return the bathroom to normal
-      # alert.voice("Crea una frase que diga al usuario que esperas que haya disfrutado de la ducha.", speaker="bathroom", gpt3=True)
+      alert.voice("Genial. Dejo de priorizar el baño.")
       homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
       waiting_for_shower = False
       if homeware.get("hue_sensor_14","on"):
@@ -83,7 +83,7 @@ def shower(homeware, alert, topic, payload):
   # Announce that the bathroom is ready to taking a shower
   if topic == "device/thermostat_bathroom" and waiting_for_shower:
     if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      alert.voice("El baño está listo", speaker="livingroom,bedroom", gpt3=False)
+      alert.voice("El baño está listo.")
       waiting_for_shower = False
 
 BATHROOM_HUMIDITY_DELTA = 10
@@ -96,7 +96,7 @@ def disableShowerScene(homeware, alert, topic, payload):
           global initial_bathroom_humidity
           if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
             homeware.execute("scene_ducha", "enable", False)
-            alert.voice("He desactivado el modo ducha", speaker="livingroom", gpt3=False)
+            alert.voice("Veo que ya te has duchado. Dejo de priorizar el baño.")
 
 # Set the power alert scene
 def powerAlert(homeware, alert, topic, payload):
@@ -112,7 +112,7 @@ def powerAlert(homeware, alert, topic, payload):
           power_alert_counter += 1
           if power_alert_counter > 1:
             # Send voice and text alerts
-            alert.voice("Sobrecarga de potencia, nivel crítico")
+            alert.voice("Sobrecarga de potencia, nivel crítico.")
             alert.message("Sobrecarga de potencia")
             # Change the status of some lights
             currentToggleSettings = {
@@ -125,7 +125,7 @@ def powerAlert(homeware, alert, topic, payload):
         if power_alert_counter > 1:
           power_alert_counter = 0
           # Send voice alerts
-          alert.voice("Sistemas de potencia bajo control")
+          alert.voice("Sistemas de potencia bajo control.")
           currentToggleSettings = {
             "emergencia": False
           }
@@ -136,4 +136,16 @@ def powerAlert(homeware, alert, topic, payload):
         if power_alert_counter == 1:
           power_alert_counter = 0
 
+# Set sensors scene
+def sensors(homeware, alert, topic, payload):
+  if topic == "device/scene_sensors_enable/enable":
+    if not payload:
+      homeware.execute("rgb003", "on", False)
+      homeware.execute("hue_6", "on", False)
+      homeware.execute("hue_sensor_12", "on", False)
 
+# Set dim scene
+def astro_day(homeware, alert, topic, payload):
+  if topic == "device/scene_astro_day/enable":
+    if not payload:
+      homeware.execute("scene_dim", "enable", True)

@@ -13,6 +13,10 @@ def bedroom(service, homeware, mqtt_client):
             homeware.execute("rgb003","on",True)
           else:
             homeware.execute("hue_6","on",True)
+      # Set last_seen
+      homeware.execute("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings", {"last_seen": True}) # Bedroom
+      homeware.execute("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings", {"last_seen": False}) # Bathroom
+      homeware.execute("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings", {"last_seen": False}) # Livingroom
     else:
         if not homeware.get("hue_sensor_12", "on"):
           mqtt_client.publish("tasks", 
@@ -20,7 +24,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_hue_6",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_6",
                   "param": "on",
@@ -41,7 +45,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_rgb003",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "rgb003",
                   "param": "on",
@@ -63,7 +67,7 @@ def bedroom(service, homeware, mqtt_client):
               {
                 "id": "bedroom_fan",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_8",
                   "param": "on",
@@ -102,7 +106,11 @@ def bathroom(service, homeware, mqtt_client):
         if homeware.get("scene_dim","enable"):
             homeware.execute("hue_sensor_2","on",True)
         else:
-          homeware.execute("light001","on",True)
+          homeware.execute("light001","on",True)      
+      # Set last_seen
+      homeware.execute("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings", {"last_seen": False}) # Bedroom
+      homeware.execute("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings", {"last_seen": True}) # Bathroom
+      homeware.execute("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings", {"last_seen": False}) # Livingroom
     else:
         if not homeware.get("hue_sensor_14", "on"):
           mqtt_client.publish("tasks", 
@@ -110,7 +118,7 @@ def bathroom(service, homeware, mqtt_client):
               {
                 "id": "bathroom_hue_sensor_2",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "hue_sensor_2",
                   "param": "on",
@@ -131,7 +139,7 @@ def bathroom(service, homeware, mqtt_client):
               {
                 "id": "bathroom_light001",
                 "action": "set",
-                "delta": 1,
+                "delta": 60,
                 "target": {
                   "device_id": "light001",
                   "param": "on",
@@ -172,6 +180,10 @@ def livingroom_motion(service, homeware, mqtt_client):
         mqtt_client.publish("tasks", json.dumps({"id": "rgb001", "action": "delete"}))
         homeware.execute("hue_11", "on", True)
         homeware.execute("rgb001", "on", True)
+      # Set last_seen
+      homeware.execute("c2b38173-883e-4766-bcb5-0cce2dc0e00e", "currentToggleSettings", {"last_seen": False}) # Bedroom
+      homeware.execute("06612edc-4b7c-4ef3-9f3c-157b9d482f8c", "currentToggleSettings", {"last_seen": False}) # Bathroom
+      homeware.execute("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "currentToggleSettings", {"last_seen": True}) # Livingroom
     else:
       if not homeware.get("scene_awake", "enable"):
         mqtt_client.publish("tasks", 
@@ -179,7 +191,7 @@ def livingroom_motion(service, homeware, mqtt_client):
             {
               "id": "hue_11",
               "action": "set",
-              "delta": 1,
+              "delta": 60,
               "target": {
                 "device_id": "hue_11",
                 "param": "on",
@@ -205,7 +217,7 @@ def livingroom_motion(service, homeware, mqtt_client):
             {
               "id": "rgb001",
               "action": "set",
-              "delta": 1,
+              "delta": 60,
               "target": {
                 "device_id": "rgb001",
                 "param": "on",
