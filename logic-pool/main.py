@@ -50,7 +50,6 @@ TOPICS = [
   "device/hue_sensor_2/on",
   "device/thermostat_livingroom",
   "device/scene_dim/enable",
-  "device/scene_ducha/enable",
   "device/thermostat_bathroom",
   "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy",
   "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/brightness",
@@ -79,7 +78,8 @@ def on_connect(client, userdata, flags, rc, properties):
 
 # Do tasks when a message is received
 def on_message(client, userdata, msg):
-  try:
+  # try:
+  if True:
     if msg.topic == "heartbeats/request":
       # Send heartbeat
       mqtt_client.publish("heartbeats", SERVICE)
@@ -107,9 +107,9 @@ def on_message(client, userdata, msg):
         switches.bathroom(homeware, msg.topic, payload)
         switches.mirror(homeware, msg.topic, payload)
         thermostats.livingroom(homeware, msg.topic, payload)
-  except Exception as e:
-    logger.log("Excepción en Logic pool mqtt", severity="WARNING")
-    logger.log(str(e), severity="WARNING") 
+  # except Exception as e:
+  #   logger.log("Excepción en Logic pool mqtt", severity="WARNING")
+  #   logger.log(str(e), severity="WARNING") 
 
 if __name__ == "__main__":
   # Check env vars
