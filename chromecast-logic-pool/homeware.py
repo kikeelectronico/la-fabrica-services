@@ -34,11 +34,11 @@ class Homeware:
       self.logger.log("Homeware env vars aren't set", severity="ERROR")
     else:
       try:
-        url = self.__url + "/api/status/get/" + id
+        url = self.__url + "/api/devices/" + id + "/states/" + param
         headers = {"Authorization": "bearer " + self.__token}
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
-          return response.json()[param]
+          return response.json()
         else:
           self.logger.log("Fail to get Homeware status. Status code: " + str(response.status_code), severity="WARNING")
           return (False, {})

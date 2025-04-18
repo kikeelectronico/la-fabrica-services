@@ -4,7 +4,7 @@ from requests.exceptions import ConnectionError
 # Test both the API and the db getting the status of a device
 def homewareTest(api_url, api_key, logger):
   try:
-    url = api_url + "/api/status/get/scene_dim"
+    url = api_url + "/api/devices/scene_dim/states"
     headers = {
         "Authorization": "bearer " + api_key
     }
