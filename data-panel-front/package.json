@@ -6,7 +6,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.6.1",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-bootstrap": "^2.10.9",
