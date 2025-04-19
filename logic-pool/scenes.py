@@ -1,11 +1,13 @@
 import time
 
 DELAY_BETWEEN_POWER_ALERTS = 40
+BATHROOM_HUMIDITY_DELTA = 10
 
 power_alert_counter = 0
 last_power_check = 0
 waiting_for_shower = False
 initial_bathroom_humidity = 0
+shower_initiated = False
 
 # Set dim scene
 def dim(homeware, topic, payload):
@@ -86,16 +88,20 @@ def shower(homeware, alert, topic, payload):
       alert.voice("El baño está listo.")
       waiting_for_shower = False
 
-BATHROOM_HUMIDITY_DELTA = 10
-
 def disableShowerScene(homeware, alert, topic, payload):
+  if topic == "device/thermostat_bathroom/thermostatHumidityAmbient":
+    global initial_bathroom_humidity
+    global shower_initiated
+    if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
+      shower_initiated = True
+
   if topic == "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy":
     if payload == "OCCUPIED":
       if homeware.get("scene_ducha", "enable"):
         if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
-          global initial_bathroom_humidity
-          if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
+          if shower_initiated:
             homeware.execute("scene_ducha", "enable", False)
+            shower_initiated = False
             alert.voice("Veo que ya te has duchado. Dejo de priorizar el baño.")
 
 # Set the power alert scene
