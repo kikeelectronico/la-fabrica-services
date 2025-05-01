@@ -65,8 +65,8 @@ def dim(homeware, topic, payload):
 
 # Set the shower scene
 def shower(homeware, alert, topic, payload):
-  global waiting_for_shower
   if topic == "device/scene_ducha/enable":
+    global waiting_for_shower
     if payload:
       alert.voice("Vale, preparo el baño.")
       # Start preparing the bathroom
@@ -83,25 +83,31 @@ def shower(homeware, alert, topic, payload):
       if homeware.get("hue_sensor_14","on"):
         homeware.execute("hue_sensor_14","on",False)
   # Announce that the bathroom is ready to taking a shower
-  if topic == "device/thermostat_bathroom" and waiting_for_shower:
-    if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
-      alert.voice("El baño está listo.")
-      waiting_for_shower = False
+  if topic == "device/thermostat_bathroom":
+    global waiting_for_shower
+    if waiting_for_shower:
+      if payload["thermostatTemperatureAmbient"] >= payload["thermostatTemperatureSetpoint"]:
+        waiting_for_shower = False
+        alert.voice("El baño está listo.")
 
 def disableShowerScene(homeware, alert, topic, payload):
   if topic == "device/thermostat_bathroom/thermostatHumidityAmbient":
     global initial_bathroom_humidity
-    global shower_initiated
     if homeware.get("thermostat_bathroom", "thermostatHumidityAmbient") > initial_bathroom_humidity + BATHROOM_HUMIDITY_DELTA:
+      global shower_initiated
       shower_initiated = True
 
   if topic == "device/c8bd20a2-69a5-4946-b6d6-3423b560ffa9/occupancy":
+    
     if payload == "OCCUPIED":
       if homeware.get("scene_ducha", "enable"):
         if homeware.get("e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4", "openPercent") == 0:
+          global shower_initiated
           if shower_initiated:
             homeware.execute("scene_ducha", "enable", False)
+            global waiting_for_shower
             shower_initiated = False
+            waiting_for_shower = False
             alert.voice("Veo que ya te has duchado. Dejo de priorizar el baño.")
 
 # Set the power alert scene
