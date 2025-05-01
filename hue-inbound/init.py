@@ -38,7 +38,8 @@ def connectivity(host, token, homeware, logger, device_id_service_id):
     services = response.json()["data"]
     for service in services:
       if "id_v1" in service:
-        device_id = "hue_" + service["id_v1"].split("/")[2]
+        id_v1_splited = service["id_v1"].split("/")
+        device_id = "hue_" + ("sensor_" if id_v1_splited[1] == "sensors" else "") + id_v1_splited[2]
         homeware.execute(device_id, "online", True if service["status"] == "connected" else False)
       homeware.execute(device_id_service_id[service["id"]], "online", True if service["status"] == "connected" else False)
 
