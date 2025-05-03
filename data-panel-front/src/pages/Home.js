@@ -51,12 +51,25 @@ const home_alerts = [
     ]
   },
   {
-    "text": "Ventana abierta",
+    "text": "Salón",
     "severity": "normal",
     "image": "window.png",
     "conditions": [
       {
         "device_id": "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4",
+        "param": "openPercent",
+        "value": 100,
+        "comparator": "="
+      }
+    ]
+  },
+  {
+    "text": "Dormitorio",
+    "severity": "normal",
+    "image": "window.png",
+    "conditions": [
+      {
+        "device_id": "e6c2e2bd-5057-49bc-821f-a4b10e415ac6",
         "param": "openPercent",
         "value": 100,
         "comparator": "="
