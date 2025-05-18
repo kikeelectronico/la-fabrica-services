@@ -150,6 +150,9 @@ def main():
           alert.voice("Luz tenue.")
     elif hour == "12:00:00" and not hour == just_executed:
       just_executed = hour
+      if homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
+        if homeware.get("scene_dim", "enable") and homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "occupancy") == "OCCUPIED":
+          alert.voice("Luz tenue activada.")
       weekday = today.weekday()
       if (weekday in [5,6] or homeware.get("scene_on_vacation", "enable")) and homeware.get("switch_at_home", "on"):
         if homeware.get("scene_winter", "enable"):
