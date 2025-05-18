@@ -7,7 +7,7 @@ import Power from "../components/Power"
 import Weather from "../components/Weather"
 import Air from "../components/Air"
 import Alerts from "../components/Alerts"
-import Launches from "../components/Launches"
+// import Launches from "../components/Launches"
 import Shower from "../components/Shower"
 import Bedroom from "../components/Bedroom"
 import NotAtHome from "../components/NotAtHome"
@@ -140,8 +140,8 @@ export default function Home(props) {
   const [water, setWater] = useState(null)
   const [weather, setWeather] = useState(null)
   const [weather_flag, setWeatherFlag] = useState(null)
-  const [launches, setLaunches] = useState(null)
-  const [launches_flag, setLaunchesFlag] = useState(null)
+  // const [launches, setLaunches] = useState(null)
+  // const [launches_flag, setLaunchesFlag] = useState(null)
   const [spotify, setSpotify] = useState(null)
   const [spotify_playing, setSpotifyPlaying] = useState(false);
   const [weather_alerts, setWeatherAlerts] = useState(null)
@@ -156,7 +156,7 @@ export default function Home(props) {
       else if (event.type === "home") {setHome(event.data); setHomeFlag(event.flags)}
       else if (event.type === "water") {setWater(event.data);}
       else if (event.type === "weather") {setWeather(event.data); setWeatherFlag(event.flags)}
-      else if (event.type === "launches") {setLaunches(event.data); setLaunchesFlag(event.flags)}
+      // else if (event.type === "launches") {setLaunches(event.data); setLaunchesFlag(event.flags)}
       else if (event.type === "spotify") {setSpotify(event.data)}
     };
     sse.onerror = () => {
@@ -253,7 +253,9 @@ export default function Home(props) {
           { home && home_flag ? <Shower data={home}/> : <></> }
           { home && home_flag ? <Bedroom data={home}/> : <></> }
           { home && home_flag ? <NotAtHome data={home}/> : <></> }
-          { launches && launches_flag ? <Launches data={launches}/> : <></> }
+          {
+            //{ launches && launches_flag ? <Launches data={launches}/> : <></> }
+          }
           { spotify ? <Spotify data={spotify}/> : <></> }
           { 
             home ? 
