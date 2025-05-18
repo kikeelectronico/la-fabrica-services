@@ -4,7 +4,7 @@ def livingroom(homeware, topic, payload):
     if not homeware.get("scene_dim", "enable"):
       # if int(payload) > 20:
         # homeware.execute("scene_dim", "eneable", False)
-      brightness = int((int(payload) * 1.4) + 16)
+      brightness = int((int(payload) * 1.4) + 20)
       if not homeware.get("hue_sensor_12", "on"):
         homeware.execute("hue_6", "brightness", brightness)
       homeware.execute("hue_7", "brightness", brightness)
