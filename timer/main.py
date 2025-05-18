@@ -145,6 +145,11 @@ def main():
           homeware.execute("thermostat_livingroom", "thermostatMode", "heat")
           homeware.execute("thermostat_bathroom", "thermostatTemperatureSetpoint", 21)
           homeware.execute("thermostat_bathroom", "thermostatMode", "heat")
+    elif hour == "10:30:00" and not hour == just_executed:
+      just_executed = hour
+      if weekday in [0,1,2,3,4] and homeware.get("switch_at_home", "on") and (not homeware.get("scene_on_vacation", "enable")):
+        if homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "brightness") < 20 and homeware.get("c8bd20a2-69a5-4946-b6d6-3423b560ffa9", "occupancy") == "OCCUPIED":
+          alert.voice("Luz tenue.")
     elif hour == "12:00:00" and not hour == just_executed:
       just_executed = hour
       # Weekday control
