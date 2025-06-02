@@ -35,7 +35,7 @@ def shouldCool(homeware, thermostat_id, ac_id):
   if state["thermostatMode"] == "cool":
     ambient = state["thermostatTemperatureAmbient"]
     set_point = state["thermostatTemperatureSetpoint"]
-    if ambient > (set_point + 1):
+    if ambient > (set_point + 0.5):
       return True
     elif ambient < set_point:
       return False
