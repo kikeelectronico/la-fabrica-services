@@ -87,14 +87,14 @@ def powerManagment(homeware, topic, payload):
           bedroom = False
           bathroom = False
           heater = True
-          livingroom_ac = False
+          livingroom_ac = shouldCool(homeware, "thermostat_livingroom", "ac_001") or homeware.get("thermostat_livingroom", "thermostatMode") == "fan-only"
           shower_state = 1
         elif shower_state == 1: # Wait for water to heat up
           if homeware.get("current001", "brightness") < 50:
             bathroom = False
             livingroom = False
             bedroom = False
-            livingroom_ac = False            
+            livingroom_ac = shouldCool(homeware, "thermostat_livingroom", "ac_001") or homeware.get("thermostat_livingroom", "thermostatMode") == "fan-only"            
             heater = False
             shower_state = 2
         elif shower_state == 2: # If winter: heat up the bathroom air and keep the livingroom and water tank at temperature
@@ -102,7 +102,7 @@ def powerManagment(homeware, topic, payload):
             bathroom = False #shouldHeat(homeware, "thermostat_bathroom", "hue_12")
             livingroom = shouldHeat(homeware, "thermostat_livingroom", "hue_8", "e5e5dd62-a2d8-40e1-b8f6-a82db6ed84f4") and not bathroom
             bedroom = False
-            livingroom_ac = False
+            livingroom_ac = shouldCool(homeware, "thermostat_livingroom", "ac_001") or homeware.get("thermostat_livingroom", "thermostatMode") == "fan-only"
             heater = not bathroom and not livingroom
           else:
             bathroom = False
