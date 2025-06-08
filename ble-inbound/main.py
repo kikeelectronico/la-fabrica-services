@@ -13,27 +13,14 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST_NETWORK", "no_set")
+BLE_SENSORS = os.environ.get("BLE_SENSORS", "no_set")
+BLE_PRESENCE = os.environ.get("BLE_PRESENCE", "no_set")
 ENV = os.environ.get("ENV", "dev")
 
 # Define constants
 MQTT_PORT = 1883
 SERVICE = "ble-inbound-" + ENV
 ONLINE_TIMEOUT = 300
-# MAC address
-DEVICES = {
-  "thermostat_livingroom": {
-    "mac": "F1:1C:1C:76:7F:3C",
-  },
-  "thermostat_dormitorio": {
-    "mac": "E5:DC:2A:7B:6C:4F",
-  },
-  "thermostat_bathroom": {
-    "mac": "F6:5C:6E:AA:3E:C8",
-  },
-  "temperature_001": {
-    "mac": "C8:6B:82:C6:0E:3E",
-  }
-}
 # API UUIDs
 API_SERVICE_UUID ="cba20d00-224d-11e6-9fb8-0002a5d5c51b"
 API_TX_CHARACTERISTIC_UUID= "cba20003-224d-11e6-9fb8-0002a5d5c51b"
@@ -50,6 +37,7 @@ mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
 homeware = Homeware(mqtt_client)
 
+# Callback for BLE sensots
 class MyDelegate(btle.DefaultDelegate):
     def __init__(self, logger):
         self.logger = logger
@@ -142,6 +130,8 @@ if __name__ == "__main__":
   if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
   if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
   if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if BLE_SENSORS == "no_set": report("BLE_SENSORS env vars no set")
+  if BLE_PRESENCE == "no_set": report("BLE_PRESENCE env vars no set")
   
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
