@@ -2,6 +2,7 @@ from bluepy import btle
 import paho.mqtt.client as mqtt
 import os
 import time
+import json
 
 from homeware import Homeware
 from logger import Logger
@@ -13,6 +14,8 @@ if os.environ.get("MQTT_PASS", "no_set") == "no_set":
 MQTT_USER = os.environ.get("MQTT_USER", "no_set")
 MQTT_PASS = os.environ.get("MQTT_PASS", "no_set")
 MQTT_HOST = os.environ.get("MQTT_HOST_NETWORK", "no_set")
+HOMEWARE_API_URL = os.environ.get("HOMEWARE_API_URL_NETWORK", "no_set")
+HOMEWARE_API_KEY = os.environ.get("HOMEWARE_API_KEY", "no_set")
 BLE_SENSORS = os.environ.get("BLE_SENSORS", "no_set")
 BLE_PRESENCE = os.environ.get("BLE_PRESENCE", "no_set")
 ENV = os.environ.get("ENV", "dev")
@@ -35,7 +38,7 @@ last_update = {}
 # Instantiate objects
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=SERVICE)
 logger = Logger(mqtt_client, SERVICE)
-homeware = Homeware(mqtt_client)
+homeware = Homeware(mqtt_client, HOMEWARE_API_URL, HOMEWARE_API_KEY, logger)
 
 # Callback for BLE sensots
 class MyDelegate(btle.DefaultDelegate):
@@ -120,6 +123,15 @@ def getSensors():
             logger.log("Device offline: " + device, severity="WARNING")
             homeware.execute(device,"online",False)
 
+# BLE presence
+def verifyPresence():
+  scanner = btle.Scanner()
+  dispositivos = scanner.scan(10.0)
+  macs = [dev.addr.upper() for dev in dispositivos]
+  names = [dev.getValueText(0x09) for dev in dispositivos]
+  for device in BLE_PRESENCE:
+      if not homeware.get(device["id"], "enable") == (device["name"] in names):
+        homeware.execute(device["id"],"enable", device["name"] in names)
 
 # Main entry point
 if __name__ == "__main__":
@@ -130,8 +142,12 @@ if __name__ == "__main__":
   if MQTT_USER == "no_set": report("MQTT_USER env vars no set")
   if MQTT_PASS == "no_set": report("MQTT_PASS env vars no set")
   if MQTT_HOST == "no_set": report("MQTT_HOST env vars no set")
+  if HOMEWARE_API_URL == "no_set": report("HOMEWARE_API_URL env vars no set")
+  if HOMEWARE_API_KEY == "no_set": report("HOMEWARE_API_KEY env vars no set")
   if BLE_SENSORS == "no_set": report("BLE_SENSORS env vars no set")
+  else: BLE_SENSORS = json.loads(BLE_SENSORS)
   if BLE_PRESENCE == "no_set": report("BLE_PRESENCE env vars no set")
+  else: BLE_PRESENCE = json.loads(BLE_PRESENCE)
   
   # Connect to the mqtt broker
   mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -139,5 +155,6 @@ if __name__ == "__main__":
   logger.log("Starting " + SERVICE , severity="INFO")
 
   while True:
-    getSensors()
+    # getSensors()
+    verifyPresence()
     time.sleep(10)
