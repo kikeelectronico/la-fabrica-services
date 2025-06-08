@@ -166,3 +166,10 @@ def astro_day(homeware, alert, topic, payload):
   if topic == "device/scene_astro_day/enable":
     if not payload:
       homeware.execute("scene_dim", "enable", True)
+
+# Headphones related logic
+def headphones(homeware, alert, topic, payload):
+  if topic == "device/scene_headphones/enable":
+    if homeware.get("thermostat_livingroom", "thermostatMode") in ["cool", "fan-only"]:
+      if homeware.get("thermostat_livingroom", "thermostatTemperatureAmbient") > homeware.get("thermostat_livingroom", "thermostatTemperatureSetpoint"):
+        homeware.execute("ac_001", "currentFanSpeedSetting", "Alta" if payload else "Baja")
