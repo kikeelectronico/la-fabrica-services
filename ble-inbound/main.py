@@ -83,11 +83,11 @@ class MyDelegate(btle.DefaultDelegate):
 
 # BLE sensors
 def getSensors():
-   for device in DEVICES:
+   for device in BLE_SENSORS:
       try:
         # Connect to device
         logger.log("Connecting to: " + device, severity="INFO")
-        ble_link = btle.Peripheral(DEVICES[device]["mac"], btle.ADDR_TYPE_RANDOM)
+        ble_link = btle.Peripheral(BLE_SENSORS[device]["mac"], btle.ADDR_TYPE_RANDOM)
         ble_link.withDelegate(MyDelegate(logger))
         # Get the API service
         service_uuid = btle.UUID(API_SERVICE_UUID)
