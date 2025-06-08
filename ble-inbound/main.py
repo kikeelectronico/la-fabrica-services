@@ -78,9 +78,9 @@ class MyDelegate(btle.DefaultDelegate):
                   homeware.execute(device_id,"humidityAmbientPercent",hum)
                 homeware.execute(device_id,"online",True)
             else:
-                self.logger.log("Unknown package from " + device, severity="WARNING")
+                self.logger.log("Unknown package from " + device_id, severity="WARNING")
         elif data[0] == 7:
-            self.logger.log("Low battery: " + device, severity="WARNING")
+            self.logger.log("Low battery: " + device_id, severity="WARNING")
             homeware.execute(device_id,"descriptiveCapacityRemaining","LOW")
             homeware.execute(device_id,"online",False)
 
@@ -155,6 +155,6 @@ if __name__ == "__main__":
   logger.log("Starting " + SERVICE , severity="INFO")
 
   while True:
-    # getSensors()
+    getSensors()
     verifyPresence()
     time.sleep(1)
