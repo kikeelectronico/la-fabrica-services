@@ -48,7 +48,6 @@ class MyDelegate(btle.DefaultDelegate):
 
     def handleNotification(self, cHandle, data):
         data = bytearray(data)
-        print(self.device_id)
         if data[0] == 1:
             if len(data) == 5:
                 # Update batery
@@ -70,7 +69,6 @@ class MyDelegate(btle.DefaultDelegate):
                 temp_dec = data[1] if data[1] < 16 else 0
                 temp = temp_int + (temp_dec/10)
                 hum = data[3] if data[3] < 128 else (data[3] - 128)
-                print(self.device_id, temp, hum)
                 if "thermostat" in self.device_id:
                   homeware.execute(self.device_id,"thermostatTemperatureAmbient",temp)
                   homeware.execute(self.device_id,"thermostatHumidityAmbient",hum)
