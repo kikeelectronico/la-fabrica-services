@@ -22,6 +22,7 @@ jobs:
           - hue-logic-pool
           - hue-outbound
           - hue-sensors-alerts
+          - ikea-inbound
           - logger
           - logic-pool
           - timer
