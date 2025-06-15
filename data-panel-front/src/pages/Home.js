@@ -18,7 +18,7 @@ const API = process.env.REACT_APP_DATA_PANEL_API_URL
 
 const scenes_to_show = [
   {
-    "name": "Luz tenue",
+    "name": "Luz indirecta",
     "id": "scene_dim"
   }
 ]
