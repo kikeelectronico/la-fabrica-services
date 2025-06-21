@@ -20,7 +20,7 @@ def playingLights(homeware):
     homeware.execute("hue_10", "on", False)
     prev_status.setdefault("thermostat_livingroom", {})
     prev_status["thermostat_livingroom"]["thermostatMode"] = homeware.get("thermostat_livingroom", "thermostatMode")
-    if prev_status["thermostat_livingroom"]["thermostatMode"] == "cool":
+    if prev_status["thermostat_livingroom"]["thermostatMode"] == "cool" and (not homeware.get("scene_headphones", "enable")):
       homeware.execute("thermostat_livingroom", "thermostatMode", "off")
     prev_player_playing_state = True
       
