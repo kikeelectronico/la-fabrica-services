@@ -188,9 +188,9 @@ export default function Home(props) {
         console.log(alert)
         let severity = "low"
         if (alert.category.includes("Extreme")) severity = "critical"
-        else if (alert.event.includes("Moderate")) severity = "normal"
-        else if (alert.event.includes("amarillo")) severity = "normal"
-        else if (alert.severity === "Moderate") severity = "normal"
+        else if (alert.event.includes("Moderate")) severity = "middle"
+        else if (alert.event.includes("amarillo")) severity = "low"
+        else if (alert.event.includes("naranja")) severity = "middle"
         _weather_alerts.push(
           {
             "text": alert.event + (alert.event[alert.event.length-1] !== "." ? "." : "") + (alert.desc !== "" ? " " + alert.desc : "") + (alert.desc[alert.desc.length-1] !== "." ? "." : "") + (alert.areas !== "" ? " " + alert.areas : ""),
